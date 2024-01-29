@@ -15,7 +15,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {RippleModule} from "primeng/ripple";
 
 
-import {ApiGeneratorService} from "../service/api-generator-service";
+import {ApiGeneratorRestService} from "../service/api-generator-rest-service";
 import {ApiGeneratorModel} from "../model/api-generator-model";
 import {PropertyModel} from "../model/property-model";
 import {FormMode} from "../../../common/form-mode";
@@ -55,7 +55,7 @@ export class ApiGeneratorPageComponent implements OnInit, OnDestroy {
 
     constructor(
         private fb: FormBuilder,
-        private apiGeneratorService: ApiGeneratorService,
+        private apiGeneratorService: ApiGeneratorRestService,
         private messageService: MessageService
     ) {
     }

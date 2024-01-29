@@ -1,12 +1,12 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {ApiGeneratorModel} from "../model/api-generator-model";
+import {TourCategoryModel} from "../model/tour-category-model";
 
 @Injectable({
     providedIn: 'root'
 })
-export class ApiGeneratorService {
+export class TourCategoryRestService {
 
     private baseUrl = 'http://localhost:8090';
 
@@ -14,7 +14,7 @@ export class ApiGeneratorService {
     constructor(private http: HttpClient) {
     }
 
-    generate(model: ApiGeneratorModel) {
+    generate(model: TourCategoryModel) {
         return this.http.post(`${this.baseUrl}/apigen/api/generate`, model);
     }
 
