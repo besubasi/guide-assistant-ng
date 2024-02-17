@@ -1,1 +1,94 @@
-<p>tour-category-list works!</p>
+<!--
+<div class="grid">
+    <div class="col-12">
+        <p-card>
+            <ng-template pTemplate="header">
+                <ui-page-title [title]="'stockMovementReason.list' | translate" [pageCode]="pageCode"
+                               [showBack]="false"></ui-page-title>
+            </ng-template>
+
+            <ng-content select="[toolbar]"></ng-content>
+
+            <p-table
+                dataKey="id"
+                styleClass="p-datatable-striped"
+                selectionMode="single"
+                [id]="pageCode + '_list'"
+                [value]="list"
+                [paginator]="true"
+                [rows]="10"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [totalRecords]="list?.length"
+                [(selection)]="selectedModel"
+                (onRowSelect)="onRowSelect()"
+                (onRowUnselect)="onRowUnSelect()"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="code" style="width: 15%">
+                            {{ 'code' | translate }}
+                            <p-sortIcon field="code"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="definition" style="width: 70%">
+                            {{ 'definition' | translate }}
+                            <p-sortIcon field="definition"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="active" style="width: 15%">
+                            {{ 'general.active' | translate }}
+                            <p-sortIcon field="active"></p-sortIcon>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style="width: 15%">
+                            <p-columnFilter field="code" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)"/>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th style="width: 70%">
+                            <p-columnFilter field="definition" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)"/>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th id="activeColumnFilter" style="width: 15%">
+                            <p-columnFilter field="active" matchMode="equals" [showMenu]="false"
+                                            [style]="{ width: '100%' }">
+                                <ng-template pTemplate="filter" let-filter="filterCallback">
+                                    <p-dropdown
+                                        [options]="enumActivePassive"
+                                        [optionLabel]="'label'"
+                                        [optionValue]="'value'"
+                                        [showClear]="true"
+                                        [placeholder]="'placeholder' | translate"
+                                        (onChange)="filter($event.value)"
+                                        id="active"
+                                        name="active"
+                                        appendTo="body"
+                                    ></p-dropdown>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr [pSelectableRow]="item">
+                        <td style="width: 15%">{{ item.code }}</td>
+                        <td style="width: 70%">{{ item.definition }}</td>
+                        <td style="width: 15%">
+                            <ui-active-inactive-tags [tagValue]="item.active"></ui-active-inactive-tags>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td [attr.colspan]="3">{{ 'noRecordsFound' | translate }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-card>
+    </div>
+</div>
+-->
