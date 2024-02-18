@@ -1,0 +1,14 @@
+<div class="search-button-wrapper flex">
+    <button
+        [type]="enterSubmit ? 'submit' : 'button'"
+        id="{{ idPrefix + '_search' }}"
+        [loading]="loading()"
+        (click)="search()"
+        pButton
+        label="{{ 'button.search' | translate }}"
+        [disabled]="searchButtonDisabled"
+    >
+        <i class="material-icons">search</i>
+    </button>
+    <button type="button" id="{{ idPrefix + '_clear' }}" (click)="clear()" pButton label="{{ 'button.clear' | translate }}" class="ml-3 p-button-text" [disabled]="clearButtonDisabled"></button>
+</div>

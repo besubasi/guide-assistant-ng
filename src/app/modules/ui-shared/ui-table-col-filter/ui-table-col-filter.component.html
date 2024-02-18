@@ -1,0 +1,11 @@
+<div class="flex pb-2 pt-2 justify-content-end align-items-center">
+    <span class="mr-2">{{ 'tableFilter' | translate }}</span>
+    <p-multiSelect
+        [options]="cols"
+        [(ngModel)]="selectedCols"
+        [optionLabel]="optionLabel"
+        (onChange)="onChange($event)"
+        [maxSelectedLabels]="0"
+        [selectedItemsLabel]="'tableFilterSelected' | translate"
+    ></p-multiSelect>
+</div>

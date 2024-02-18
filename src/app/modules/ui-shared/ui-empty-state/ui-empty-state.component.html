@@ -1,0 +1,8 @@
+<div class="ui-empty-state-wrapper flex justify-content-center align-items-center flex-column py-6">
+    <i class="icon-wrapper material-icons-outlined"> inbox </i>
+    <h4>{{ mainTitleText || 'emptyState.mainTitle' | translate }}</h4>
+    <span>{{ subTitleText || 'emptyState.subTitle' | translate }}</span>
+    <button pButton [disabled]="!isDisabledButton" label="{{ saveButtonLabel || 'button.add' | translate }}" class="mt-4" (click)="addHandler()" *ngIf="showSaveButton">
+        <i class="material-icons">add</i>
+    </button>
+</div>

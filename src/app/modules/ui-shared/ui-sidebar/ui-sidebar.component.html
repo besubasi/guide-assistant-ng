@@ -1,0 +1,15 @@
+<p-sidebar
+    class="ui-sidebar-wrapper"
+    [(visible)]="display"
+    position="{{ sidebarPosition }}"
+    [dismissible]="false"
+    [showCloseIcon]="false"
+    [blockScroll]="true"
+    [style]="{ width: sideBarSize }"
+    [closeOnEscape]="false"
+    [appendTo]="appendTo"
+>
+    <ng-container>
+        <ng-content></ng-content>
+    </ng-container>
+</p-sidebar>

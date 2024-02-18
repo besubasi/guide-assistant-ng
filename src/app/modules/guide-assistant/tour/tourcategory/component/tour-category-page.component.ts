@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CurrencyPipe, NgIf, NgStyle} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {MenuModule} from "primeng/menu";
@@ -15,10 +15,12 @@ import {RippleModule} from "primeng/ripple";
 
 
 import {Subscription} from "rxjs";
-import {TourRestService} from "../../tour/service/tour-rest-service";
 import {FormMode} from 'src/app/common/form-mode';
 import {TourCategoryModel} from "../model/tour-category-model";
 import {TourCategoryListComponent} from "./tour-category-list/tour-category-list.component";
+import {UiSharedModule} from "../../../../ui-shared/ui-shared.module";
+import {InputNumberModule} from "primeng/inputnumber";
+import {TourCategoryRestService} from "../service/tour-category-rest-service";
 
 @Component({
     selector: 'app-tour-category-page',
@@ -40,21 +42,24 @@ import {TourCategoryListComponent} from "./tour-category-list/tour-category-list
         RippleModule,
         DividerModule,
         TourCategoryListComponent,
+        UiSharedModule,
+        InputNumberModule,
     ],
     styleUrls: ['./tour-category-page.component.scss'],
     templateUrl: './tour-category-page.component.html'
 })
 export class TourCategoryPageComponent implements OnInit, OnDestroy {
 
+    @ViewChild(TourCategoryListComponent) listComponent: TourCategoryListComponent;
+
     form: UntypedFormGroup;
     formMode: string;
-    selectedModel: TourCategoryModel;
     subscriptions: Subscription[];
 
     constructor(
         private fb: FormBuilder,
-        private restService: TourRestService,
-        private messageService: MessageService
+        private restService: TourCategoryRestService,
+        private messageService: MessageService,
     ) {
     }
 
@@ -69,9 +74,15 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
+        this.form = this.fb.group(new TourCategoryModel());
+    }
+
+    buildForm2() {
         this.form = this.fb.group({
             id: [null],
-            name: [null, [Validators.required]]
+            companyId: [null, [Validators.required]],
+            name: [null, [Validators.required]],
+            active: [true, [Validators.required]]
         });
     }
 
@@ -91,16 +102,21 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
     onCopy() {
         this.formMode = FormMode.COPY;
         this.buildForm();
-        this.form.patchValue(this.selectedModel);
+        this.form.patchValue(this.listComponent?.selectedModel);
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
-        this.form.patchValue(this.selectedModel);
+        this.form.patchValue(this.listComponent?.selectedModel);
     }
 
     onDelete() {
+        this.restService.delete(this.listComponent?.selectedModel.id).subscribe(() => {
+            this.onCancel();
+            this.listComponent.loadListData();
+            this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
+        });
     }
 
     onBack() {
@@ -116,8 +132,11 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
     onSave() {
         let apiModel: TourCategoryModel = this.form.value;
 
-        let subscription = this.restService.generate(apiModel).subscribe(
+        let subscription = this.restService.save(apiModel).subscribe(
             response => {
+                console.log(response);
+                this.onCancel();
+                this.listComponent.loadListData();
                 this.messageService.add({severity: 'success', summary: 'Success', detail: "Api Oluşturuldu"});
             }
         );

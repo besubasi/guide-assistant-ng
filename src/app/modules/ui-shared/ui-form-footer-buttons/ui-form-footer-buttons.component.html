@@ -1,0 +1,108 @@
+<div class="ui-form-footer-buttons-wrapper">
+    <hr />
+    <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
+        <ng-container *ngIf="customContent">
+            <ng-content></ng-content>
+        </ng-container>
+
+        <div *ngIf="showRemove">
+            <button
+                pButton
+                id="{{ idPrefix + '_delete' }}"
+                type="button"
+                label="{{ 'button.delete' | translate }}"
+                class="p-button-danger p-button-text ml-2"
+                (click)="handleRemove()"
+                [disabled]="removeButtonDisabled"
+            ></button>
+        </div>
+
+        <div class="mr-2" *ngIf="showCancel">
+            <button
+                pButton
+                id="{{ idPrefix + '_cancel' }}"
+                type="button"
+                label="{{ 'button.cancel' | translate }}"
+                class="p-button-text ml-2"
+                (click)="handleCancel()"
+                [disabled]="cancelButtonDisabled"
+            ></button>
+        </div>
+
+        <div *ngIf="showSave">
+            <button
+                pButton
+                id="{{ idPrefix + '_save' }}"
+                [type]="enterSubmit ? 'submit' : 'button'"
+                label="{{ saveButtonLabel ? saveButtonLabel : ('button.save' | translate) }}"
+                class="ml-2"
+                (click)="handleSave()"
+                [loading]="loadingSave()"
+                [disabled]="saveButtonDisabled"
+            ></button>
+        </div>
+
+        <div *ngIf="showChoose">
+            <button
+                pButton
+                id="{{ idPrefix + '_choose' }}"
+                [type]="enterSubmit ? 'submit' : 'button'"
+                label="{{ 'button.choose' | translate }}"
+                class="ml-2"
+                (click)="handleChoose()"
+                [disabled]="chooseButtonDisabled"
+            ></button>
+        </div>
+
+        <div *ngIf="showNext">
+            <button
+                pButton
+                id="{{ idPrefix + '_next' }}"
+                [type]="enterSubmit ? 'submit' : 'button'"
+                label="{{ 'button.next' | translate }}"
+                class="ml-2"
+                (click)="handleNext()"
+                [loading]="loadingNext()"
+                [disabled]="nextButtonDisabled"
+            ></button>
+        </div>
+
+        <div *ngIf="showOk">
+            <button
+                pButton
+                id="{{ idPrefix + '_ok' }}"
+                [type]="enterSubmit ? 'submit' : 'button'"
+                label="{{ 'button.ok' | translate }}"
+                class="ml-2"
+                (click)="handleOk()"
+                [loading]="loadingOk()"
+                [disabled]="okButtonDisabled"
+            ></button>
+        </div>
+
+        <div *ngIf="showEdit">
+            <button
+                pButton
+                id="{{ idPrefix + '_edit' }}"
+                type="button"
+                label="{{ 'button.edit' | translate }}"
+                class="p-button-text ml-2"
+                (click)="handleEdit()"
+                [disabled]="editButtonDisabled"
+            ></button>
+        </div>
+
+        <div *ngIf="showDefaultButton">
+            <button
+                pButton
+                id="{{ idPrefix + '_default' }}"
+                [type]="enterSubmit ? 'submit' : 'button'"
+                label="{{ defaultButtonLabel ? (defaultButtonLabel | translate) : ('button.save' | translate) }}"
+                class="ml-2"
+                (click)="handleDefaultButton()"
+                [loading]="loadingDefaultButton()"
+                [disabled]="defaultButtonDisabled"
+            ></button>
+        </div>
+    </p-toolbar>
+</div>

@@ -1,0 +1,111 @@
+@import '../../../assets/sass/overrides/variables';
+
+:host ::ng-deep .ui-card-item-wrapper {
+    .p-card {
+        border: 1px solid rgba($blackFull, 0.2);
+        box-shadow: none;
+
+        &:hover {
+            background-color: rgba($primaryColor, 0.05);
+            border-color: rgba($primaryColor, 0.4);
+            cursor: pointer;
+
+            .content-wrapper {
+                .arrow-square {
+                    background-color: $primaryColor;
+    
+                    i {
+                        color: #ffffff;
+                    }
+                }
+            }
+            
+        }
+
+        .content-wrapper {
+            &.horizontal-content-wrapper{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 2px 0;
+            }
+            &.default-content-wrapper{
+                display: flex;
+                flex-direction: column;
+                padding: 0;
+            }
+
+            .container {
+                .title {
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin-bottom: 0 !important;
+                    flex-grow: 0;
+                    width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+    
+                .desc {
+                    flex-grow: 0;
+                }
+            }
+    
+            .arrow-square {
+                width: 24px;
+                height: 24px;
+                border: 0.5px solid $primaryColor;
+                border-radius: 3px;
+    
+                i {
+                    font-size: 18px;
+                    color: $primaryColor;
+                }
+            }
+        }
+
+        .p-card-body {
+            .p-card-content {
+                padding: 0;
+            }
+        }
+
+        i.icon {
+            position: absolute;
+            margin-left: -35px;
+        }
+    }
+
+    &.ui-card-item-disabled {
+        > * {
+            pointer-events: none;
+            opacity: 0.5;
+            color: rgba($blackFull, 0.4);
+            border: 1px solid rgba($blackFull, 0.2);
+        }
+
+        .arrow-square {
+            border-color: rgba($blackFull, 0.2);
+
+            i {
+                color: rgba($blackFull, 0.2);
+            }
+        }
+    }
+
+    &.ui-card-item-selected {
+        .p-card {
+            background-color: rgba($primaryColor, 0.05) !important;
+            border-color: rgba($primaryColor, 0.4) !important;
+
+            .arrow-square {
+                background-color: $primaryColor !important;
+
+                i {
+                    color: #ffffff !important;
+                }
+            }
+        }
+    }
+}

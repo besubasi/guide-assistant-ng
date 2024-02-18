@@ -1,0 +1,74 @@
+$blackFull: #0d162a;
+$primaryColor: #0056ff;
+
+:host ::ng-deep .ui-page-title {
+    border-bottom: 1px solid rgba($blackFull, 0.1);
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1rem;
+
+    h3 {
+        margin: 0;
+        padding: 0;
+        font-size: 18px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .p-button.p-button-text {
+        color: $blackFull;
+    }
+
+    .big-icon {
+        font-size: 24px !important;
+    }
+
+    .menuOverlayClass {
+        top: 15px !important;
+        left: -170px !important;
+        min-width: 200px;
+        text-align: left;
+    }
+}
+
+:host ::ng-deep .modal-title-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0px;
+    width: calc(100% - 37px);
+    top: 3px;
+    right: 0px;
+
+    &.modal-title-without-showmore {
+        top: 10px;
+    }
+
+    &.ui-page-title {
+        padding-left: 1.5rem;
+        border-bottom: none;
+    }
+
+    .header-border-wrapper {
+        width: 100%;
+        position: fixed;
+        left: 0px;
+        top: 49px;
+
+        hr {
+            margin: 7px 0 0 0;;
+        }
+    }
+}
+
+.app-icon {
+    float: left;
+    margin-top: -2px;
+    margin-right: 10px;
+    color: #CFD0D4
+}
+
+//dışındayken
+// position: absolute;
+//     width: 100%;
+//     left: 0;
+//     top: 56px;

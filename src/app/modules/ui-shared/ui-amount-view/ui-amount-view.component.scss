@@ -1,0 +1,36 @@
+.amount-wrapper {
+    background-color: #F9FAFF;
+    border: 1px solid #E1E1E4;
+    border-radius: 4px;
+    margin-top: 0.75rem;
+    margin-right: 0;
+    margin-left: 0;
+
+    .box:first-of-type {
+        .header-p {
+            font-weight: 700;
+        }
+    }
+
+    .box:not(:first-of-type) {
+        .header-p {
+            font-weight: 700;
+            font-size: 11px;
+        }
+    }
+
+    .box:not(:last-child) {      
+        border-right: 1px solid #E1E1E4;
+    }
+
+    .box {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .header-p {
+            margin: 0;
+        }
+    }
+}

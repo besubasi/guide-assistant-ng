@@ -35,7 +35,8 @@
         "tslib": "^2.5.0",
         "zone.js": "~0.14.0",
         "prismjs": "^1.29.0",
-        "json2typescript": "1.5.1"
+        "json2typescript": "1.5.1",
+        "@ngx-translate/core": "15.0.0"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^17.0.5",

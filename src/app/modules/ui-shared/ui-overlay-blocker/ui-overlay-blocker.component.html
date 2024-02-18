@@ -1,0 +1,4 @@
+<div [ngClass]="show ? 'ui-overlay-blocker' : ''">
+    <ng-content></ng-content>
+    <div *ngIf="show" class="ui-overlay-blocker-text">{{ text }}</div>
+</div>

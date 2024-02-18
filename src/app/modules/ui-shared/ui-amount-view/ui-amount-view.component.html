@@ -1,0 +1,6 @@
+<div class="amount-wrapper grid">
+    <div class="box col" *ngFor="let item of itemList; let i = index; trackBy: trackByFn">
+        <p class="p-l-1 header-p">{{ item.label | translate }}</p>
+        <span class="p-l-1" *ngIf="item.value || item.value == 0">{{ item.value | number: '1.2-2' }}</span>
+    </div>
+</div>

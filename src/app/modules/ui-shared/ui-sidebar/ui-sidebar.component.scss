@@ -1,0 +1,43 @@
+:host ::ng-deep .ui-sidebar-wrapper {
+    .ui-page-title {
+        margin-bottom: 0.5rem;
+        margin-left: -1rem;
+        margin-right: -1rem;
+        padding-left: 1.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .p-sidebar {
+        padding: 0;
+
+        .p-sidebar-header{
+            display: none;
+        }
+        .p-sidebar-content{
+            height: 100%;
+            padding-bottom: 4rem;
+
+            h4 {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .selection-language-bar-wrapper {
+        margin-bottom: 1rem;
+    }
+
+    .ui-form-footer-buttons-wrapper {
+        position: fixed;
+        width: 36rem;
+        right: 0;
+        bottom: 0;
+        padding: 0 0 0.75rem 0;
+        background: white;
+
+        hr {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+}

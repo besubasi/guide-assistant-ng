@@ -1,0 +1,23 @@
+$blackFull: #0d162a;
+$primaryColor: #0056ff;
+
+.ui-page-header {
+    h1 {
+        margin: auto 0;
+        font-size: 24px;
+        color: $blackFull;
+        padding-right: 16px;
+        border-right: 1px solid rgba($blackFull, 0.2);
+
+    }
+
+    .p-button.p-button-text {
+        color: $blackFull;
+    }
+
+    .big-icon {
+        font-size: 24px !important;
+        margin-top: 4px;
+    }
+}
+

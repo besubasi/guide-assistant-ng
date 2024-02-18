@@ -1,0 +1,33 @@
+.ui-overlay-blocker {
+    display: block;
+    pointer-events: none;
+    position: relative;
+}
+
+.ui-overlay-blocker:before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    display: block;
+    height: 100%;
+    top: 0;
+    color: #fff;
+    left: 0;
+    text-align: center;
+    right: 0;
+    background-color: rgb(71 82 106 / 0.7);
+    border-radius: 4px;
+}
+
+.ui-overlay-blocker .ui-overlay-blocker-text {
+    color: #fff;
+    font-size: 28px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    margin-top: -0.5em;
+    display: block;
+    width: 100%;
+    text-overflow: ellipsis;
+    z-index: 10;
+}
