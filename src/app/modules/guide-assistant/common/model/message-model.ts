@@ -1,5 +1,5 @@
 import {JsonObject, JsonProperty} from "json2typescript";
-import {EnumMessageType} from "./enum-message-type";
+import {EnumMessageType} from "../enum/enum-message-type";
 
 @JsonObject('MessageModel')
 export class MessageModel {

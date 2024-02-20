@@ -10,18 +10,18 @@
             <ng-content select="[toolbar]"></ng-content>
 
             <p-table
-                    dataKey="id"
-                    styleClass="p-datatable-striped"
-                    selectionMode="single"
-                    [id]="pageCode + '_list'"
-                    [value]="list"
-                    [paginator]="true"
-                    [rows]="10"
-                    [rowsPerPageOptions]="[10, 25, 50]"
-                    [totalRecords]="list?.length"
-                    [(selection)]="selectedModel"
-                    (onRowSelect)="onRowSelect()"
-                    (onRowUnselect)="onRowUnSelect()"
+                dataKey="id"
+                styleClass="p-datatable-striped"
+                selectionMode="single"
+                [id]="pageCode + '_list'"
+                [value]="list"
+                [paginator]="true"
+                [rows]="10"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [totalRecords]="list?.length"
+                [(selection)]="selectedModel"
+                (onRowSelect)="onRowSelect()"
+                (onRowUnselect)="onRowUnSelect()"
             >
                 <ng-template pTemplate="header">
                     <tr>
@@ -41,7 +41,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
                     <tr [pSelectableRow]="item">
-                        <td style="width: 35%">{{ item.companyId }}</td>
+                        <td style="width: 35%">{{ item.companyName }}</td>
                         <td style="width: 50%">{{ item.name }}</td>
                         <td style="width: 50%">{{ item.active }}</td>
                         <!--                        <td style="width: 15%">

@@ -1,4 +1,5 @@
-@import '../../../assets/sass/overrides/variables';
+$blackFull: #0d162a;
+$primaryColor: #0056ff;
 
 :host ::ng-deep .ui-card-item-wrapper {
     .p-card {
@@ -13,23 +14,24 @@
             .content-wrapper {
                 .arrow-square {
                     background-color: $primaryColor;
-    
+
                     i {
                         color: #ffffff;
                     }
                 }
             }
-            
+
         }
 
         .content-wrapper {
-            &.horizontal-content-wrapper{
+            &.horizontal-content-wrapper {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 padding: 2px 0;
             }
-            &.default-content-wrapper{
+
+            &.default-content-wrapper {
                 display: flex;
                 flex-direction: column;
                 padding: 0;
@@ -46,18 +48,18 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
-    
+
                 .desc {
                     flex-grow: 0;
                 }
             }
-    
+
             .arrow-square {
                 width: 24px;
                 height: 24px;
                 border: 0.5px solid $primaryColor;
                 border-radius: 3px;
-    
+
                 i {
                     font-size: 18px;
                     color: $primaryColor;

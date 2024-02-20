@@ -51,11 +51,8 @@ export class TourCategoryListComponent implements OnInit, OnDestroy {
 
     loadListData() {
         const subscription = this.restService.getList(new TourCategorySearchModel()).subscribe((response) => {
-            console.log(response);
             this.list = response;
-            console.log(this.list);
-            console.log(this.list[0]);
-            console.log(this.list[0]?.name);
+            this.list?.forEach(x => x.companyName = x.companyCode + ' - ' + x.companyName);
         });
         this.subscriptions.push(subscription);
     }

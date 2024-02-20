@@ -3,21 +3,22 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from "rxjs/operators";
 
-import {ApiResponse} from "../../../common/model/api-response";
-import {BaseRestService} from "../../../common/service/base-rest-service";
-import {EndpointConstant} from "../../../common/constant/endpoint-constant";
 
-import {TourCategoryModel as M} from "../model/tour-category-model";
-import {TourCategorySaveModel as SV} from "../model/tour-category-save-model";
-import {TourCategorySearchModel as SM} from "../model/tour-category-search-model";
+import {ApiResponse} from "../../common/model/api-response";
+import {BaseRestService} from "../../common/service/base-rest-service";
+import {EndpointConstant} from "../../common/constant/endpoint-constant";
+
+import {CompanyModel as M} from "../model/company-model";
+import {CompanySaveModel as SV} from "../model/company-save-model";
+import {CompanySearchModel as SM} from "../model/company-search-model";
 
 @Injectable({
     providedIn: 'root'
 })
-export class TourCategoryRestService extends BaseRestService {
+export class CompanyRestService extends BaseRestService {
 
     constructor(public override httpClient: HttpClient) {
-        super(httpClient, EndpointConstant.TOUR_CATEGORY_SERVICE_NAME);
+        super(httpClient, EndpointConstant.COMPANY_SERVICE_NAME);
     }
 
     public save(saveModel: SV): Observable<M> {
@@ -38,10 +39,7 @@ export class TourCategoryRestService extends BaseRestService {
     public getList(searchModel: SM): Observable<Array<M>> {
         return this.httpClient
             .post<ApiResponse>(this.ENDPOINT_GET_LIST, this.converter.serialize(searchModel, SM))
-            .pipe(map((apiResponse) => {
-                let tourCategoryModels = this.converter.deserializeArray(apiResponse.data || [], M);
-                return tourCategoryModels;
-            }));
+            .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], M)));
     }
 
 }

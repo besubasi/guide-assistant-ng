@@ -6,7 +6,7 @@ import {MessageService, SharedModule} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {ChartModule} from "primeng/chart";
 import {InputTextModule} from "primeng/inputtext";
-import {FormBuilder, ReactiveFormsModule, UntypedFormGroup, Validators} from '@angular/forms';
+import {FormBuilder, ReactiveFormsModule, UntypedFormGroup} from '@angular/forms';
 import {DividerModule} from "primeng/divider";
 import {ToolbarModule} from "primeng/toolbar";
 import {CardModule} from "primeng/card";
@@ -21,6 +21,10 @@ import {TourCategoryListComponent} from "./tour-category-list/tour-category-list
 import {UiSharedModule} from "../../../../ui-shared/ui-shared.module";
 import {InputNumberModule} from "primeng/inputnumber";
 import {TourCategoryRestService} from "../service/tour-category-rest-service";
+import {CompanyRestService} from "../../../company/service/company-rest-service";
+import {CompanyModel} from "../../../company/model/company-model";
+import {DropdownModule} from "primeng/dropdown";
+import {CompanySearchModel} from "../../../company/model/company-search-model";
 
 @Component({
     selector: 'app-tour-category-page',
@@ -44,6 +48,7 @@ import {TourCategoryRestService} from "../service/tour-category-rest-service";
         TourCategoryListComponent,
         UiSharedModule,
         InputNumberModule,
+        DropdownModule,
     ],
     styleUrls: ['./tour-category-page.component.scss'],
     templateUrl: './tour-category-page.component.html'
@@ -55,10 +60,12 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
     form: UntypedFormGroup;
     formMode: string;
     subscriptions: Subscription[];
+    companyList: CompanyModel[];
 
     constructor(
         private fb: FormBuilder,
         private restService: TourCategoryRestService,
+        private companyService: CompanyRestService,
         private messageService: MessageService,
     ) {
     }
@@ -66,7 +73,9 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
+        this.companyList = [];
         this.buildForm();
+        this.loadCompanyList();
     }
 
     ngOnDestroy(): void {
@@ -77,13 +86,14 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
         this.form = this.fb.group(new TourCategoryModel());
     }
 
-    buildForm2() {
-        this.form = this.fb.group({
-            id: [null],
-            companyId: [null, [Validators.required]],
-            name: [null, [Validators.required]],
-            active: [true, [Validators.required]]
-        });
+    loadCompanyList() {
+        let searchModel: CompanySearchModel = new CompanySearchModel();
+        searchModel.active = true;
+        let subscription = this.companyService.getList(searchModel).subscribe((response => {
+            this.companyList = response;
+            this.companyList?.forEach(x => x.name = x.code + ' - ' + x.name);
+        }));
+        this.subscriptions.push(subscription);
     }
 
     onRowSelect() {
@@ -137,7 +147,11 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
                 console.log(response);
                 this.onCancel();
                 this.listComponent.loadListData();
-                this.messageService.add({severity: 'success', summary: 'Success', detail: "Api Oluşturuldu"});
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Başarılı',
+                    detail: "Tur Kategorisi başarıyla kaydedildi."
+                });
             }
         );
         this.subscriptions.push(subscription);

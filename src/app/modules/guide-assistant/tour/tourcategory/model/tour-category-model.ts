@@ -15,4 +15,10 @@ export class TourCategoryModel {
     @JsonProperty('active', Boolean, true)
     active: boolean = true;
 
+    @JsonProperty('companyCode', String, true)
+    companyCode: string = null;
+
+    @JsonProperty('companyName', String, true)
+    companyName: string = null;
+
 }

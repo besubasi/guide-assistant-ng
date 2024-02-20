@@ -4,8 +4,8 @@ import {JsonObject, JsonProperty} from "json2typescript";
 @JsonObject('ApiResponse')
 export class ApiResponse {
 
-    @JsonProperty('body', String, true)
-    body: any = null;
+    @JsonProperty('data', String, true)
+    data: any = null;
 
     @JsonProperty('messageList', [MessageModel], true)
     messageList: MessageModel[] = null;
