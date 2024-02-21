@@ -18,7 +18,7 @@ import {RippleModule} from "primeng/ripple";
 import {ApiGeneratorRestService} from "../service/api-generator-rest-service";
 import {ApiGeneratorModel} from "../model/api-generator-model";
 import {PropertyModel} from "../model/property-model";
-import {FormMode} from "../../../common/form-mode";
+import {FormMode} from "../../guide-assistant/common/enum/form-mode";
 import {Subscription} from "rxjs";
 
 @Component({

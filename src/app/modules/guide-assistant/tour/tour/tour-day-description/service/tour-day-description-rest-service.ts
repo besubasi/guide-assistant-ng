@@ -3,26 +3,25 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from "rxjs/operators";
 
-import {ApiResponse} from "../../../common/model/api-response";
-import {BaseRestService} from "../../../common/service/base-rest-service";
-import {EndpointConstant} from "../../../common/constant/endpoint-constant";
+import {BaseRestService} from "../../../../common/service/base-rest-service";
+import {EndpointConstant} from "../../../../common/constant/endpoint-constant";
+import {ApiResponse} from "../../../../common/model/api-response";
 
-import {TourCategoryModel as M} from "../model/tour-category-model";
-import {TourCategorySaveModel as SV} from "../model/tour-category-save-model";
-import {TourCategorySearchModel as SM} from "../model/tour-category-search-model";
+import {TourDayDescriptionModel as M} from "../model/tour-day-description-model";
+import {TourDayDescriptionSearchModel as SM} from "../model/tour-day-description-search-model";
 
 @Injectable({
     providedIn: 'root'
 })
-export class TourCategoryRestService extends BaseRestService {
+export class TourDayDescriptionRestService extends BaseRestService {
 
     constructor(public override httpClient: HttpClient) {
-        super(httpClient, EndpointConstant.TOUR_CATEGORY_SERVICE_NAME);
+        super(httpClient, EndpointConstant.TOUR_DAY_DESCRIPTION_SERVICE_NAME);
     }
 
-    public save(saveModel: SV): Observable<M> {
+    public save(model: M): Observable<M> {
         return this.httpClient
-            .post<ApiResponse>(this.ENDPOINT_SAVE, this.converter.serialize(saveModel, SV))
+            .post<ApiResponse>(this.ENDPOINT_SAVE, this.converter.serialize(model, M))
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 

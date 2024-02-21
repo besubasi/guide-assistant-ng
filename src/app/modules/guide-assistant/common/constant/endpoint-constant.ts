@@ -11,5 +11,8 @@ export class EndpointConstant {
     static COMPANY_SERVICE_NAME: string = "/company";
     static TOUR_SERVICE_NAME: string = "/tour";
     static TOUR_CATEGORY_SERVICE_NAME: string = "/tour-category";
+    static TOUR_DESCRIPTION_SERVICE_NAME: string = "/tour-description";
+    static TOUR_DAY_DESCRIPTION_SERVICE_NAME: string = "/tour-day-description";
+    static TOUR_CALENDAR_SERVICE_NAME: string = "/tour-calendar";
 
 }

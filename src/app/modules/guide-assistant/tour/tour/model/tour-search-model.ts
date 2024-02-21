@@ -1,8 +1,5 @@
-export class TourSearchModel {
-    uuid: string;
-    type: string;
-    name: string;
-    dbName: string;
-    notNull: boolean = false
-    useSearchParameter: boolean = false;
+import {BaseSearchModel} from "../../../common/model/base-search-model";
+
+export class TourSearchModel extends BaseSearchModel {
+
 }

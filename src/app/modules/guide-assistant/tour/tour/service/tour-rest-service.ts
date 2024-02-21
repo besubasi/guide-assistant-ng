@@ -1,26 +1,44 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {TourModel} from "../model/tour-model";
+import {map} from "rxjs/operators";
+
+import {ApiResponse} from "../../../common/model/api-response";
+import {BaseRestService} from "../../../common/service/base-rest-service";
+import {EndpointConstant} from "../../../common/constant/endpoint-constant";
+
+import {TourModel as M} from "../model/tour-model";
+import {TourSaveModel as SV} from "../model/tour-save-model";
+import {TourSearchModel as SM} from "../model/tour-search-model";
 
 @Injectable({
     providedIn: 'root'
 })
-export class TourRestService {
+export class TourRestService extends BaseRestService {
 
-    private baseUrl = 'http://localhost:8090';
-
-
-    constructor(private http: HttpClient) {
+    constructor(public override httpClient: HttpClient) {
+        super(httpClient, EndpointConstant.TOUR_SERVICE_NAME);
     }
 
-    generate(model: TourModel) {
-        return this.http.post(`${this.baseUrl}/apigen/api/generate`, model);
+    public save(saveModel: SV): Observable<M> {
+        return this.httpClient
+            .post<ApiResponse>(this.ENDPOINT_SAVE, this.converter.serialize(saveModel, SV))
+            .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 
-    sayMyName(): Observable<string> {
-        return this.http.get<string>(`${this.baseUrl}/apigen/api/sayMyName`);
+    public delete(id: number): Observable<any> {
+        return this.httpClient.delete(this.ENDPOINT_DELETE_BY_ID + id);
     }
 
+    public getById(id: number): Observable<M> {
+        return this.httpClient.get<ApiResponse>(this.ENDPOINT_GET_BY_ID + id)
+            .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
+    }
+
+    public getList(searchModel: SM): Observable<Array<M>> {
+        return this.httpClient
+            .post<ApiResponse>(this.ENDPOINT_GET_LIST, this.converter.serialize(searchModel, SM))
+            .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], M)));
+    }
 
 }

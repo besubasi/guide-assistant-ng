@@ -1,25 +1,79 @@
-<div>
-    <app-tour-category-list (onRowSelectEvent)="onRowSelect()" (onRowUnselectEvent)="onRowUnselect()">
-        <p-toolbar toolbar class="flex justify-content-end" styleClass="pr-0 pl-0 pt-0">
-            <div>
-                <button [id]="'add'" pButton [label]="'Ekle'" class="mr-2" (click)="onAdd()">
+<div class="grid">
+    <div class="col-12">
+        <p-card>
 
-                </button>
-                <button [id]="'copy'" pButton [label]="'Kopyala'" class="mr-2 p-button-outlined" (click)="onCopy()"
-                        [disabled]="!listComponent?.selectedModel">
+            <ng-template pTemplate="header">
+                <ui-page-title title="Tur Kategorileri" [pageCode]="pageCode"
+                               [showBack]="false"></ui-page-title>
+            </ng-template>
 
-                </button>
-                <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
-                        [disabled]="!listComponent?.selectedModel">
+            <p-toolbar toolbar class="flex justify-content-end" styleClass="pr-0 pl-0 pt-0">
+                <div>
+                    <button [id]="'add'" pButton [label]="'Ekle'" class="mr-2" (click)="onAdd()">
 
-                </button>
-                <button [id]="'delete'" pButton [label]="'Sil'" class="mr-2 p-button-outlined" (click)="onDelete()"
-                        [disabled]="!listComponent?.selectedModel">
+                    </button>
+                    <button [id]="'copy'" pButton [label]="'Kopyala'" class="mr-2 p-button-outlined" (click)="onCopy()"
+                            [disabled]="!selection">
 
-                </button>
-            </div>
-        </p-toolbar>
-    </app-tour-category-list>
+                    </button>
+                    <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
+                            [disabled]="!selection">
+
+                    </button>
+                    <button [id]="'delete'" pButton [label]="'Sil'" class="mr-2 p-button-outlined" (click)="onDelete()"
+                            [disabled]="!selection">
+
+                    </button>
+                </div>
+            </p-toolbar>
+
+            <p-table
+                dataKey="id"
+                styleClass="p-datatable-striped"
+                selectionMode="single"
+                [id]="pageCode + '_list'"
+                [value]="list"
+                [paginator]="true"
+                [rows]="10"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [totalRecords]="list?.length"
+                [(selection)]="selection"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="companyId" style="width: 35%">
+                            Şirket
+                            <p-sortIcon field="companyId"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="name" style="width: 50%">
+                            Tur Kategori Adı
+                            <p-sortIcon field="name"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="active" style="width: 15%">
+                            Aktif
+                            <p-sortIcon field="active"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr [pSelectableRow]="item">
+                        <td style="width: 35%">{{ item.companyName }}</td>
+                        <td style="width: 50%">{{ item.name }}</td>
+                        <td style="width: 50%">{{ item.active }}</td>
+                        <!--                        <td style="width: 15%">
+                                                    <ui-active-inactive-tags [tagValue]="item.active"></ui-active-inactive-tags>
+                                                </td>-->
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td [attr.colspan]="3">Kayıt Bulunamadı</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </p-card>
+    </div>
 </div>
 
 <ui-sidebar [display]="formMode !== FormMode.NONE">
@@ -84,7 +138,6 @@
 
                 </p-toolbar>
             </div>
-
 
         </form>
     </div>

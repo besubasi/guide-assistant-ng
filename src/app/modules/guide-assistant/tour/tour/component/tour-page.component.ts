@@ -1,27 +1,32 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CurrencyPipe, NgForOf, NgIf, NgStyle} from "@angular/common";
+import {CurrencyPipe, NgIf, NgStyle} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {MenuModule} from "primeng/menu";
-import {SelectItem, SharedModule} from "primeng/api";
+import {MessageService, SharedModule} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {ChartModule} from "primeng/chart";
 import {InputTextModule} from "primeng/inputtext";
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, ReactiveFormsModule, UntypedFormGroup} from '@angular/forms';
 import {DividerModule} from "primeng/divider";
 import {ToolbarModule} from "primeng/toolbar";
 import {CardModule} from "primeng/card";
 import {CheckboxModule} from "primeng/checkbox";
 import {RippleModule} from "primeng/ripple";
-import {DataView, DataViewModule} from "primeng/dataview";
+import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
-import {OrderListModule} from "primeng/orderlist";
-import {PickListModule} from "primeng/picklist";
-import {RatingModule} from "primeng/rating";
-import {Product} from "../../../../../demo/api/product";
-import {ProductService} from "../../../../../demo/service/product.service";
+import {Subscription} from "rxjs";
+
+import {FormMode} from "../../../common/enum/form-mode";
+import {TourModel} from "../model/tour-model";
+import {UiSharedModule} from "../../../../ui-shared/ui-shared.module";
+import {TourRestService} from "../service/tour-rest-service";
+import {CompanyRestService} from "../../../company/service/company-rest-service";
+import {CompanyModel} from "../../../company/model/company-model";
+import {CompanySearchModel} from "../../../company/model/company-search-model";
+import {TourSearchModel} from "../model/tour-search-model";
 
 @Component({
-    selector: 'app-api-generator-page',
+    selector: 'app-tour-page',
     standalone: true,
     imports: [
         NgStyle,
@@ -39,81 +44,120 @@ import {ProductService} from "../../../../../demo/service/product.service";
         CheckboxModule,
         RippleModule,
         DividerModule,
-        DataViewModule,
+        UiSharedModule,
+        InputNumberModule,
         DropdownModule,
-        NgForOf,
-        OrderListModule,
-        PickListModule,
-        RatingModule,
-        FormsModule,
     ],
     styleUrls: ['./tour-page.component.scss'],
     templateUrl: './tour-page.component.html'
 })
 export class TourPageComponent implements OnInit, OnDestroy {
 
-    products: Product[] = [];
+    pageCode: string;
+    formMode: string;
+    form: UntypedFormGroup;
+    list: TourModel[];
+    selection: TourModel;
+    subscriptions: Subscription[];
+    companyList: CompanyModel[];
 
-    sortOptions: SelectItem[] = [];
-
-    sortOrder: number = 0;
-
-    sortField: string = '';
-
-    sourceCities: any[] = [];
-
-    targetCities: any[] = [];
-
-    orderCities: any[] = [];
-
-    constructor(private productService: ProductService) {
+    constructor(
+        private fb: FormBuilder,
+        private restService: TourRestService,
+        private companyService: CompanyRestService,
+        private messageService: MessageService,
+    ) {
     }
 
     ngOnInit() {
-        this.productService.getProducts().then(data => this.products = data);
+        this.formMode = FormMode.NONE;
+        this.subscriptions = [];
+        this.companyList = [];
+        this.pageCode = "3-5";
 
-        this.sourceCities = [
-            {name: 'San Francisco', code: 'SF'},
-            {name: 'London', code: 'LDN'},
-            {name: 'Paris', code: 'PRS'},
-            {name: 'Istanbul', code: 'IST'},
-            {name: 'Berlin', code: 'BRL'},
-            {name: 'Barcelona', code: 'BRC'},
-            {name: 'Rome', code: 'RM'}];
-
-        this.targetCities = [];
-
-        this.orderCities = [
-            {name: 'San Francisco', code: 'SF'},
-            {name: 'London', code: 'LDN'},
-            {name: 'Paris', code: 'PRS'},
-            {name: 'Istanbul', code: 'IST'},
-            {name: 'Berlin', code: 'BRL'},
-            {name: 'Barcelona', code: 'BRC'},
-            {name: 'Rome', code: 'RM'}];
-
-        this.sortOptions = [
-            {label: 'Price High to Low', value: '!price'},
-            {label: 'Price Low to High', value: 'price'}
-        ];
+        this.buildForm();
+        this.loadCompanyList();
+        this.loadListData();
     }
+
 
     ngOnDestroy(): void {
+        this.subscriptions?.forEach(x => x.unsubscribe());
     }
 
-    onSortChange(event: any) {
-        const value = event.value;
-
-        if (value.indexOf('!') === 0) {
-            this.sortOrder = -1;
-            this.sortField = value.substring(1, value.length);
-        } else {
-            this.sortOrder = 1;
-            this.sortField = value;
-        }
+    buildForm() {
+        this.form = this.fb.group(new TourModel());
     }
 
-    onFilter(dv: DataView, event: Event) {
-        dv.filter((event.target as HTMLInputElement).value);
+    loadCompanyList() {
+        let searchModel: CompanySearchModel = new CompanySearchModel();
+        searchModel.active = true;
+        let subscription = this.companyService.getList(searchModel).subscribe((response => {
+            this.companyList = response;
+            this.companyList?.forEach(x => x.name = x.code + ' - ' + x.name);
+        }));
+        this.subscriptions.push(subscription);
+    }
+
+    loadListData() {
+        const subscription = this.restService.getList(new TourSearchModel()).subscribe((response) => {
+            this.list = response;
+        });
+        this.subscriptions.push(subscription);
+    }
+
+    onAdd() {
+        this.formMode = FormMode.ADD;
+        this.buildForm();
+    }
+
+    onCopy() {
+        this.formMode = FormMode.COPY;
+        this.buildForm();
+        this.form.patchValue(this.selection);
+        this.form.patchValue({id: null});
+    }
+
+    onEdit() {
+        this.formMode = FormMode.EDIT;
+        this.buildForm();
+        this.form.patchValue(this.selection);
+    }
+
+    onDelete() {
+        this.restService.delete(this.selection.id).subscribe(() => {
+            this.onCancel();
+            this.loadListData();
+            this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
+        });
+    }
+
+    onCancel() {
+        this.formMode = FormMode.NONE;
+        this.form.reset();
+        this.buildForm();
+    }
+
+    onSave() {
+        let apiModel: TourModel = this.form.value;
+
+        let subscription = this.restService.save(apiModel).subscribe(
+            response => {
+                console.log(response);
+                this.onCancel();
+                this.loadListData();
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Başarılı',
+                    detail: "Tur Kategorisi başarıyla kaydedildi."
+                });
+            }
+        );
+        this.subscriptions.push(subscription);
+    }
+
+
+    get FormMode() {
+        return FormMode;
     }
 }

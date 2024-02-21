@@ -1,19 +1,8 @@
 import {JsonObject, JsonProperty} from 'json2typescript';
+import {TourCategorySaveModel} from "./tour-category-save-model";
 
 @JsonObject('TourCategoryModel')
-export class TourCategoryModel {
-
-    @JsonProperty('id', Number, true)
-    id: number = null;
-
-    @JsonProperty('companyId', Number, true)
-    companyId: number = null;
-
-    @JsonProperty('name', String, true)
-    name: string = null;
-
-    @JsonProperty('active', Boolean, true)
-    active: boolean = true;
+export class TourCategoryModel extends TourCategorySaveModel {
 
     @JsonProperty('companyCode', String, true)
     companyCode: string = null;

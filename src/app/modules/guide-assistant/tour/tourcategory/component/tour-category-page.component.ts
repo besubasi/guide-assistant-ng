@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CurrencyPipe, NgIf, NgStyle} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {MenuModule} from "primeng/menu";
@@ -12,19 +12,18 @@ import {ToolbarModule} from "primeng/toolbar";
 import {CardModule} from "primeng/card";
 import {CheckboxModule} from "primeng/checkbox";
 import {RippleModule} from "primeng/ripple";
-
-
-import {Subscription} from "rxjs";
-import {FormMode} from 'src/app/common/form-mode';
-import {TourCategoryModel} from "../model/tour-category-model";
-import {TourCategoryListComponent} from "./tour-category-list/tour-category-list.component";
-import {UiSharedModule} from "../../../../ui-shared/ui-shared.module";
 import {InputNumberModule} from "primeng/inputnumber";
+import {DropdownModule} from "primeng/dropdown";
+import {Subscription} from "rxjs";
+
+import {FormMode} from "../../../common/enum/form-mode";
+import {TourCategoryModel} from "../model/tour-category-model";
+import {UiSharedModule} from "../../../../ui-shared/ui-shared.module";
 import {TourCategoryRestService} from "../service/tour-category-rest-service";
 import {CompanyRestService} from "../../../company/service/company-rest-service";
 import {CompanyModel} from "../../../company/model/company-model";
-import {DropdownModule} from "primeng/dropdown";
 import {CompanySearchModel} from "../../../company/model/company-search-model";
+import {TourCategorySearchModel} from "../model/tour-category-search-model";
 
 @Component({
     selector: 'app-tour-category-page',
@@ -45,7 +44,6 @@ import {CompanySearchModel} from "../../../company/model/company-search-model";
         CheckboxModule,
         RippleModule,
         DividerModule,
-        TourCategoryListComponent,
         UiSharedModule,
         InputNumberModule,
         DropdownModule,
@@ -55,10 +53,11 @@ import {CompanySearchModel} from "../../../company/model/company-search-model";
 })
 export class TourCategoryPageComponent implements OnInit, OnDestroy {
 
-    @ViewChild(TourCategoryListComponent) listComponent: TourCategoryListComponent;
-
-    form: UntypedFormGroup;
+    pageCode: string;
     formMode: string;
+    form: UntypedFormGroup;
+    list: TourCategoryModel[];
+    selection: TourCategoryModel;
     subscriptions: Subscription[];
     companyList: CompanyModel[];
 
@@ -74,9 +73,13 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
         this.companyList = [];
+        this.pageCode = "3-5";
+
         this.buildForm();
         this.loadCompanyList();
+        this.loadListData();
     }
+
 
     ngOnDestroy(): void {
         this.subscriptions?.forEach(x => x.unsubscribe());
@@ -96,12 +99,12 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
         this.subscriptions.push(subscription);
     }
 
-    onRowSelect() {
-
-    }
-
-    onRowUnselect() {
-
+    loadListData() {
+        const subscription = this.restService.getList(new TourCategorySearchModel()).subscribe((response) => {
+            this.list = response;
+            this.list?.forEach(x => x.companyName = x.companyCode + ' - ' + x.companyName);
+        });
+        this.subscriptions.push(subscription);
     }
 
     onAdd() {
@@ -112,25 +115,22 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
     onCopy() {
         this.formMode = FormMode.COPY;
         this.buildForm();
-        this.form.patchValue(this.listComponent?.selectedModel);
+        this.form.patchValue(this.selection);
+        this.form.patchValue({id: null});
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
-        this.form.patchValue(this.listComponent?.selectedModel);
+        this.form.patchValue(this.selection);
     }
 
     onDelete() {
-        this.restService.delete(this.listComponent?.selectedModel.id).subscribe(() => {
+        this.restService.delete(this.selection.id).subscribe(() => {
             this.onCancel();
-            this.listComponent.loadListData();
+            this.loadListData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
         });
-    }
-
-    onBack() {
-        this.formMode = FormMode.NONE;
     }
 
     onCancel() {
@@ -146,7 +146,7 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
             response => {
                 console.log(response);
                 this.onCancel();
-                this.listComponent.loadListData();
+                this.loadListData();
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Başarılı',

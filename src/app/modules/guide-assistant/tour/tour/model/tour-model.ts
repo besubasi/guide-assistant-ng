@@ -1,22 +1,25 @@
-import {TourSearchModel} from "./tour-search-model";
+import {JsonProperty} from "json2typescript";
 
-export class TourModel {
+import {BaseModel} from "../../../common/model/base-model";
 
-    apiPackage: string;
-    apiName: string;
-    tableName: string;
+export class TourModel extends BaseModel {
 
-    createConstant: boolean = true;
-    createEntity: boolean = true;
-    createModel: boolean = true;
-    createSearchModel: boolean = true;
-    createMapper: boolean = true;
-    createMapperImpl: boolean = true;
-    createRepository: boolean = true;
-    createService: boolean = true;
-    createServiceImpl: boolean = true;
-    createRestController: boolean = true;
+    @JsonProperty('companyId', Number, true)
+    companyId: number = null;
 
-    propertyList: TourSearchModel[] = [];
+    @JsonProperty('tourTypeId', Number, true)
+    tourTypeId: number = null;
+
+    @JsonProperty('code', String, true)
+    code: string = null;
+
+    @JsonProperty('name', String, true)
+    name: string = null;
+
+    @JsonProperty('day', String, true)
+    day: string = null;
+
+    @JsonProperty('active', Boolean, true)
+    active: boolean = true;
 
 }

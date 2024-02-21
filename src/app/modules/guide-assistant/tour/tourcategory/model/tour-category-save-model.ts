@@ -1,8 +1,8 @@
 import {JsonObject, JsonProperty} from 'json2typescript';
-import {Validators} from "@angular/forms";
+import {BaseModel} from "../../../common/model/base-model";
 
 @JsonObject('TourCategorySaveModel')
-export class TourCategorySaveModel {
+export class TourCategorySaveModel extends BaseModel {
 
     @JsonProperty('companyId', Number, true)
     companyId: number = null;
@@ -12,14 +12,5 @@ export class TourCategorySaveModel {
 
     @JsonProperty('active', Boolean, true)
     active: boolean = true;
-
-
-    static getValidationRules() {
-        return {
-            companyId: [Validators.required],
-            name: [Validators.required],
-            age: [Validators.nullValidator]
-        };
-    }
 
 }
