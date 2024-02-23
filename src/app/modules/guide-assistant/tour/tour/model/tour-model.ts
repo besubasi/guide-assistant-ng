@@ -1,26 +1,19 @@
 import {JsonObject, JsonProperty} from "json2typescript";
-
-import {BaseModel} from "../../../common/model/base-model";
+import {TourSaveModel} from "./tour-save-model";
 
 @JsonObject('TourModel')
-export class TourModel extends BaseModel {
+export class TourModel extends TourSaveModel {
 
-    @JsonProperty('companyId', Number, true)
-    companyId: number = null;
+    @JsonProperty('companyCode', String, true)
+    companyCode: string = null;
 
-    @JsonProperty('tourTypeId', Number, true)
-    tourTypeId: number = null;
+    @JsonProperty('companyName', String, true)
+    companyName: string = null;
 
-    @JsonProperty('code', String, true)
-    code: string = null;
+    @JsonProperty('tourTypeName', String, true)
+    tourTypeName: string = null;
 
-    @JsonProperty('name', String, true)
-    name: string = null;
-
-    @JsonProperty('day', String, true)
-    day: string = null;
-
-    @JsonProperty('active', Boolean, true)
-    active: boolean = true;
+    @JsonProperty('tourCategoryName', String, true)
+    tourCategoryName: string = null;
 
 }

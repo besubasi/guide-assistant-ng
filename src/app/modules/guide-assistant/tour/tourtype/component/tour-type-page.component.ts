@@ -177,7 +177,6 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
         this.loadTourCategoryList();
     }
 
-
     get FormMode() {
         return FormMode;
     }

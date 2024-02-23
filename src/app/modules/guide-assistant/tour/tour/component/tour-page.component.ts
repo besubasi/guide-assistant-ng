@@ -24,6 +24,10 @@ import {CompanyRestService} from "../../../company/service/company-rest-service"
 import {CompanyModel} from "../../../company/model/company-model";
 import {CompanySearchModel} from "../../../company/model/company-search-model";
 import {TourSearchModel} from "../model/tour-search-model";
+import {TourTypeModel} from "../../tourtype/model/tour-type-model";
+import {TourSaveModel} from "../model/tour-save-model";
+import {TourTypeSearchModel} from "../../tourtype/model/tour-type-search-model";
+import {TourTypeRestService} from "../../tourtype/service/tour-type-rest-service";
 
 @Component({
     selector: 'app-tour-page',
@@ -60,11 +64,13 @@ export class TourPageComponent implements OnInit, OnDestroy {
     selection: TourModel;
     subscriptions: Subscription[];
     companyList: CompanyModel[];
+    tourTypeList: TourTypeModel[];
 
     constructor(
         private fb: FormBuilder,
         private restService: TourRestService,
         private companyService: CompanyRestService,
+        private tourTypeService: TourTypeRestService,
         private messageService: MessageService,
     ) {
     }
@@ -73,6 +79,7 @@ export class TourPageComponent implements OnInit, OnDestroy {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
         this.companyList = [];
+        this.tourTypeList = [];
         this.pageCode = "3-5";
 
         this.buildForm();
@@ -86,7 +93,7 @@ export class TourPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.fb.group(new TourModel());
+        this.form = this.fb.group(new TourSaveModel());
     }
 
     loadCompanyList() {
@@ -95,6 +102,17 @@ export class TourPageComponent implements OnInit, OnDestroy {
         let subscription = this.companyService.getList(searchModel).subscribe((response => {
             this.companyList = response;
             this.companyList?.forEach(x => x.name = x.code + ' - ' + x.name);
+        }));
+        this.subscriptions.push(subscription);
+    }
+
+    loadTourTypeList() {
+        let searchModel: TourTypeSearchModel = new TourTypeSearchModel();
+        searchModel.companyId = this.form.value.companyId;
+        searchModel.active = true;
+        let subscription = this.tourTypeService.getList(searchModel).subscribe((response => {
+            this.tourTypeList = response;
+            console.log(this.tourTypeList)
         }));
         this.subscriptions.push(subscription);
     }
@@ -156,6 +174,10 @@ export class TourPageComponent implements OnInit, OnDestroy {
         this.subscriptions.push(subscription);
     }
 
+    onChangeCompany() {
+        this.form.patchValue({tourTypeId: null});
+        this.loadTourTypeList();
+    }
 
     get FormMode() {
         return FormMode;
