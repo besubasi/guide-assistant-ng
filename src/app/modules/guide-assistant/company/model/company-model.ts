@@ -1,10 +1,8 @@
 import {JsonObject, JsonProperty} from 'json2typescript';
+import {BaseModel} from "../../common/model/base-model";
 
 @JsonObject('CompanyModel')
-export class CompanyModel {
-
-    @JsonProperty('id', Number, true)
-    id: number = null;
+export class CompanyModel extends BaseModel {
 
     @JsonProperty('code', String, true)
     code: string = null;

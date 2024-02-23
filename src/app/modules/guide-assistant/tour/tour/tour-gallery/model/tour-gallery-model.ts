@@ -1,6 +1,7 @@
 import {BaseModel} from "../../../../common/model/base-model";
-import {JsonProperty} from "json2typescript";
+import {JsonObject, JsonProperty} from "json2typescript";
 
+@JsonObject('TourGalleryModel')
 export class TourGalleryModel extends BaseModel {
 
     @JsonProperty('tourId', Number, true)

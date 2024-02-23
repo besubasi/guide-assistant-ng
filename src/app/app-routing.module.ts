@@ -26,6 +26,10 @@ import {AppLayoutComponent} from "./layout/app.layout.component";
                         loadChildren: () => import('./modules/guide-assistant/tour/tourcategory/tour-category-routing.module').then(m => m.TourCategoryRoutingModule)
                     },
                     {
+                        path: 'guide-assistant/tour-menu/tour-type',
+                        loadChildren: () => import('./modules/guide-assistant/tour/tourtype/tour-type-routing.module').then(m => m.TourTypeRoutingModule)
+                    },
+                    {
                         path: 'guide-assistant/tour-menu/tour',
                         loadChildren: () => import('./modules/guide-assistant/tour/tour/tour-routing.module').then(m => m.TourRoutingModule)
                     },
