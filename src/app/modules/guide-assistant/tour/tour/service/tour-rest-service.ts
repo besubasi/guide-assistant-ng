@@ -20,10 +20,10 @@ export class TourRestService extends BaseRestService {
         super(httpClient, EndpointConstant.TOUR_SERVICE_NAME);
     }
 
-    public save(saveModel: SV): Observable<M> {
+    public save(saveModel: SV): Observable<SV> {
         return this.httpClient
             .post<ApiResponse>(this.ENDPOINT_SAVE, this.converter.serialize(saveModel, SV))
-            .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
+            .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, SV)));
     }
 
     public delete(id: number): Observable<any> {

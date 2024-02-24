@@ -3,20 +3,20 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from "rxjs/operators";
 
-import {BaseRestService} from "../../../../common/service/base-rest-service";
-import {EndpointConstant} from "../../../../common/constant/endpoint-constant";
-import {ApiResponse} from "../../../../common/model/api-response";
+import {BaseRestService} from "../../../../../../common/service/base-rest-service";
+import {EndpointConstant} from "../../../../../../common/constant/endpoint-constant";
+import {ApiResponse} from "../../../../../../common/model/api-response";
 
-import {TourDescriptionModel as M} from "../model/tour-description-model";
-import {TourDescriptionSearchModel as SM} from "../model/tour-description-search-model";
+import {TourCalendarModel as M} from "../model/tour-calendar-model";
+import {TourCalendarSearchModel as SM} from "../model/tour-calendar-search-model";
 
 @Injectable({
     providedIn: 'root'
 })
-export class TourDescriptionRestService extends BaseRestService {
+export class TourCalendarRestService extends BaseRestService {
 
     constructor(public override httpClient: HttpClient) {
-        super(httpClient, EndpointConstant.TOUR_DESCRIPTION_SERVICE_NAME);
+        super(httpClient, EndpointConstant.TOUR_CALENDAR_SERVICE_NAME);
     }
 
     public save(model: M): Observable<M> {

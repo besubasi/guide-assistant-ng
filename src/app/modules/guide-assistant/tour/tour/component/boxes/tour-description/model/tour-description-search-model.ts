@@ -1,6 +1,6 @@
 import {JsonObject, JsonProperty} from "json2typescript";
 
-import {BaseSearchModel} from "../../../../common/model/base-search-model";
+import {BaseSearchModel} from "../../../../../../common/model/base-search-model";
 
 @JsonObject('TourDescriptionSearchModel')
 export class TourDescriptionSearchModel extends BaseSearchModel {

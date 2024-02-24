@@ -1,0 +1,71 @@
+<div class="grid grid-nogutter">
+    <div class="col-12">
+
+        <form [formGroup]="form" [id]="'formTourDescription'">
+            <div class="p-fluid formgrid grid">
+                <div class="col-12">
+                    <label htmlFor="descriptionFirst">Açıklama</label>
+                    <textarea id="descriptionFirst" formControlName="descriptionFirst" [rows]="10" [cols]="25"
+                              pInputTextarea autoResize="autoResize"></textarea>
+
+                    <!--
+                                        <p-editor id="descriptionFirst" formControlName="descriptionFirst"
+                                                  [style]="{ height: '320px' }">
+                                            <ng-template pTemplate="header">
+                                                <span class="ql-formats">
+                                                    <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                                    <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                                    <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                                </span>
+                                            </ng-template>
+                                        </p-editor>
+                    -->
+                </div>
+                <div class="col-12">
+                    <label htmlFor="descriptionSecond">Extra</label>
+                    <textarea id="descriptionSecond" formControlName="descriptionSecond" [rows]="10" [cols]="25"
+                              pInputTextarea autoResize="autoResize"></textarea>
+                    <!--
+                                        <p-editor id="descriptionSecond" formControlName="descriptionSecond"
+                                                  [style]="{ height: '320px' }">
+                                            <ng-template pTemplate="header">
+                                                <span class="ql-formats">
+                                                    <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                                    <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                                    <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                                </span>
+                                            </ng-template>
+                                        </p-editor>
+                    -->
+                </div>
+            </div>
+
+            <div class="ui-form-footer-buttons-wrapper">
+                <hr/>
+                <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
+                    <div class="mr-2">
+                        <button
+                            pButton
+                            [id]="'save'"
+                            [type]="'button'"
+                            label="Kaydet"
+                            class="ml-2"
+                            (click)="onSave()"
+                        ></button>
+                    </div>
+
+                    <div>
+                        <button [id]="'delete'" pButton [label]="'Sil'" class="mr-2 p-button-outlined"
+                                (click)="onDelete()"
+                                [disabled]="!tourDescriptionModel?.id">
+
+                        </button>
+                    </div>
+
+                </p-toolbar>
+            </div>
+
+        </form>
+    </div>
+</div>
+

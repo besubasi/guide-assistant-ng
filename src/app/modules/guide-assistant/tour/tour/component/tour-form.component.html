@@ -1,0 +1,145 @@
+<div>
+    <div class="grid">
+        <div class="col-12 md:col-5 lg:col-5">
+            <form [formGroup]="form">
+                <p-card>
+                    <ng-template pTemplate="header">
+                        <ui-page-title title="Tur Bilgileri" [pageCode]="pageCode"></ui-page-title>
+                    </ng-template>
+
+                    <form [formGroup]="form" [id]="'formTipi'">
+                        <div class="p-fluid formgrid grid">
+
+                            <div class="col-12 mb-2">
+                                <label htmlFor="code">Kod</label>
+                                <input pInputText id="code" type="text" formControlName="code"/>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label htmlFor="name">Adı</label>
+                                <input pInputText id="name" type="text" formControlName="name"/>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label htmlFor="companyId">Şirket</label>
+                                <p-dropdown
+                                    [id]="'companyId'"
+                                    [options]="companyList"
+                                    [optionValue]="'id'"
+                                    [optionLabel]="'name'"
+                                    [placeholder]="'Seçiniz'"
+                                    (onChange)="onChangeCompany()"
+                                    formControlName="companyId"
+                                    class="form-control"
+                                >
+                                </p-dropdown>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label htmlFor="tourTypeId">Tur Tipi</label>
+                                <p-dropdown
+                                    [id]="'tourTypeId'"
+                                    [options]="tourTypeList"
+                                    [optionValue]="'id'"
+                                    [optionLabel]="'name'"
+                                    [placeholder]="'Seçiniz'"
+                                    formControlName="tourTypeId"
+                                    class="form-control"
+                                >
+                                </p-dropdown>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label htmlFor="day">Gün</label>
+                                <p-inputNumber id="day" formControlName="day" mode="decimal" [showButtons]="true"
+                                               [min]="1"
+                                               [max]="100">
+                                </p-inputNumber>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label htmlFor="premierContentUrl">Vitrin İçerik Url</label>
+                                <input pInputText id="premierContentUrl" type="text"
+                                       formControlName="premierContentUrl"/>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <div class="field-checkbox">
+                                    <p-checkbox id="active" formControlName="active" binary="true"
+                                                label="Aktif"></p-checkbox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui-form-footer-buttons-wrapper">
+                            <hr/>
+                            <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
+                                <div class="mr-2">
+                                    <button
+                                        pButton
+                                        [id]="'cancel'"
+                                        type="button"
+                                        label="Vazgeç"
+                                        class="p-button-text ml-2"
+                                        (click)="onCancel()"
+                                    ></button>
+                                </div>
+
+                                <div>
+                                    <button
+                                        pButton
+                                        [id]="'save'"
+                                        [type]="'button'"
+                                        label="Kaydet"
+                                        class="ml-2"
+                                        (click)="onSave()"
+                                    ></button>
+                                </div>
+
+                            </p-toolbar>
+                        </div>
+
+                    </form>
+
+                </p-card>
+            </form>
+        </div>
+
+        <div class="col-12 md:col-7 lg:col-7">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <ui-page-title *ngIf="!selectedBox" title="Tur Detay Bilgileri"
+                                   [pageCode]="pageCode"></ui-page-title>
+
+                    <ui-page-title *ngIf="selectedBox" [title]="selectedBox.title" [pageCode]="selectedBox.pageCode"
+                                   [showBack]="true" (onBack)="onBack()"></ui-page-title>
+                </ng-template>
+
+                <ui-empty-state *ngIf="isOverlay" subTitleText="Tur bilgileri girildikten sonra açılacaktır"
+                                [showSaveButton]="false"></ui-empty-state>
+
+                <div *ngIf="!isOverlay && !selectedBox">
+                    <div class="grid">
+                        <div class="col-12 sm:col-6 lg:col-6 pb-6" *ngFor="let item of boxList">
+                            <ui-card-item [title]="item.title" (click)="onSelect(item)"></ui-card-item>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="!isOverlay && selectedBox">
+                    <app-tour-description-page
+                        *ngIf="selectedBox.pageCode == PageCode.TOUR_DESCRIPTION"
+                        [tour]="tour"></app-tour-description-page>
+                    <app-tour-day-description-page
+                        *ngIf="selectedBox.pageCode == PageCode.TOUR_DAY_DESCRIPTION"></app-tour-day-description-page>
+                    <app-tour-calendar-page
+                        *ngIf="selectedBox.pageCode == PageCode.TOUR_CALENDAR"></app-tour-calendar-page>
+                    <app-tour-gallery-page
+                        *ngIf="selectedBox.pageCode == PageCode.TOUR_GALLERY"></app-tour-gallery-page>
+
+                </div>
+            </p-card>
+
+        </div>
+    </div>
+</div>

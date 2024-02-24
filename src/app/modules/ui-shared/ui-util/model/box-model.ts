@@ -1,12 +1,9 @@
 export class BoxModel {
-    pageName: string = null;
-    navigationParameter:string=null;
-    ledgerCardClass:string=null;
-    dotIconClass:string=null;
-    constructor(pageName:string,navigationParameter:string,ledgerCardClass:string,dotIconClass:string) {
-        this.pageName=pageName;
-        this.navigationParameter=navigationParameter;
-        this.ledgerCardClass=ledgerCardClass;
-        this.dotIconClass=dotIconClass;
+    pageCode: string = null;
+    title: string = null
+
+    constructor(pageCode: string, title: string) {
+        this.pageCode = pageCode;
+        this.title = title;
     }
 }

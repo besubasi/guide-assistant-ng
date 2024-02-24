@@ -23,6 +23,6 @@ export class TourSaveModel extends BaseModel {
     premierContentUrl: string = null;
 
     @JsonProperty('active', Boolean, true)
-    active: boolean = true;
+    active: boolean = false;
 
 }

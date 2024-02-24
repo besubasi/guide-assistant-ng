@@ -1,18 +1,11 @@
 <div class="ui-page-header grid">
     <div class="col flex">
         <ng-container *ngIf="showBack">
-            <button [id]="pageCode + '_back_button'" pButton type="button" (click)="goBack()" class="p-button p-button-text btn-icon-only mr-2">
+            <button [id]="pageCode + '_back_button'" pButton type="button" (click)="goBack()"
+                    class="p-button p-button-text btn-icon-only mr-2">
                 <i class="material-icons big-icon"> arrow_back </i>
             </button>
         </ng-container>
         <h1>{{ title }}</h1>
-        <!-- <span>{{ title }}</span> -->
-        <div class="ml-2">
-            <p-menu #menu [model]="moreItems" [popup]="true"></p-menu>
-            <!--<p-menu #menu [model]="moreItems" [popup]="true" [appendTo]="!inModal ? 'body' : ''"></p-menu>-->
-            <button [id]="pageCode + '_more_button'" *ngIf="showMore" pButton #btn (click)="menu?.toggle($event)" class="p-button p-button-text btn-icon-only">
-                <i class="material-icons big-icon"> more_vert </i>
-            </button>
-        </div>
     </div>
 </div>
