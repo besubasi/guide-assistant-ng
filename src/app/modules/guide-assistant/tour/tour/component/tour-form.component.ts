@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormGroup} from "@angular/forms";
 import {FormMode} from "../../../common/enum/form-mode";
 import {TourModel} from "../model/tour-model";
@@ -34,6 +34,7 @@ import {TourDescriptionPageComponent} from "./boxes/tour-description/component/t
 import {TourGalleryPageComponent} from "./boxes/tour-gallery/component/tour-gallery-page.component";
 import {CompanyRestService} from "../../../company/service/company-rest-service";
 import {CompanySearchModel} from "../../../company/model/company-search-model";
+import {TourGalleryPreviewComponent} from "./boxes/tour-gallery/component/tour-gallery-preview.component";
 
 
 @Component({
@@ -64,6 +65,7 @@ import {CompanySearchModel} from "../../../company/model/company-search-model";
         TourDescriptionPageComponent,
         TourGalleryPageComponent,
         NgForOf,
+        TourGalleryPreviewComponent,
     ],
     templateUrl: './tour-form.component.html',
     styleUrl: './tour-form.component.scss'
@@ -71,6 +73,7 @@ import {CompanySearchModel} from "../../../company/model/company-search-model";
 export class TourFormComponent implements OnInit, OnDestroy {
 
     @Input() tour: TourSaveModel;
+    @Output() eventSave = new EventEmitter();
 
     pageCode: string;
     formMode: string;
@@ -85,7 +88,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
     isOverlay: boolean;
 
     constructor(
-        private fb: FormBuilder,
+        private formBuilder: FormBuilder,
         private restService: TourRestService,
         private companyService: CompanyRestService,
         private tourTypeService: TourTypeRestService,
@@ -117,7 +120,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.fb.group(new TourSaveModel());
+        this.form = this.formBuilder.group(new TourSaveModel());
         this.form.patchValue(this.tour);
     }
 
@@ -165,6 +168,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
                 });
                 this.tour = response;
                 this.form.patchValue(this.tour);
+                this.eventSave.emit();
             }
         );
         this.subscriptions.push(subscription);
@@ -180,6 +184,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
         this.boxList.push(new BoxModel(PageCode.TOUR_DAY_DESCRIPTION, "Günlük Detaylar"));
         this.boxList.push(new BoxModel(PageCode.TOUR_GALLERY, "Fotoğraflar"));
         this.boxList.push(new BoxModel(PageCode.TOUR_CALENDAR, "Tarihler"));
+        this.boxList.push(new BoxModel(PageCode.TOUR_GALLERY_PREVIEW, "Foto Preview"));
     }
 
     onSelect(box: BoxModel) {

@@ -23,6 +23,9 @@ import {
 } from "../../../../../../../ui-shared/ui-active-inactive-tags/ui-active-inactive-tags.module";
 import {InputNumberModule} from "primeng/inputnumber";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {ModalConfig} from "../../../../../../../ui-shared/ui-util/model/modal-config";
+import {TourGalleryPreviewComponent} from "./tour-gallery-preview.component";
+import {DialogService} from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'app-tour-gallery-page',
@@ -59,14 +62,15 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[];
 
     constructor(
-        private fb: FormBuilder,
+        private formBuilder: FormBuilder,
         private restService: TourGalleryRestService,
         private messageService: MessageService,
+        private dialogService: DialogService,
     ) {
     }
 
     ngOnInit() {
-        this.pageCode = PageCode.TOUR_DAY_DESCRIPTION;
+        this.pageCode = PageCode.TOUR_GALLERY;
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
 
@@ -80,7 +84,7 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.fb.group(new TourGalleryModel());
+        this.form = this.formBuilder.group(new TourGalleryModel());
         this.form.patchValue({tourId: this.tour?.id});
     }
 
@@ -139,6 +143,22 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
             }
         );
         this.subscriptions.push(subscription);
+    }
+
+    onPreview() {
+        this.dialogService.open(TourGalleryPreviewComponent, {
+            width: ModalConfig.MODAL_PANEL_SIZE.LG,
+            contentStyle: {
+                height: ModalConfig.MODAL_PANEL_SIZE.LG,
+                'max-height': ModalConfig.MODAL_MAX_HEIGHT,
+                overflow: 'auto',
+            },
+            closeOnEscape: true,
+            data: {
+                tourId: this.tour?.id,
+                numVisible: 6
+            },
+        });
     }
 
     get FormMode() {

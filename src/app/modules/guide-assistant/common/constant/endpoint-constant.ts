@@ -5,6 +5,7 @@ export class EndpointConstant {
     static MAPPING_SAVE: string = "/save";
     static MAPPING_DELETE_BY_ID: string = "/deleteById/";
     static MAPPING_GET_BY_ID: string = "/getById/";
+    static MAPPING_GET_BY_TOUR_ID: string = "/getByTourId/";
     static MAPPING_GET_LIST: string = "/getList";
     static MAPPING_GET_PAGE: string = "/getPage";
 

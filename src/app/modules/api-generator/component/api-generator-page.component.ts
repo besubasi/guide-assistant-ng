@@ -54,7 +54,7 @@ export class ApiGeneratorPageComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[];
 
     constructor(
-        private fb: FormBuilder,
+        private formBuilder: FormBuilder,
         private apiGeneratorService: ApiGeneratorRestService,
         private messageService: MessageService
     ) {
@@ -72,7 +72,7 @@ export class ApiGeneratorPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.fb.group({
+        this.form = this.formBuilder.group({
             apiPackage: [null, [Validators.required]],
             apiName: [null, [Validators.required]],
             tableName: [null, [Validators.required]],
@@ -81,7 +81,7 @@ export class ApiGeneratorPageComponent implements OnInit, OnDestroy {
     }
 
     buildPropertyForm() {
-        this.propertyForm = this.fb.group({
+        this.propertyForm = this.formBuilder.group({
             uuid: [uuid(), [Validators.nullValidator]],
             type: [null, [Validators.required]],
             name: [null, [Validators.required]],

@@ -62,7 +62,7 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
     companyList: CompanyModel[];
 
     constructor(
-        private fb: FormBuilder,
+        private formBuilder: FormBuilder,
         private restService: TourCategoryRestService,
         private companyService: CompanyRestService,
         private messageService: MessageService,
@@ -86,7 +86,7 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.fb.group(new TourCategoryModel());
+        this.form = this.formBuilder.group(new TourCategoryModel());
     }
 
     loadCompanyList() {

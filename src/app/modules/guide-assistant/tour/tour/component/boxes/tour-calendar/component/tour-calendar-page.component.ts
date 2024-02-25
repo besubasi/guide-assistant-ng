@@ -61,7 +61,7 @@ export class TourCalendarPageComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[];
 
     constructor(
-        private fb: FormBuilder,
+        private formBuilder: FormBuilder,
         private restService: TourCalendarRestService,
         private messageService: MessageService,
     ) {
@@ -82,7 +82,7 @@ export class TourCalendarPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.fb.group(new TourCalendarModel());
+        this.form = this.formBuilder.group(new TourCalendarModel());
         this.form.patchValue({tourId: this.tour?.id});
     }
 

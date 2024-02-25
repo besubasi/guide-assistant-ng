@@ -22,41 +22,4 @@ export class BaseRestService {
         this.ENDPOINT_GET_PAGE = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_GET_PAGE;
     }
 
-
-    /*
-        public getById(id: number): Observable<T> {
-            return this.httpClient
-                .get<HvlResponse<T>>(this.endpoint + id)
-                .pipe(map((data) => new JsonConvert().deserializeObject(data.body, T)));
-        }
-
-        public getByUuid(uuid: string): Observable<T> {
-            return this.httpClient
-                .get<HvlResponse<T>>(this.endpoint + 'uuid/' + uuid)
-                .pipe(map((data) => new JsonConvert().deserializeObject(data.body, T)));
-        }
-
-        public exists(queryModel: Q): Observable<boolean> {
-            return this.httpClient
-                .post<HvlResponse<boolean>>(this.endpoint + 'exists', new JsonConvert().serialize(queryModel, Q))
-                .pipe(map((data) => Boolean(data.body)));
-        }
-
-        public existsById(id: number): Observable<boolean> {
-            return this.httpClient
-                .get<HvlResponse<boolean>>(this.endpoint + 'exists/' + id)
-                .pipe(map((data) => Boolean(data.body)));
-        }
-
-            public queryList(queryModel: Q): Observable<Array<T>> {
-        const converter = new JsonConvert();
-
-        return this.httpClient
-            .post<HvlResponse<Array<T>>>(this.endpoint + 'query', converter.serialize(queryModel, Q))
-            .pipe(map((data) => converter.deserializeArray(data.body || [], T)));
-    }
-
-    */
-
-
 }

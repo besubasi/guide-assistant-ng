@@ -15,6 +15,7 @@ import {ToastModule} from 'primeng/toast';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {MessageService} from 'primeng/api';
+import {DialogService} from "primeng/dynamicdialog";
 
 @NgModule({
     declarations: [
@@ -30,7 +31,7 @@ import {MessageService} from 'primeng/api';
         {provide: LocationStrategy, useClass: HashLocationStrategy},
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService,
-        MessageService
+        MessageService, DialogService
     ],
     bootstrap: [AppComponent]
 })

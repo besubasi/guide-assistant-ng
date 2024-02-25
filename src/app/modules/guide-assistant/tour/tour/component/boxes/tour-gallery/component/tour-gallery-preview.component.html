@@ -1,0 +1,11 @@
+<p-galleria [(value)]="list" [autoPlay]="true"
+            [numVisible]="numVisible">
+    <ng-template pTemplate="item" let-item>
+        <img [src]="item.contentUrl" style="width: 100%;"/>
+    </ng-template>
+    <ng-template pTemplate="thumbnail" let-item>
+        <div class="grid grid-nogutter justify-content-center">
+            <img [src]="item.contentUrl" class="shadow-4" width="100"/>
+        </div>
+    </ng-template>
+</p-galleria>

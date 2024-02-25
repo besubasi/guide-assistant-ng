@@ -58,6 +58,7 @@ export class TourPageComponent implements OnInit, OnDestroy {
     list: TourModel[];
     selection: TourModel;
     subscriptions: Subscription[];
+    isReloadNecessary: boolean;
 
     constructor(
         private restService: TourRestService,
@@ -69,8 +70,9 @@ export class TourPageComponent implements OnInit, OnDestroy {
         this.pageCode = PageCode.TOUR;
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
+        this.isReloadNecessary = false;
 
-        this.loadListData();
+        this.loadData();
     }
 
 
@@ -78,7 +80,7 @@ export class TourPageComponent implements OnInit, OnDestroy {
         this.subscriptions?.forEach(x => x.unsubscribe());
     }
 
-    loadListData() {
+    loadData() {
         const subscription = this.restService.getList(new TourSearchModel()).subscribe((response) => {
             this.list = response;
         });
@@ -100,17 +102,25 @@ export class TourPageComponent implements OnInit, OnDestroy {
     onDelete() {
         this.restService.delete(this.selection.id).subscribe(() => {
             this.onCancel();
-            this.loadListData();
+            this.loadData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
         });
     }
 
     onCancel() {
         this.formMode = FormMode.NONE;
+        if (this.isReloadNecessary)
+            this.loadData();
+
+        this.isReloadNecessary = false;
     }
 
     onBack() {
-        this.formMode = FormMode.NONE;
+        this.onCancel();
+    }
+
+    eventSave() {
+        this.isReloadNecessary = true;
     }
 
     get FormMode() {

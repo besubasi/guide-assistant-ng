@@ -23,14 +23,14 @@
                             <div class="col-12 mb-2">
                                 <label htmlFor="companyId">Şirket</label>
                                 <p-dropdown
-                                    [id]="'companyId'"
-                                    [options]="companyList"
-                                    [optionValue]="'id'"
-                                    [optionLabel]="'name'"
-                                    [placeholder]="'Seçiniz'"
-                                    (onChange)="onChangeCompany()"
-                                    formControlName="companyId"
-                                    class="form-control"
+                                        [id]="'companyId'"
+                                        [options]="companyList"
+                                        [optionValue]="'id'"
+                                        [optionLabel]="'name'"
+                                        [placeholder]="'Seçiniz'"
+                                        (onChange)="onChangeCompany()"
+                                        formControlName="companyId"
+                                        class="form-control"
                                 >
                                 </p-dropdown>
                             </div>
@@ -38,13 +38,13 @@
                             <div class="col-12 mb-2">
                                 <label htmlFor="tourTypeId">Tur Tipi</label>
                                 <p-dropdown
-                                    [id]="'tourTypeId'"
-                                    [options]="tourTypeList"
-                                    [optionValue]="'id'"
-                                    [optionLabel]="'name'"
-                                    [placeholder]="'Seçiniz'"
-                                    formControlName="tourTypeId"
-                                    class="form-control"
+                                        [id]="'tourTypeId'"
+                                        [options]="tourTypeList"
+                                        [optionValue]="'id'"
+                                        [optionLabel]="'name'"
+                                        [placeholder]="'Seçiniz'"
+                                        formControlName="tourTypeId"
+                                        class="form-control"
                                 >
                                 </p-dropdown>
                             </div>
@@ -76,23 +76,23 @@
                             <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
                                 <div class="mr-2">
                                     <button
-                                        pButton
-                                        [id]="'cancel'"
-                                        type="button"
-                                        label="Vazgeç"
-                                        class="p-button-text ml-2"
-                                        (click)="onCancel()"
+                                            pButton
+                                            [id]="'cancel'"
+                                            type="button"
+                                            label="Vazgeç"
+                                            class="p-button-text ml-2"
+                                            (click)="onCancel()"
                                     ></button>
                                 </div>
 
                                 <div>
                                     <button
-                                        pButton
-                                        [id]="'save'"
-                                        [type]="'button'"
-                                        label="Kaydet"
-                                        class="ml-2"
-                                        (click)="onSave()"
+                                            pButton
+                                            [id]="'save'"
+                                            [type]="'button'"
+                                            label="Kaydet"
+                                            class="ml-2"
+                                            (click)="onSave()"
                                     ></button>
                                 </div>
 
@@ -128,19 +128,24 @@
 
                 <div *ngIf="!isOverlay && selectedBox">
                     <app-tour-description-page
-                        *ngIf="selectedBox.pageCode == PageCode.TOUR_DESCRIPTION"
-                        [tour]="tour"></app-tour-description-page>
+                            *ngIf="selectedBox.pageCode == PageCode.TOUR_DESCRIPTION"
+                            [tour]="tour"></app-tour-description-page>
                     <app-tour-day-description-page
-                        *ngIf="selectedBox.pageCode == PageCode.TOUR_DAY_DESCRIPTION"
-                        [tour]="tour"></app-tour-day-description-page>
+                            *ngIf="selectedBox.pageCode == PageCode.TOUR_DAY_DESCRIPTION"
+                            [tour]="tour"></app-tour-day-description-page>
                     <app-tour-gallery-page
-                        *ngIf="selectedBox.pageCode == PageCode.TOUR_GALLERY"
-                        [tour]="tour"
+                            *ngIf="selectedBox.pageCode == PageCode.TOUR_GALLERY"
+                            [tour]="tour"
                     ></app-tour-gallery-page>
                     <app-tour-calendar-page
-                        *ngIf="selectedBox.pageCode == PageCode.TOUR_CALENDAR"
-                        [tour]="tour"
+                            *ngIf="selectedBox.pageCode == PageCode.TOUR_CALENDAR"
+                            [tour]="tour"
                     ></app-tour-calendar-page>
+                    <app-tour-gallery-preview
+                            *ngIf="selectedBox.pageCode == PageCode.TOUR_GALLERY_PREVIEW"
+                            [tourId]="tour?.id"
+                            [numVisible]="4"
+                    ></app-tour-gallery-preview>
                 </div>
             </p-card>
 

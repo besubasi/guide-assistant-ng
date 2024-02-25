@@ -13,7 +13,6 @@ import {MessageService} from "primeng/api";
 import {FormMode} from '../../../../../../common/enum/form-mode';
 import {TourDescriptionRestService} from "../service/tour-description-rest-service";
 import {TourSaveModel} from "../../../../model/tour-save-model";
-import {TourDescriptionSearchModel} from "../model/tour-description-search-model";
 import {PageCode} from "../../../../../../common/enum/page-code";
 import {TourDescriptionModel} from "../model/tour-description-model";
 import {EditorModule} from "primeng/editor";
@@ -50,7 +49,7 @@ export class TourDescriptionPageComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[];
 
     constructor(
-        private fb: FormBuilder,
+        private formBuilder: FormBuilder,
         private restService: TourDescriptionRestService,
         private messageService: MessageService,
     ) {
@@ -62,7 +61,7 @@ export class TourDescriptionPageComponent implements OnInit, OnDestroy {
         this.subscriptions = [];
         this.tourDescriptionModel = new TourDescriptionModel();
         this.tourDescriptionModel.tourId = this.tour?.id
-        this.form = this.fb.group(new TourDescriptionModel());
+        this.form = this.formBuilder.group(new TourDescriptionModel());
         this.form.patchValue(this.tourDescriptionModel);
 
         this.loadTourDescription();
@@ -73,16 +72,11 @@ export class TourDescriptionPageComponent implements OnInit, OnDestroy {
     }
 
     loadTourDescription() {
-        let searchModel = new TourDescriptionSearchModel();
-        searchModel.tourId = this.tour?.id;
-        const subscription = this.restService.getList(searchModel).subscribe((response) => {
-            if (response[0]) {
-                this.tourDescriptionModel = response[0];
-            } else {
-                this.tourDescriptionModel = new TourDescriptionModel();
-                this.tourDescriptionModel.tourId = this.tour?.id;
+        const subscription = this.restService.getByTourId(this.tour?.id).subscribe((response) => {
+            if (response) {
+                this.tourDescriptionModel = response;
+                this.form.patchValue(this.tourDescriptionModel);
             }
-            this.form.patchValue(this.tourDescriptionModel);
         });
         this.subscriptions.push(subscription);
     }

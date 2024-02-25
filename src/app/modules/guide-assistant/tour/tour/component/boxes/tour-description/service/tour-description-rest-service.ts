@@ -8,7 +8,6 @@ import {EndpointConstant} from "../../../../../../common/constant/endpoint-const
 import {ApiResponse} from "../../../../../../common/model/api-response";
 
 import {TourDescriptionModel as M} from "../model/tour-description-model";
-import {TourDescriptionSearchModel as SM} from "../model/tour-description-search-model";
 
 @Injectable({
     providedIn: 'root'
@@ -29,15 +28,10 @@ export class TourDescriptionRestService extends BaseRestService {
         return this.httpClient.delete(this.ENDPOINT_DELETE_BY_ID + id);
     }
 
-    public getById(id: number): Observable<M> {
-        return this.httpClient.get<ApiResponse>(this.ENDPOINT_GET_BY_ID + id)
+    public getByTourId(tourId: number): Observable<M> {
+        return this.httpClient.get<ApiResponse>(EndpointConstant.BASE_ENDPOINT + EndpointConstant.TOUR_DESCRIPTION_SERVICE_NAME + EndpointConstant.MAPPING_GET_BY_TOUR_ID + tourId)
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 
-    public getList(searchModel: SM): Observable<Array<M>> {
-        return this.httpClient
-            .post<ApiResponse>(this.ENDPOINT_GET_LIST, this.converter.serialize(searchModel, SM))
-            .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], M)));
-    }
 
 }
