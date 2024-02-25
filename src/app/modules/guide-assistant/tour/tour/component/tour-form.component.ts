@@ -109,7 +109,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
         this.buildForm();
         this.initializeBoxes();
         this.loadCompanyList();
-        this.form.patchValue(this.tour);
+        this.loadTourTypeList();
     }
 
     ngOnDestroy(): void {
@@ -118,6 +118,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
 
     buildForm() {
         this.form = this.fb.group(new TourSaveModel());
+        this.form.patchValue(this.tour);
     }
 
     loadCompanyList() {

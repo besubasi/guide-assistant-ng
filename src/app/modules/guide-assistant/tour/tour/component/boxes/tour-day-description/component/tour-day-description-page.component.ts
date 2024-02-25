@@ -8,7 +8,6 @@ import {ToolbarModule} from "primeng/toolbar";
 import {UiPageTitleModule} from "../../../../../../../ui-shared/ui-page-title/ui-page-title.module";
 import {UiSideBarModule} from "../../../../../../../ui-shared/ui-sidebar/ui-sidebar.module";
 import {UiUtilModule} from "../../../../../../../ui-shared/ui-util/ui-util.module";
-import {TourTypeModel} from "../../../../../tourtype/model/tour-type-model";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
 import {FormMode} from '../../../../../../common/enum/form-mode';
@@ -18,6 +17,12 @@ import {TourDayDescriptionSearchModel} from "../model/tour-day-description-searc
 import {PageCode} from "../../../../../../common/enum/page-code";
 import {TourDayDescriptionModel} from "../model/tour-day-description-model";
 import {EditorModule} from "primeng/editor";
+import {TableModule} from "primeng/table";
+import {
+    UiActiveInactiveTagsModule
+} from "../../../../../../../ui-shared/ui-active-inactive-tags/ui-active-inactive-tags.module";
+import {InputNumberModule} from "primeng/inputnumber";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 @Component({
     selector: 'app-tour-day-description-page',
@@ -33,7 +38,11 @@ import {EditorModule} from "primeng/editor";
         UiPageTitleModule,
         UiSideBarModule,
         UiUtilModule,
-        EditorModule
+        EditorModule,
+        TableModule,
+        UiActiveInactiveTagsModule,
+        InputNumberModule,
+        InputTextareaModule
     ],
     templateUrl: './tour-day-description-page.component.html',
     styleUrl: './tour-day-description-page.component.scss'
@@ -57,7 +66,7 @@ export class TourDayDescriptionPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.pageCode = PageCode.TOUR_DESCRIPTION;
+        this.pageCode = PageCode.TOUR_DAY_DESCRIPTION;
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
 
@@ -71,7 +80,8 @@ export class TourDayDescriptionPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.fb.group(new TourTypeModel());
+        this.form = this.fb.group(new TourDayDescriptionModel());
+        this.form.patchValue({tourId: this.tour?.id});
     }
 
     loadData() {
@@ -119,13 +129,12 @@ export class TourDayDescriptionPageComponent implements OnInit, OnDestroy {
     onSave() {
         let subscription = this.restService.save(this.form.value).subscribe(
             response => {
-                console.log(response);
                 this.onCancel();
                 this.loadData();
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Başarılı',
-                    detail: "Kayıt başarıyla kaydedildi."
+                    detail: "İşlem başarıyla kaydedildi."
                 });
             }
         );

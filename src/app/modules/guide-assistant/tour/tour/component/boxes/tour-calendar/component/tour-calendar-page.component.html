@@ -1,1 +1,102 @@
-<p>tour-calendar-page works!</p>
+<div class="grid grid-nogutter">
+    <div class="col-12">
+
+        <p-toolbar toolbar class="flex justify-content-end" styleClass="pr-0 pl-0 pt-0">
+            <div>
+                <button [id]="'add'" pButton [label]="'Ekle'" class="mr-2" (click)="onAdd()">
+
+                </button>
+                <button [id]="'copy'" pButton [label]="'Kopyala'" class="mr-2 p-button-outlined" (click)="onCopy()"
+                        [disabled]="!selection">
+
+                </button>
+                <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
+                        [disabled]="!selection">
+
+                </button>
+                <button [id]="'delete'" pButton [label]="'Sil'" class="mr-2 p-button-outlined" (click)="onDelete()"
+                        [disabled]="!selection">
+
+                </button>
+            </div>
+        </p-toolbar>
+
+        <p-table
+            dataKey="id"
+            styleClass="p-datatable-striped"
+            selectionMode="single"
+            [id]="pageCode + '_list'"
+            [value]="list"
+            [paginator]="true"
+            [rows]="10"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [totalRecords]="list?.length"
+            [(selection)]="selection"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 100%">Tarih</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+                <tr [pSelectableRow]="item">
+                    <td style="width: 100%">{{ item.startDate }}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td [attr.colspan]="1">Kayıt Bulunamadı</td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+    </div>
+</div>
+
+<ui-sidebar [display]="formMode !== FormMode.NONE">
+    <div>
+        <div class="grid">
+            <ui-page-title class="col" title="Tur Tipi"></ui-page-title>
+        </div>
+        <form [formGroup]="form" [id]="'formTipi'">
+            <div class="p-fluid formgrid grid">
+
+                <div class="col-12 mb-2">
+                    <label htmlFor="startDate">Gün</label>
+                    <p-calendar id="startDate" formControlName="startDate" [showIcon]="true"
+                                dateFormat="dd.mm.yy"></p-calendar>
+                </div>
+            </div>
+
+            <div class="ui-form-footer-buttons-wrapper">
+                <hr/>
+                <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
+                    <div class="mr-2">
+                        <button
+                            pButton
+                            [id]="'cancel'"
+                            type="button"
+                            label="Vazgeç"
+                            class="p-button-text ml-2"
+                            (click)="onCancel()"
+                        ></button>
+                    </div>
+
+                    <div>
+                        <button
+                            pButton
+                            [id]="'save'"
+                            [type]="'button'"
+                            label="Kaydet"
+                            class="ml-2"
+                            (click)="onSave()"
+                        ></button>
+                    </div>
+
+                </p-toolbar>
+            </div>
+
+        </form>
+    </div>
+</ui-sidebar>
+

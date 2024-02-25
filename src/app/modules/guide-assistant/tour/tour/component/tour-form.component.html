@@ -131,12 +131,16 @@
                         *ngIf="selectedBox.pageCode == PageCode.TOUR_DESCRIPTION"
                         [tour]="tour"></app-tour-description-page>
                     <app-tour-day-description-page
-                        *ngIf="selectedBox.pageCode == PageCode.TOUR_DAY_DESCRIPTION"></app-tour-day-description-page>
-                    <app-tour-calendar-page
-                        *ngIf="selectedBox.pageCode == PageCode.TOUR_CALENDAR"></app-tour-calendar-page>
+                        *ngIf="selectedBox.pageCode == PageCode.TOUR_DAY_DESCRIPTION"
+                        [tour]="tour"></app-tour-day-description-page>
                     <app-tour-gallery-page
-                        *ngIf="selectedBox.pageCode == PageCode.TOUR_GALLERY"></app-tour-gallery-page>
-
+                        *ngIf="selectedBox.pageCode == PageCode.TOUR_GALLERY"
+                        [tour]="tour"
+                    ></app-tour-gallery-page>
+                    <app-tour-calendar-page
+                        *ngIf="selectedBox.pageCode == PageCode.TOUR_CALENDAR"
+                        [tour]="tour"
+                    ></app-tour-calendar-page>
                 </div>
             </p-card>
 

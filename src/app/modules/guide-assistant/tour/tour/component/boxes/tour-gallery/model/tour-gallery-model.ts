@@ -8,10 +8,13 @@ export class TourGalleryModel extends BaseModel {
     @JsonProperty('tourId', Number, true)
     tourId: number = null;
 
-    @JsonProperty('imageUrl', String, true)
-    imageUrl: string = null;
+    @JsonProperty('lineNumber', Number, true)
+    lineNumber: number = null;
 
-    @JsonProperty('thumbnailImageUrl', String, true)
-    thumbnailImageUrl: string = null;
+    @JsonProperty('contentUrl', String, true)
+    contentUrl: string = null;
+
+    @JsonProperty('description', String, true)
+    description: string = null;
 
 }
