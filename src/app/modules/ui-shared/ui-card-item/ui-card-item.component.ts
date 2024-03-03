@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
     styleUrls: ['./ui-card-item.component.scss'],
@@ -23,9 +23,6 @@ import { Component, OnInit, Input } from '@angular/core';
                     <ng-container *ngIf="!defaultMode">
                         <ng-content></ng-content>
                     </ng-container>
-                </div>
-                <div class="arrow-square flex justify-content-center align-items-center">
-                    <i class="material-icons">navigate_next</i>
                 </div>
             </div>
         </p-card>
@@ -63,7 +60,9 @@ export class UiCardItemComponent implements OnInit {
     /** @description kartın horizontally mode ile acilmasini kontrol eder */
     @Input() isHorizontalCard: boolean = false;
 
-    constructor() {}
+    constructor() {
+    }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+    }
 }

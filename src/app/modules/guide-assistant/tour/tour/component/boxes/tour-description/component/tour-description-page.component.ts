@@ -82,7 +82,7 @@ export class TourDescriptionPageComponent implements OnInit, OnDestroy {
     }
 
     onDelete() {
-        let subscription = this.restService.delete(this.tourDescriptionModel.id).subscribe(() => {
+        let subscription = this.restService.deleteById(this.tourDescriptionModel.id).subscribe(() => {
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
             this.tourDescriptionModel = new TourDescriptionModel();
             this.tourDescriptionModel.tourId = this.tour?.id;

@@ -25,7 +25,7 @@ export class TourDayDescriptionRestService extends BaseRestService {
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 
-    public delete(id: number): Observable<any> {
+    public deleteById(id: number): Observable<any> {
         return this.httpClient.delete(this.ENDPOINT_DELETE_BY_ID + id);
     }
 

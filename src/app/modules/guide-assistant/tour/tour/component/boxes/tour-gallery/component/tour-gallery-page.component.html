@@ -2,14 +2,32 @@
     <div class="col-12">
 
         <p-toolbar toolbar class="flex justify-content-end" styleClass="pr-0 pl-0 pt-0">
-            <div>
-                <button [id]="'add'" pButton [label]="'Ekle'" class="mr-2" (click)="onAdd()">
+            <div class="flex justify-content-end">
+                <p-fileUpload
+                    (onSelect)="onFileMultiUpload($event)"
+                    [showCancelButton]="false"
+                    [showUploadButton]="false"
+                    [multiple]="true"
+                    chooseIcon="pi pi-plus"
+                    chooseLabel="Toplu Ekle"
+                    mode="basic"
+                    class="mr-2"
+                >
+                </p-fileUpload>
 
-                </button>
-                <button [id]="'copy'" pButton [label]="'Kopyala'" class="mr-2 p-button-outlined" (click)="onCopy()"
-                        [disabled]="!selection">
+                <p-fileUpload
+                    (onSelect)="onFileUpload($event)"
+                    [showCancelButton]="false"
+                    [showUploadButton]="false"
+                    [multiple]="true"
+                    chooseIcon="pi pi-plus"
+                    chooseLabel="Ekle"
+                    mode="basic"
+                    class="mr-2"
+                >
+                </p-fileUpload>
 
-                </button>
+
                 <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
                         [disabled]="!selection">
 
@@ -25,23 +43,23 @@
         </p-toolbar>
 
         <p-table
-                dataKey="id"
-                styleClass="p-datatable-striped"
-                selectionMode="single"
-                [id]="pageCode + '_list'"
-                [value]="list"
-                [paginator]="true"
-                [rows]="10"
-                [rowsPerPageOptions]="[10, 25, 50]"
-                [totalRecords]="list?.length"
-                [(selection)]="selection"
+            dataKey="id"
+            styleClass="p-datatable-striped"
+            selectionMode="single"
+            [id]="pageCode + '_list'"
+            [value]="list"
+            [paginator]="true"
+            [rows]="10"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [totalRecords]="list?.length"
+            [(selection)]="selection"
         >
             <ng-template pTemplate="header">
                 <th pSortableColumn="lineNumber" style="width: 15%">
-                    Sıra Numarası
+                    Sıra
                     <p-sortIcon field="lineNumber"></p-sortIcon>
                 </th>
-                <th style="width: 25%">İçerik</th>
+                <th style="width: 25%">Media</th>
                 <th style="width: 25%">Açıklama</th>
             </ng-template>
             <ng-template pTemplate="body" let-item>
@@ -97,23 +115,23 @@
                 <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
                     <div class="mr-2">
                         <button
-                                pButton
-                                [id]="'cancel'"
-                                type="button"
-                                label="Vazgeç"
-                                class="p-button-text ml-2"
-                                (click)="onCancel()"
+                            pButton
+                            [id]="'cancel'"
+                            type="button"
+                            label="Vazgeç"
+                            class="p-button-text ml-2"
+                            (click)="onCancel()"
                         ></button>
                     </div>
 
                     <div>
                         <button
-                                pButton
-                                [id]="'save'"
-                                [type]="'button'"
-                                label="Kaydet"
-                                class="ml-2"
-                                (click)="onSave()"
+                            pButton
+                            [id]="'save'"
+                            [type]="'button'"
+                            label="Kaydet"
+                            class="ml-2"
+                            (click)="onSave()"
                         ></button>
                     </div>
 

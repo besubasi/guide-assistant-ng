@@ -8,7 +8,8 @@ import {EndpointConstant} from "../../../../../../common/constant/endpoint-const
 import {ApiResponse} from "../../../../../../common/model/api-response";
 
 import {TourGalleryModel as M} from "../model/tour-gallery-model";
-import {TourGallerySearchModel as SM} from "../model/tour-gallery-search-model";
+import {TourGallerySaveModel} from "../model/tour-gallery-save-model";
+import {TourGalleryContentUpdateModel} from "../model/tour-gallery-content-update-model";
 
 @Injectable({
     providedIn: 'root'
@@ -19,13 +20,31 @@ export class TourGalleryRestService extends BaseRestService {
         super(httpClient, EndpointConstant.TOUR_GALLERY_SERVICE_NAME);
     }
 
-    public save(model: M): Observable<M> {
+    public createAll(modelList: TourGallerySaveModel[]): Observable<Array<M>> {
         return this.httpClient
-            .post<ApiResponse>(this.ENDPOINT_SAVE, this.converter.serialize(model, M))
+            .post<ApiResponse>(this.ENDPOINT_CREATE_ALL, this.converter.serializeArray(modelList, TourGallerySaveModel))
+            .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], M)));
+    }
+
+    public create(model: TourGallerySaveModel): Observable<M> {
+        return this.httpClient
+            .post<ApiResponse>(this.ENDPOINT_CREATE, this.converter.serialize(model, TourGallerySaveModel))
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 
-    public delete(id: number): Observable<any> {
+    public update(model: M): Observable<M> {
+        return this.httpClient
+            .post<ApiResponse>(this.ENDPOINT_UPDATE, this.converter.serialize(model, M))
+            .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
+    }
+
+    public updateContent(model: TourGalleryContentUpdateModel): Observable<M> {
+        return this.httpClient
+            .post<ApiResponse>(this.ENDPOINT_UPDATE_CONTENT, this.converter.serialize(model, TourGalleryContentUpdateModel))
+            .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
+    }
+
+    public deleteById(id: number): Observable<any> {
         return this.httpClient.delete(this.ENDPOINT_DELETE_BY_ID + id);
     }
 
@@ -34,9 +53,8 @@ export class TourGalleryRestService extends BaseRestService {
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 
-    public getList(searchModel: SM): Observable<Array<M>> {
-        return this.httpClient
-            .post<ApiResponse>(this.ENDPOINT_GET_LIST, this.converter.serialize(searchModel, SM))
+    public getListByTourId(tourId: number): Observable<Array<M>> {
+        return this.httpClient.get<ApiResponse>(this.ENDPOINT_GET_LIST_BY_TOUR_ID + tourId)
             .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], M)));
     }
 

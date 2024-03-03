@@ -4,7 +4,6 @@ import {TourGalleryModel} from "../model/tour-gallery-model";
 import {Subscription} from "rxjs";
 import {TourGalleryRestService} from "../service/tour-gallery-rest-service";
 import {PageCode} from "../../../../../../common/enum/page-code";
-import {TourGallerySearchModel} from "../model/tour-gallery-search-model";
 import {FormMode} from 'src/app/modules/guide-assistant/common/enum/form-mode';
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
 
@@ -55,9 +54,7 @@ export class TourGalleryPreviewComponent implements OnInit, OnDestroy {
         if (!this.tourId)
             return;
 
-        let searchModel = new TourGallerySearchModel();
-        searchModel.tourId = this.tourId;
-        const subscription = this.restService.getList(searchModel).subscribe((response) => {
+        const subscription = this.restService.getListByTourId(this.tourId).subscribe((response) => {
             this.list = response;
         });
         this.subscriptions.push(subscription);

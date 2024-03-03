@@ -24,12 +24,12 @@ export class TourDescriptionRestService extends BaseRestService {
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 
-    public delete(id: number): Observable<any> {
+    public deleteById(id: number): Observable<any> {
         return this.httpClient.delete(this.ENDPOINT_DELETE_BY_ID + id);
     }
 
     public getByTourId(tourId: number): Observable<M> {
-        return this.httpClient.get<ApiResponse>(EndpointConstant.BASE_ENDPOINT + EndpointConstant.TOUR_DESCRIPTION_SERVICE_NAME + EndpointConstant.MAPPING_GET_BY_TOUR_ID + tourId)
+        return this.httpClient.get<ApiResponse>(this.ENDPOINT_GET_BY_TOUR_ID + tourId)
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 

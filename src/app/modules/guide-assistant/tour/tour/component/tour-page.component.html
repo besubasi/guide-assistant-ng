@@ -13,15 +13,15 @@
 
                     </button>
                     <button [id]="'copy'" pButton [label]="'Kopyala'" class="mr-2 p-button-outlined" (click)="onCopy()"
-                            [disabled]="!selection">
+                            [disabled]="!selectedModel">
 
                     </button>
                     <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
-                            [disabled]="!selection">
+                            [disabled]="!selectedModel">
 
                     </button>
                     <button [id]="'delete'" pButton [label]="'Sil'" class="mr-2 p-button-outlined" (click)="onDelete()"
-                            [disabled]="!selection">
+                            [disabled]="!selectedModel">
 
                     </button>
                 </div>
@@ -37,7 +37,8 @@
                 [rows]="10"
                 [rowsPerPageOptions]="[10, 25, 50]"
                 [totalRecords]="list?.length"
-                [(selection)]="selection"
+                [(selection)]="selectedModel"
+                (onRowUnselect)="onRowUnselect()"
             >
                 <ng-template pTemplate="header">
                     <tr>
@@ -106,6 +107,6 @@
     <p-card>
         <ui-page-header title="Tur" [pageCode]="pageCode" [showBack]="true" (onBack)="onBack()"></ui-page-header>
 
-        <app-tour-form [tour]="selection" (eventSave)="eventSave()"></app-tour-form>
+        <app-tour-form [tour]="selectedModel" (eventSave)="eventSave()" (eventCancel)="onBack()"></app-tour-form>
     </p-card>
 </div>

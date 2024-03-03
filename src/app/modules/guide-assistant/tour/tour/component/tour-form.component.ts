@@ -35,6 +35,8 @@ import {TourGalleryPageComponent} from "./boxes/tour-gallery/component/tour-gall
 import {CompanyRestService} from "../../../company/service/company-rest-service";
 import {CompanySearchModel} from "../../../company/model/company-search-model";
 import {TourGalleryPreviewComponent} from "./boxes/tour-gallery/component/tour-gallery-preview.component";
+import {FileUploadModule} from "primeng/fileupload";
+import {Util} from "../../../common/util/util";
 
 
 @Component({
@@ -66,6 +68,7 @@ import {TourGalleryPreviewComponent} from "./boxes/tour-gallery/component/tour-g
         TourGalleryPageComponent,
         NgForOf,
         TourGalleryPreviewComponent,
+        FileUploadModule,
     ],
     templateUrl: './tour-form.component.html',
     styleUrl: './tour-form.component.scss'
@@ -74,6 +77,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
 
     @Input() tour: TourSaveModel;
     @Output() eventSave = new EventEmitter();
+    @Output() eventCancel = new EventEmitter();
 
     pageCode: string;
     formMode: string;
@@ -85,7 +89,6 @@ export class TourFormComponent implements OnInit, OnDestroy {
 
     boxList: BoxModel[];
     selectedBox: BoxModel;
-    isOverlay: boolean;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -107,7 +110,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
         this.tourTypeList = [];
         this.boxList = [];
         this.selectedBox = null;
-        this.isOverlay = !this.tour?.id;
+        this.tour = Util.clone<TourSaveModel>(TourSaveModel, this.tour);
 
         this.buildForm();
         this.initializeBoxes();
@@ -117,6 +120,10 @@ export class TourFormComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions?.forEach(x => x.unsubscribe());
+    }
+
+    clone<T>(TCreator: { new(): T }, model: T): T {
+        return Object.assign(new TCreator(), structuredClone(model));
     }
 
     buildForm() {
@@ -151,9 +158,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
     }
 
     onCancel() {
-        this.formMode = FormMode.NONE;
-        this.form.reset();
-        this.buildForm();
+        this.eventCancel.emit();
     }
 
     onSave() {
@@ -164,9 +169,10 @@ export class TourFormComponent implements OnInit, OnDestroy {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Başarılı',
-                    detail: "Tur Kategorisi başarıyla kaydedildi."
+                    detail: "İşlem başarıyla kaydedildi."
                 });
                 this.tour = response;
+                this.boxList?.forEach(box => box.disabled = false);
                 this.form.patchValue(this.tour);
                 this.eventSave.emit();
             }
@@ -180,14 +186,17 @@ export class TourFormComponent implements OnInit, OnDestroy {
 
     initializeBoxes() {
         this.boxList = [];
-        this.boxList.push(new BoxModel(PageCode.TOUR_DESCRIPTION, "Açıklamalar"));
-        this.boxList.push(new BoxModel(PageCode.TOUR_DAY_DESCRIPTION, "Günlük Detaylar"));
-        this.boxList.push(new BoxModel(PageCode.TOUR_GALLERY, "Fotoğraflar"));
-        this.boxList.push(new BoxModel(PageCode.TOUR_CALENDAR, "Tarihler"));
-        this.boxList.push(new BoxModel(PageCode.TOUR_GALLERY_PREVIEW, "Foto Preview"));
+        this.boxList.push(new BoxModel(PageCode.TOUR_DESCRIPTION, "Açıklamalar", !this.tour?.id));
+        this.boxList.push(new BoxModel(PageCode.TOUR_DAY_DESCRIPTION, "Günlük Detaylar", !this.tour?.id));
+        this.boxList.push(new BoxModel(PageCode.TOUR_GALLERY, "Galeri", !this.tour?.id));
+        this.boxList.push(new BoxModel(PageCode.TOUR_CALENDAR, "Tarihler", !this.tour?.id));
+        this.boxList.push(new BoxModel(PageCode.TOUR_GALLERY_PREVIEW, "Foto Preview", !this.tour?.id));
     }
 
-    onSelect(box: BoxModel) {
+    onSelect(box?: BoxModel) {
+        if (box.disabled)
+            return;
+
         if (box.pageCode) this.selectedBox = box;
     }
 

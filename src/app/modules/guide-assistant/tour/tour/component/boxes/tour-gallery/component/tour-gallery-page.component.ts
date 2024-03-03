@@ -13,7 +13,6 @@ import {MessageService} from "primeng/api";
 import {FormMode} from '../../../../../../common/enum/form-mode';
 import {TourGalleryRestService} from "../service/tour-gallery-rest-service";
 import {TourSaveModel} from "../../../../model/tour-save-model";
-import {TourGallerySearchModel} from "../model/tour-gallery-search-model";
 import {PageCode} from "../../../../../../common/enum/page-code";
 import {TourGalleryModel} from "../model/tour-gallery-model";
 import {EditorModule} from "primeng/editor";
@@ -26,6 +25,9 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {ModalConfig} from "../../../../../../../ui-shared/ui-util/model/modal-config";
 import {TourGalleryPreviewComponent} from "./tour-gallery-preview.component";
 import {DialogService} from 'primeng/dynamicdialog';
+import {FileUploadModule} from "primeng/fileupload";
+import {TourGallerySaveModel} from "../model/tour-gallery-save-model";
+import {TourGalleryContentUpdateModel} from "../model/tour-gallery-content-update-model";
 
 @Component({
     selector: 'app-tour-gallery-page',
@@ -45,7 +47,8 @@ import {DialogService} from 'primeng/dynamicdialog';
         TableModule,
         UiActiveInactiveTagsModule,
         InputNumberModule,
-        InputTextareaModule
+        InputTextareaModule,
+        FileUploadModule
     ],
     templateUrl: './tour-gallery-page.component.html',
     styleUrl: './tour-gallery-page.component.scss'
@@ -89,12 +92,20 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
     }
 
     loadData() {
-        let searchModel = new TourGallerySearchModel();
-        searchModel.tourId = this.tour?.id;
-        const subscription = this.restService.getList(searchModel).subscribe((response) => {
+        if (!this.tour?.id) {
+            this.list = [];
+            return;
+        }
+
+        const subscription = this.restService.getListByTourId(this.tour?.id).subscribe((response) => {
             this.list = response;
         });
         this.subscriptions.push(subscription);
+    }
+
+    onAddAll() {
+        this.formMode = FormMode.ADD;
+        this.buildForm();
     }
 
     onAdd() {
@@ -116,7 +127,7 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
     }
 
     onDelete() {
-        let subscription = this.restService.delete(this.selection.id).subscribe(() => {
+        let subscription = this.restService.deleteById(this.selection.id).subscribe(() => {
             this.onCancel();
             this.loadData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
@@ -130,8 +141,8 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
         this.buildForm();
     }
 
-    onSave() {
-        let subscription = this.restService.save(this.form.value).subscribe(
+    onCreate(model: TourGallerySaveModel) {
+        let subscription = this.restService.create(model).subscribe(
             response => {
                 this.onCancel();
                 this.loadData();
@@ -144,6 +155,115 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
         );
         this.subscriptions.push(subscription);
     }
+
+    onCreateAll(modelList: TourGallerySaveModel[]) {
+        let subscription = this.restService.createAll(modelList).subscribe(
+            response => {
+                this.onCancel();
+                this.loadData();
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Başarılı',
+                    detail: "İşlem başarıyla kaydedildi."
+                });
+            }
+        );
+        this.subscriptions.push(subscription);
+    }
+
+    onSave() {
+        let subscription = this.restService.update(this.form.value).subscribe(
+            response => {
+                this.onCancel();
+                this.loadData();
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Başarılı',
+                    detail: "İşlem başarıyla kaydedildi."
+                });
+            }
+        );
+        this.subscriptions.push(subscription);
+    }
+
+    onUpdateContent(model: TourGalleryContentUpdateModel) {
+        let subscription = this.restService.updateContent(model).subscribe(
+            response => {
+                this.onCancel();
+                this.loadData();
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Başarılı',
+                    detail: "İşlem başarıyla kaydedildi."
+                });
+            }
+        );
+        this.subscriptions.push(subscription);
+    }
+
+    onFileUpload($event) {
+        const fileList: FileList = $event.files;
+        if (fileList.length === 0) {
+            console.error('Dosya seçilmedi veya birden fazla dosya seçildi.');
+            return;
+        }
+
+        let startIndex = 0;
+        this.list?.forEach(x => startIndex = x.lineNumber > startIndex ? x.lineNumber : startIndex);
+
+        const file: File = fileList[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        console.log('FileUpload start');
+        reader.onload = () => {
+            const model: TourGallerySaveModel = new TourGallerySaveModel();
+            model.tourId = this.tour?.id;
+            model.lineNumber = startIndex + 1;
+            model.content = reader.result as string;
+            console.log('File read end for : ' + file.name);
+            this.onCreate(model);
+        };
+        console.log('FileUpload end');
+        reader.onerror = (error) => {
+            console.error('Dosya okunurken bir hata oluştu:', error);
+        };
+    }
+
+    onFileMultiUpload($event) {
+        const fileList: FileList = $event.files;
+        if (fileList.length === 0)
+            return;
+
+        let startIndex = 0;
+        this.list?.forEach(x => startIndex = x.lineNumber > startIndex ? x.lineNumber : startIndex);
+        const modelList: TourGallerySaveModel[] = [];
+        console.log('FileMultiUpload start');
+        for (let i = 0; i < fileList.length; i++) {
+            const file: File = fileList[i];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            console.log('Before reader.onload');
+            reader.onload = () => {
+                const model: TourGallerySaveModel = new TourGallerySaveModel();
+                model.tourId = this.tour?.id;
+                model.lineNumber = startIndex + i + 1;
+                model.content = reader.result as string;
+                modelList.push(model);
+
+                if (i == fileList.length - 1) {
+                    console.log('Dosya okuma işlemi bitti, modelList.length = ' + modelList.length);
+                }
+                console.log('File read end for : ' + file.name);
+            };
+            console.log('After reader.onload');
+
+            reader.onerror = (error) => {
+                console.error('Dosya okunurken bir hata oluştu:', error);
+            };
+        }
+        console.log('for loop end');
+    }
+
 
     onPreview() {
         this.dialogService.open(TourGalleryPreviewComponent, {

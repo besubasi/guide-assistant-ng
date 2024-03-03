@@ -126,7 +126,7 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
     }
 
     onDelete() {
-        this.restService.delete(this.selection.id).subscribe(() => {
+        this.restService.deleteById(this.selection.id).subscribe(() => {
             this.onCancel();
             this.loadListData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});

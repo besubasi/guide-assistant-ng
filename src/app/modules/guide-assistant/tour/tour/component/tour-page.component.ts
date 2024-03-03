@@ -56,7 +56,7 @@ export class TourPageComponent implements OnInit, OnDestroy {
     pageCode: string;
     formMode: string;
     list: TourModel[];
-    selection: TourModel;
+    selectedModel: TourModel;
     subscriptions: Subscription[];
     isReloadNecessary: boolean;
 
@@ -88,6 +88,7 @@ export class TourPageComponent implements OnInit, OnDestroy {
     }
 
     onAdd() {
+        this.selectedModel = null;
         this.formMode = FormMode.ADD;
     }
 
@@ -100,7 +101,7 @@ export class TourPageComponent implements OnInit, OnDestroy {
     }
 
     onDelete() {
-        this.restService.delete(this.selection.id).subscribe(() => {
+        this.restService.deleteById(this.selectedModel.id).subscribe(() => {
             this.onCancel();
             this.loadData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
@@ -121,6 +122,16 @@ export class TourPageComponent implements OnInit, OnDestroy {
 
     eventSave() {
         this.isReloadNecessary = true;
+    }
+
+    onRowSelect() {
+
+    }
+
+    onRowUnselect() {
+        this.selectedModel == null;
+        console.log("selectedModel");
+        console.log(this.selectedModel);
     }
 
     get FormMode() {
