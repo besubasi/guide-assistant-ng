@@ -26,7 +26,6 @@ import {ModalConfig} from "../../../../../../../ui-shared/ui-util/model/modal-co
 import {TourGalleryPreviewComponent} from "./tour-gallery-preview.component";
 import {DialogService} from 'primeng/dynamicdialog';
 import {FileUploadModule} from "primeng/fileupload";
-import {TourGallerySaveModel} from "../model/tour-gallery-save-model";
 import {TourGalleryContentUpdateModel} from "../model/tour-gallery-content-update-model";
 import {EndpointConstant} from "../../../../../../common/constant/endpoint-constant";
 
@@ -58,7 +57,6 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
 
     @Input() tour: TourSaveModel;
     @ViewChild('fileUpload') fileUpload: any;
-    @ViewChild('fileUploadMulti') fileUploadMulti: any;
 
     pageCode: string;
     formMode: string;
@@ -146,36 +144,6 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
         this.buildForm();
     }
 
-    onCreate(model: TourGallerySaveModel) {
-        let subscription = this.restService.create(model).subscribe(
-            response => {
-                this.onCancel();
-                this.loadData();
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Başarılı',
-                    detail: "İşlem başarıyla kaydedildi."
-                });
-            }
-        );
-        this.subscriptions.push(subscription);
-    }
-
-    onCreateAll(modelList: TourGallerySaveModel[]) {
-        let subscription = this.restService.createAll(modelList).subscribe(
-            response => {
-                this.onCancel();
-                this.loadData();
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Başarılı',
-                    detail: "İşlem başarıyla kaydedildi."
-                });
-            }
-        );
-        this.subscriptions.push(subscription);
-    }
-
     onSave() {
         let subscription = this.restService.update(this.form.value).subscribe(
             response => {
@@ -240,7 +208,7 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
             let file = fileList[i];
             formData.append('file', file, file.name);
         }
-        this.fileUploadMulti.clear();
+        this.fileUpload.clear();
         this.createFiles(formData);
     }
 

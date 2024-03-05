@@ -8,7 +8,6 @@ import {EndpointConstant} from "../../../../../../common/constant/endpoint-const
 import {ApiResponse} from "../../../../../../common/model/api-response";
 
 import {TourGalleryModel as M} from "../model/tour-gallery-model";
-import {TourGallerySaveModel} from "../model/tour-gallery-save-model";
 import {TourGalleryContentUpdateModel} from "../model/tour-gallery-content-update-model";
 
 @Injectable({
@@ -23,18 +22,6 @@ export class TourGalleryRestService extends BaseRestService {
     public createFiles(formData: FormData): Observable<Boolean> {
         return this.httpClient.post<ApiResponse>(this.ENDPOINT_CREATE_FILES, formData)
             .pipe(map((apiResponse) => Boolean(apiResponse.data)));
-    }
-
-    public createAll(modelList: TourGallerySaveModel[]): Observable<Array<M>> {
-        return this.httpClient
-            .post<ApiResponse>(this.ENDPOINT_CREATE_ALL, this.converter.serializeArray(modelList, TourGallerySaveModel))
-            .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], M)));
-    }
-
-    public create(model: TourGallerySaveModel): Observable<M> {
-        return this.httpClient
-            .post<ApiResponse>(this.ENDPOINT_CREATE, this.converter.serialize(model, TourGallerySaveModel))
-            .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 
     public update(model: M): Observable<M> {
