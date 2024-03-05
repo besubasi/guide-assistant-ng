@@ -4,6 +4,7 @@ export class EndpointConstant {
 
     static MAPPING_SAVE: string = "/save";
     static MAPPING_CREATE: string = "/create";
+    static MAPPING_CREATE_FILES: string = "/createFiles";
     static MAPPING_CREATE_ALL: string = "/createAll";
     static MAPPING_UPDATE: string = "/update";
     static MAPPING_UPDATE_CONTENT: string = "/updateContent";

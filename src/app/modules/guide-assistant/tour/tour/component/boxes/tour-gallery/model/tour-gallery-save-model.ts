@@ -12,6 +12,9 @@ export class TourGallerySaveModel {
     @JsonProperty('content', String, true)
     content: string = null;
 
+    @JsonProperty('file', File, true)
+    file: File = null;
+
     @JsonProperty('description', String, true)
     description: string = null;
 

@@ -20,6 +20,11 @@ export class TourGalleryRestService extends BaseRestService {
         super(httpClient, EndpointConstant.TOUR_GALLERY_SERVICE_NAME);
     }
 
+    public createFiles(formData: FormData): Observable<Boolean> {
+        return this.httpClient.post<ApiResponse>(this.ENDPOINT_CREATE_FILES, formData)
+            .pipe(map((apiResponse) => Boolean(apiResponse.data)));
+    }
+
     public createAll(modelList: TourGallerySaveModel[]): Observable<Array<M>> {
         return this.httpClient
             .post<ApiResponse>(this.ENDPOINT_CREATE_ALL, this.converter.serializeArray(modelList, TourGallerySaveModel))

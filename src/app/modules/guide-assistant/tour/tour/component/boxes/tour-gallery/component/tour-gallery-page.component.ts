@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ButtonModule} from "primeng/button";
 import {CheckboxModule} from "primeng/checkbox";
 import {DropdownModule} from "primeng/dropdown";
@@ -28,6 +28,7 @@ import {DialogService} from 'primeng/dynamicdialog';
 import {FileUploadModule} from "primeng/fileupload";
 import {TourGallerySaveModel} from "../model/tour-gallery-save-model";
 import {TourGalleryContentUpdateModel} from "../model/tour-gallery-content-update-model";
+import {EndpointConstant} from "../../../../../../common/constant/endpoint-constant";
 
 @Component({
     selector: 'app-tour-gallery-page',
@@ -56,6 +57,8 @@ import {TourGalleryContentUpdateModel} from "../model/tour-gallery-content-updat
 export class TourGalleryPageComponent implements OnInit, OnDestroy {
 
     @Input() tour: TourSaveModel;
+    @ViewChild('fileUpload') fileUpload: any;
+    @ViewChild('fileUploadMulti') fileUploadMulti: any;
 
     pageCode: string;
     formMode: string;
@@ -63,6 +66,7 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
     list: TourGalleryModel[];
     selection: TourGalleryModel;
     subscriptions: Subscription[];
+    uploadUrl: string;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -76,6 +80,7 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
         this.pageCode = PageCode.TOUR_GALLERY;
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
+        this.uploadUrl = EndpointConstant.BASE_ENDPOINT + EndpointConstant.TOUR_GALLERY_SERVICE_NAME + EndpointConstant.MAPPING_CREATE_ALL;
 
         this.buildForm();
         this.loadData();
@@ -201,70 +206,6 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
         this.subscriptions.push(subscription);
     }
 
-    onFileUpload($event) {
-        const fileList: FileList = $event.files;
-        if (fileList.length === 0) {
-            console.error('Dosya seçilmedi veya birden fazla dosya seçildi.');
-            return;
-        }
-
-        let startIndex = 0;
-        this.list?.forEach(x => startIndex = x.lineNumber > startIndex ? x.lineNumber : startIndex);
-
-        const file: File = fileList[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        console.log('FileUpload start');
-        reader.onload = () => {
-            const model: TourGallerySaveModel = new TourGallerySaveModel();
-            model.tourId = this.tour?.id;
-            model.lineNumber = startIndex + 1;
-            model.content = reader.result as string;
-            console.log('File read end for : ' + file.name);
-            this.onCreate(model);
-        };
-        console.log('FileUpload end');
-        reader.onerror = (error) => {
-            console.error('Dosya okunurken bir hata oluştu:', error);
-        };
-    }
-
-    onFileMultiUpload($event) {
-        const fileList: FileList = $event.files;
-        if (fileList.length === 0)
-            return;
-
-        let startIndex = 0;
-        this.list?.forEach(x => startIndex = x.lineNumber > startIndex ? x.lineNumber : startIndex);
-        const modelList: TourGallerySaveModel[] = [];
-        console.log('FileMultiUpload start');
-        for (let i = 0; i < fileList.length; i++) {
-            const file: File = fileList[i];
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            console.log('Before reader.onload');
-            reader.onload = () => {
-                const model: TourGallerySaveModel = new TourGallerySaveModel();
-                model.tourId = this.tour?.id;
-                model.lineNumber = startIndex + i + 1;
-                model.content = reader.result as string;
-                modelList.push(model);
-
-                if (i == fileList.length - 1) {
-                    console.log('Dosya okuma işlemi bitti, modelList.length = ' + modelList.length);
-                }
-                console.log('File read end for : ' + file.name);
-            };
-            console.log('After reader.onload');
-
-            reader.onerror = (error) => {
-                console.error('Dosya okunurken bir hata oluştu:', error);
-            };
-        }
-        console.log('for loop end');
-    }
-
-
     onPreview() {
         this.dialogService.open(TourGalleryPreviewComponent, {
             width: ModalConfig.MODAL_PANEL_SIZE.LG,
@@ -284,4 +225,38 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
     get FormMode() {
         return FormMode;
     }
+
+    onSelectFiles($event) {
+        const fileList: FileList = $event.files;
+        if (fileList.length === 0)
+            return;
+
+        let startIndex = 0;
+        this.list?.forEach(x => startIndex = x.lineNumber > startIndex ? x.lineNumber : startIndex);
+
+        const formData: FormData = new FormData();
+        formData.append('tourId', this.tour?.id.toString());
+        for (let i = 0; i < fileList.length; i++) {
+            let file = fileList[i];
+            formData.append('file', file, file.name);
+        }
+        this.fileUploadMulti.clear();
+        this.createFiles(formData);
+    }
+
+    createFiles(formData: FormData) {
+        let subscription = this.restService.createFiles(formData).subscribe(
+            response => {
+                this.onCancel();
+                this.loadData();
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Başarılı',
+                    detail: "İşlem başarıyla kaydedildi."
+                });
+            }
+        );
+        this.subscriptions.push(subscription);
+    }
+
 }

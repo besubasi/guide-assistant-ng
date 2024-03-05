@@ -4,29 +4,17 @@
         <p-toolbar toolbar class="flex justify-content-end" styleClass="pr-0 pl-0 pt-0">
             <div class="flex justify-content-end">
                 <p-fileUpload
-                    (onSelect)="onFileMultiUpload($event)"
-                    [showCancelButton]="false"
-                    [showUploadButton]="false"
-                    [multiple]="true"
-                    chooseIcon="pi pi-plus"
-                    chooseLabel="Toplu Ekle"
-                    mode="basic"
-                    class="mr-2"
-                >
-                </p-fileUpload>
-
-                <p-fileUpload
-                    (onSelect)="onFileUpload($event)"
-                    [showCancelButton]="false"
-                    [showUploadButton]="false"
-                    [multiple]="true"
+                    #fileUpload
+                    name="file"
                     chooseIcon="pi pi-plus"
                     chooseLabel="Ekle"
                     mode="basic"
                     class="mr-2"
-                >
-                </p-fileUpload>
-
+                    multiple="multiple"
+                    [showCancelButton]="false"
+                    [showUploadButton]="false"
+                    (onSelect)="onSelectFiles($event)"
+                ></p-fileUpload>
 
                 <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
                         [disabled]="!selection">
@@ -59,16 +47,16 @@
                     Sıra
                     <p-sortIcon field="lineNumber"></p-sortIcon>
                 </th>
-                <th style="width: 25%">Media</th>
-                <th style="width: 25%">Açıklama</th>
+                <th style="width: 50%">Media</th>
+                <th style="width: 35%">Açıklama</th>
             </ng-template>
             <ng-template pTemplate="body" let-item>
                 <tr [pSelectableRow]="item">
                     <td style="width: 15%">{{ item.lineNumber }}</td>
-                    <td style="width: 20%; min-width: 5rem;">
+                    <td style="width: 50%">
                         <img src="{{item.contentUrl}}" class="shadow-4" width="100">
                     </td>
-                    <td style="width: 10%">{{ item.description }}</td>
+                    <td style="width: 35%">{{ item.description }}</td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
