@@ -101,6 +101,7 @@ export class TourDescriptionPageComponent implements OnInit, OnDestroy {
                 });
 
                 this.tourDescriptionModel = response;
+
                 this.form.patchValue(this.tourDescriptionModel);
             }
         );

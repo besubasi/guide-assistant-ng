@@ -15,7 +15,9 @@
                                         <textarea id="descriptionSecond" formControlName="descriptionSecond" [rows]="10" [cols]="25"
                                                   pInputTextarea autoResize="autoResize"></textarea>
                     -->
-                    <p-editor id="descriptionSecond" formControlName="descriptionSecond" [style]="{ height: '320px' }">
+
+                    <p-editor id="descriptionSecond" formControlName="descriptionSecond" [style]="{ height: '210px' }">
+
                     </p-editor>
                 </div>
             </div>
@@ -25,12 +27,12 @@
                 <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
                     <div class="mr-2">
                         <button
-                                pButton
-                                [id]="'save'"
-                                [type]="'button'"
-                                label="Kaydet"
-                                class="ml-2"
-                                (click)="onSave()"
+                            pButton
+                            [id]="'save'"
+                            [type]="'button'"
+                            label="Kaydet"
+                            class="ml-2"
+                            (click)="onSave()"
                         ></button>
                     </div>
 

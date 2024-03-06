@@ -20,8 +20,8 @@ export class TourSaveModel extends BaseModel {
     @JsonProperty('day', Number, true)
     day: number = null;
 
-    @JsonProperty('premierContentUrl', String, true)
-    premierContentUrl: string = null;
+    @JsonProperty('contentUrl', String, true)
+    contentUrl: string = null;
 
     @JsonProperty('active', Boolean, true)
     active: boolean = false;

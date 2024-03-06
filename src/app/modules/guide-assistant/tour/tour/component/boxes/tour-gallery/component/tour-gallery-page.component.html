@@ -4,7 +4,7 @@
         <p-toolbar toolbar class="flex justify-content-end" styleClass="pr-0 pl-0 pt-0">
             <div class="flex justify-content-end">
                 <p-fileUpload
-                    #fileUpload
+                    #fileCreateContentList
                     name="file"
                     chooseIcon="pi pi-plus"
                     chooseLabel="Ekle"
@@ -89,6 +89,24 @@
                     <label htmlFor="contentUrl">İçerik Url</label>
                     <input pInputText id="contentUrl" type="text"
                            formControlName="contentUrl"/>
+                </div>
+
+                <div class="col-12 mb-2">
+                    <img src="{{form.value?.contentUrl}}" class="shadow-4" width="100">
+                </div>
+
+                <div class="col-12 mb-2">
+                    <p-fileUpload
+                        #fileUpdateContent
+                        name="file"
+                        chooseIcon="pi pi-plus"
+                        chooseLabel="İçerik Güncelle"
+                        mode="basic"
+                        class="mr-2"
+                        [showCancelButton]="false"
+                        [showUploadButton]="false"
+                        (onSelect)="onUpdateContent($event)"
+                    ></p-fileUpload>
                 </div>
 
                 <div class="col-12 mb-2">
