@@ -17,11 +17,11 @@
                 ></p-fileUpload>
 
                 <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
-                        [disabled]="!selection">
+                        [disabled]="!selectedItem">
 
                 </button>
                 <button [id]="'delete'" pButton [label]="'Sil'" class="mr-2 p-button-outlined" (click)="onDelete()"
-                        [disabled]="!selection">
+                        [disabled]="!selectedItem">
 
                 </button>
                 <button pButton pRipple icon="pi pi-file-edit" class="p-button-raised p-button-help mr-2"
@@ -40,7 +40,7 @@
             [rows]="10"
             [rowsPerPageOptions]="[10, 25, 50]"
             [totalRecords]="list?.length"
-            [(selection)]="selection"
+            [(selection)]="selectedItem"
         >
             <ng-template pTemplate="header">
                 <th pSortableColumn="lineNumber" style="width: 15%">
@@ -72,13 +72,13 @@
 <ui-sidebar [display]="formMode !== FormMode.NONE">
     <div>
         <div class="grid">
-            <ui-page-title class="col" title="Tur Tipi"></ui-page-title>
+            <ui-page-title class="col" title="Galeri"></ui-page-title>
         </div>
         <form [formGroup]="form" [id]="'formTipi'">
             <div class="p-fluid formgrid grid">
 
                 <div class="col-12 mb-2">
-                    <label htmlFor="lineNumber">Gün</label>
+                    <label htmlFor="lineNumber">Sıra</label>
                     <p-inputNumber id="lineNumber" formControlName="lineNumber" mode="decimal" [showButtons]="true"
                                    [min]="1"
                                    [max]="100">
@@ -110,7 +110,7 @@
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label htmlFor="description">Adı</label>
+                    <label htmlFor="description">Açıklama</label>
                     <input pInputText id="description" type="text" formControlName="description"/>
                 </div>
 

@@ -33,5 +33,4 @@ export class TourDescriptionRestService extends BaseRestService {
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 
-
 }

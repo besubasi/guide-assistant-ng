@@ -61,7 +61,7 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
     formMode: string;
     form: UntypedFormGroup;
     list: TourGalleryModel[];
-    selection: TourGalleryModel;
+    selectedItem: TourGalleryModel;
     subscriptions: Subscription[];
     isNeedReload: boolean;
 
@@ -113,18 +113,18 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
     onCopy() {
         this.formMode = FormMode.COPY;
         this.buildForm();
-        this.form.patchValue(this.selection);
+        this.form.patchValue(this.selectedItem);
         this.form.patchValue({id: null});
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
-        this.form.patchValue(this.selection);
+        this.form.patchValue(this.selectedItem);
     }
 
     onDelete() {
-        let subscription = this.restService.deleteById(this.selection.id).subscribe(() => {
+        let subscription = this.restService.deleteById(this.selectedItem.id).subscribe(() => {
             this.onCancel();
             this.loadData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
@@ -136,6 +136,7 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
         this.formMode = FormMode.NONE;
         this.form.reset();
         this.buildForm();
+        this.selectedItem = null;
         if (this.isNeedReload) {
             this.loadData();
             this.isNeedReload = true;
@@ -207,9 +208,8 @@ export class TourGalleryPageComponent implements OnInit, OnDestroy {
         let subscription = this.restService.updateContent(formData).subscribe(
             response => {
                 this.isNeedReload = true;
-                //this.form = this.formBuilder.group(new TourGalleryModel());
                 this.form.reset();
-                this.selection = response;
+                this.selectedItem = response;
                 this.form.patchValue(response);
                 this.messageService.add({
                     severity: 'success',
