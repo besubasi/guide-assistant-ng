@@ -40,4 +40,9 @@ export class TourDayDescriptionRestService extends BaseRestService {
             .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], M)));
     }
 
+    public getListByTourId(tourId: number): Observable<Array<M>> {
+        return this.httpClient.get<ApiResponse>(this.ENDPOINT_GET_LIST_BY_TOUR_ID + tourId)
+            .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], M)));
+    }
+
 }

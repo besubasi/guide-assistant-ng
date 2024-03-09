@@ -13,7 +13,6 @@ import {MessageService} from "primeng/api";
 import {FormMode} from '../../../../../../common/enum/form-mode';
 import {TourDayDescriptionRestService} from "../service/tour-day-description-rest-service";
 import {TourSaveModel} from "../../../../model/tour-save-model";
-import {TourDayDescriptionSearchModel} from "../model/tour-day-description-search-model";
 import {PageCode} from "../../../../../../common/enum/page-code";
 import {TourDayDescriptionModel} from "../model/tour-day-description-model";
 import {EditorModule} from "primeng/editor";
@@ -23,6 +22,9 @@ import {
 } from "../../../../../../../ui-shared/ui-active-inactive-tags/ui-active-inactive-tags.module";
 import {InputNumberModule} from "primeng/inputnumber";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {
+    UiFormFooterButtonsModule
+} from "../../../../../../../ui-shared/ui-form-footer-buttons/ui-form-footer-buttons.module";
 
 @Component({
     selector: 'app-tour-day-description-page',
@@ -42,7 +44,8 @@ import {InputTextareaModule} from "primeng/inputtextarea";
         TableModule,
         UiActiveInactiveTagsModule,
         InputNumberModule,
-        InputTextareaModule
+        InputTextareaModule,
+        UiFormFooterButtonsModule
     ],
     templateUrl: './tour-day-description-page.component.html',
     styleUrl: './tour-day-description-page.component.scss'
@@ -85,9 +88,10 @@ export class TourDayDescriptionPageComponent implements OnInit, OnDestroy {
     }
 
     loadData() {
-        let searchModel = new TourDayDescriptionSearchModel();
-        searchModel.tourId = this.tour?.id;
-        const subscription = this.restService.getList(searchModel).subscribe((response) => {
+        if (!this.tour?.id)
+            return;
+
+        const subscription = this.restService.getListByTourId(this.tour?.id).subscribe((response) => {
             this.list = response;
         });
         this.subscriptions.push(subscription);

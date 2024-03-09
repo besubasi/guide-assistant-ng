@@ -42,7 +42,15 @@
             <ng-template pTemplate="body" let-item>
                 <tr [pSelectableRow]="item">
                     <td style="width: 10%">{{ item.dayNumber }}</td>
-                    <td style="width: 90%">{{ item.description }}</td>
+
+                    <td style="width: 90%">
+                        <p-editor [style]="{'min-height':'100px'}" [(ngModel)]="item.description"
+                                  [readonly]="true">
+                            <ng-template pTemplate="header">
+                            </ng-template>
+                        </p-editor>
+                    </td>
+
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
@@ -59,67 +67,31 @@
 <ui-sidebar [display]="formMode !== FormMode.NONE">
     <div>
         <div class="grid">
-            <ui-page-title class="col" title="Tur Tipi"></ui-page-title>
+            <ui-page-title class="col" title="Günlük Detaylar"></ui-page-title>
         </div>
-        <form [formGroup]="form" [id]="'formTipi'">
-            <div class="p-fluid formgrid grid">
 
-                <div class="col-12 mb-2">
-                    <label htmlFor="dayNumber">Gün</label>
+        <form [formGroup]="form" [id]="'formTourDayDescription'">
+            <div class="p-fluid formgrid grid">
+                <div class="col-12">
+                    <label for="dayNumber">Gün</label>
                     <p-inputNumber id="dayNumber" formControlName="dayNumber" mode="decimal" [showButtons]="true"
                                    [min]="1"
                                    [max]="100">
                     </p-inputNumber>
                 </div>
                 <div class="col-12">
-                    <label htmlFor="description">Açıklama</label>
-                    <textarea id="description" formControlName="description" [rows]="10" [cols]="25"
-                              pInputTextarea autoResize="autoResize"></textarea>
-
-                    <!--
-                                        <p-editor id="description" formControlName="description"
-                                                  [style]="{ height: '320px' }">
-                                            <ng-template pTemplate="header">
-                                                <span class="ql-formats">
-                                                    <button type="button" class="ql-bold" aria-label="Bold"></button>
-                                                    <button type="button" class="ql-italic" aria-label="Italic"></button>
-                                                    <button type="button" class="ql-underline" aria-label="Underline"></button>
-                                                </span>
-                                            </ng-template>
-                                        </p-editor>
-                    -->
+                    <label for="description">Açıklama</label>
+                    <p-editor id="description" formControlName="description"
+                              [style]="{ height: '150px' }"></p-editor>
                 </div>
             </div>
-
-            <div class="ui-form-footer-buttons-wrapper">
-                <hr/>
-                <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
-                    <div class="mr-2">
-                        <button
-                            pButton
-                            [id]="'cancel'"
-                            type="button"
-                            label="Vazgeç"
-                            class="p-button-text ml-2"
-                            (click)="onCancel()"
-                        ></button>
-                    </div>
-
-                    <div>
-                        <button
-                            pButton
-                            [id]="'save'"
-                            [type]="'button'"
-                            label="Kaydet"
-                            class="ml-2"
-                            (click)="onSave()"
-                        ></button>
-                    </div>
-
-                </p-toolbar>
-            </div>
-
         </form>
+
+        <ui-form-footer-buttons [form]="form" [idPrefix]="pageCode"
+                                [showCancel]="true" (onCancel)="onCancel()"
+                                [showSave]="true" (onSave)="onSave()">
+        </ui-form-footer-buttons>
+
     </div>
 </ui-sidebar>
 
