@@ -6,10 +6,8 @@ import {Subscription} from "rxjs";
 import {CompanyModel} from "../../../company/model/company-model";
 import {TourTypeModel} from "../../tourtype/model/tour-type-model";
 import {TourRestService} from "../service/tour-rest-service";
-import {TourTypeRestService} from "../../tourtype/service/tour-type-rest-service";
 import {MessageService, SharedModule} from "primeng/api";
 import {TourSaveModel} from "../model/tour-save-model";
-import {TourTypeSearchModel} from "../../tourtype/model/tour-type-search-model";
 import {CurrencyPipe, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {MenuModule} from "primeng/menu";
@@ -32,8 +30,6 @@ import {
 } from "./boxes/tour-day-description/component/tour-day-description-page.component";
 import {TourDescriptionPageComponent} from "./boxes/tour-description/component/tour-description-page.component";
 import {TourGalleryPageComponent} from "./boxes/tour-gallery/component/tour-gallery-page.component";
-import {CompanyRestService} from "../../../company/service/company-rest-service";
-import {CompanySearchModel} from "../../../company/model/company-search-model";
 import {TourGalleryPreviewComponent} from "./boxes/tour-gallery/component/tour-gallery-preview.component";
 import {FileUploadModule} from "primeng/fileupload";
 import {Util} from "../../../common/util/util";
@@ -76,6 +72,8 @@ import {Util} from "../../../common/util/util";
 export class TourFormComponent implements OnInit, OnDestroy {
 
     @Input() tour: TourSaveModel;
+    @Input() companyList: CompanyModel[];
+    @Input() allTourTypeList: TourTypeModel[];
     @Output() eventSave = new EventEmitter();
     @Output() eventCancel = new EventEmitter();
 
@@ -83,18 +81,13 @@ export class TourFormComponent implements OnInit, OnDestroy {
     formMode: string;
     form: UntypedFormGroup;
     subscriptions: Subscription[];
-
-    companyList: CompanyModel[];
     tourTypeList: TourTypeModel[];
-
     boxList: BoxModel[];
     selectedBox: BoxModel;
 
     constructor(
         private formBuilder: FormBuilder,
         private restService: TourRestService,
-        private companyService: CompanyRestService,
-        private tourTypeService: TourTypeRestService,
         private messageService: MessageService,
     ) {
     }
@@ -107,15 +100,14 @@ export class TourFormComponent implements OnInit, OnDestroy {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
         this.companyList = [];
-        this.tourTypeList = [];
+        this.allTourTypeList = [];
         this.boxList = [];
         this.selectedBox = null;
         this.tour = Util.clone<TourSaveModel>(TourSaveModel, this.tour);
 
         this.buildForm();
         this.initializeBoxes();
-        this.loadCompanyList();
-        this.loadTourTypeList();
+        this.onChangeCompany();
     }
 
     ngOnDestroy(): void {
@@ -131,30 +123,13 @@ export class TourFormComponent implements OnInit, OnDestroy {
         this.form.patchValue(this.tour);
     }
 
-    loadCompanyList() {
-        let searchModel: CompanySearchModel = new CompanySearchModel();
-        searchModel.active = true;
-        let subscription = this.companyService.getList(searchModel).subscribe((response => {
-            this.companyList = response;
-            this.companyList?.forEach(x => x.name = x.code + ' - ' + x.name);
-        }));
-        this.subscriptions.push(subscription);
-    }
-
-    loadTourTypeList() {
-        let searchModel: TourTypeSearchModel = new TourTypeSearchModel();
-        searchModel.companyId = this.form.value.companyId;
-        searchModel.active = true;
-        let subscription = this.tourTypeService.getList(searchModel).subscribe((response => {
-            this.tourTypeList = response;
-            console.log(this.tourTypeList)
-        }));
-        this.subscriptions.push(subscription);
-    }
-
     onChangeCompany() {
         this.form.patchValue({tourTypeId: null});
-        this.loadTourTypeList();
+        if (this.form.value.companyId) {
+            this.tourTypeList = this.allTourTypeList?.filter(x => x.companyId == this.form.value.companyId);
+        } else {
+            this.tourTypeList = this.allTourTypeList;
+        }
     }
 
     onCancel() {

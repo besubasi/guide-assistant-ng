@@ -11,17 +11,17 @@
                         <div class="p-fluid formgrid grid">
 
                             <div class="col-12 mb-2">
-                                <label htmlFor="code">Kod</label>
+                                <label for="code">Kod</label>
                                 <input pInputText id="code" type="text" formControlName="code"/>
                             </div>
 
                             <div class="col-12 mb-2">
-                                <label htmlFor="name">Adı</label>
+                                <label for="name">Adı</label>
                                 <input pInputText id="name" type="text" formControlName="name"/>
                             </div>
 
                             <div class="col-12 mb-2">
-                                <label htmlFor="companyId">Şirket</label>
+                                <label for="companyId">Şirket</label>
                                 <p-dropdown
                                     [id]="'companyId'"
                                     [options]="companyList"
@@ -36,10 +36,10 @@
                             </div>
 
                             <div class="col-12 mb-2">
-                                <label htmlFor="tourTypeId">Tur Tipi</label>
+                                <label for="tourTypeId">Tur Tipi</label>
                                 <p-dropdown
                                     [id]="'tourTypeId'"
-                                    [options]="tourTypeList"
+                                    [options]="allTourTypeList"
                                     [optionValue]="'id'"
                                     [optionLabel]="'name'"
                                     [placeholder]="'Seçiniz'"
@@ -50,7 +50,7 @@
                             </div>
 
                             <div class="col-12 mb-2">
-                                <label htmlFor="day">Gün</label>
+                                <label for="day">Gün</label>
                                 <p-inputNumber id="day" formControlName="day" mode="decimal" [showButtons]="true"
                                                [min]="1"
                                                [max]="100">

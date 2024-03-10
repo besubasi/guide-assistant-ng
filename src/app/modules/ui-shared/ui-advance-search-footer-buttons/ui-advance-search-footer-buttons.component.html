@@ -5,10 +5,11 @@
         [loading]="loading()"
         (click)="search()"
         pButton
-        label="{{ 'button.search' | translate }}"
+        label="Sorgula"
         [disabled]="searchButtonDisabled"
     >
         <i class="material-icons">search</i>
     </button>
-    <button type="button" id="{{ idPrefix + '_clear' }}" (click)="clear()" pButton label="{{ 'button.clear' | translate }}" class="ml-3 p-button-text" [disabled]="clearButtonDisabled"></button>
+    <button type="button" id="{{ idPrefix + '_clear' }}" (click)="clear()" pButton label="Temizle"
+            class="ml-3 p-button-text" [disabled]="clearButtonDisabled"></button>
 </div>

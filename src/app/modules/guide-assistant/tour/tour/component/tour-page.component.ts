@@ -6,7 +6,7 @@ import {MessageService, SharedModule} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {ChartModule} from "primeng/chart";
 import {InputTextModule} from "primeng/inputtext";
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, ReactiveFormsModule, UntypedFormGroup} from '@angular/forms';
 import {DividerModule} from "primeng/divider";
 import {ToolbarModule} from "primeng/toolbar";
 import {CardModule} from "primeng/card";
@@ -23,6 +23,13 @@ import {TourRestService} from "../service/tour-rest-service";
 import {TourSearchModel} from "../model/tour-search-model";
 import {TourFormComponent} from "./tour-form.component";
 import {PageCode} from "../../../common/enum/page-code";
+import {AccordionModule} from "primeng/accordion";
+import {CompanyModel} from "../../../company/model/company-model";
+import {TourTypeModel} from "../../tourtype/model/tour-type-model";
+import {CompanyRestService} from "../../../company/service/company-rest-service";
+import {TourTypeRestService} from "../../tourtype/service/tour-type-rest-service";
+import {CompanySearchModel} from "../../../company/model/company-search-model";
+import {TourTypeSearchModel} from "../../tourtype/model/tour-type-search-model";
 
 @Component({
     selector: 'app-tour-page',
@@ -47,6 +54,7 @@ import {PageCode} from "../../../common/enum/page-code";
         InputNumberModule,
         DropdownModule,
         TourFormComponent,
+        AccordionModule,
     ],
     styleUrls: ['./tour-page.component.scss'],
     templateUrl: './tour-page.component.html'
@@ -55,13 +63,21 @@ export class TourPageComponent implements OnInit, OnDestroy {
 
     pageCode: string;
     formMode: string;
+    searchForm: UntypedFormGroup;
     list: TourModel[];
     selectedModel: TourModel;
     subscriptions: Subscription[];
     isReloadNecessary: boolean;
 
+    companyList: CompanyModel[];
+    allTourTypeList: TourTypeModel[];
+    tourTypeList: TourTypeModel[];
+
     constructor(
+        private formBuilder: FormBuilder,
         private restService: TourRestService,
+        private companyService: CompanyRestService,
+        private tourTypeService: TourTypeRestService,
         private messageService: MessageService,
     ) {
     }
@@ -70,8 +86,14 @@ export class TourPageComponent implements OnInit, OnDestroy {
         this.pageCode = PageCode.TOUR;
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
+        this.companyList = [];
+        this.allTourTypeList = [];
+        this.tourTypeList = [];
         this.isReloadNecessary = false;
+        this.searchForm = this.formBuilder.group(new TourSearchModel());
 
+        this.loadCompanyList();
+        this.loadTourTypeList();
         this.loadData();
     }
 
@@ -80,11 +102,51 @@ export class TourPageComponent implements OnInit, OnDestroy {
         this.subscriptions?.forEach(x => x.unsubscribe());
     }
 
+    loadCompanyList() {
+        let searchModel: CompanySearchModel = new CompanySearchModel();
+        searchModel.active = true;
+        let subscription = this.companyService.getList(searchModel).subscribe((response => {
+            this.companyList = response;
+            this.companyList?.forEach(x => x.name = x.code + ' - ' + x.name);
+        }));
+        this.subscriptions.push(subscription);
+    }
+
+    loadTourTypeList() {
+        let searchModel: TourTypeSearchModel = new TourTypeSearchModel();
+        searchModel.companyId = this.searchForm.value.companyId;
+        searchModel.active = true;
+        let subscription = this.tourTypeService.getList(searchModel).subscribe((response => {
+            this.allTourTypeList = response;
+        }));
+        this.subscriptions.push(subscription);
+    }
+
+    onChangeCompany() {
+        this.searchForm.patchValue({tourTypeId: null});
+        if (this.searchForm.value.companyId) {
+            this.tourTypeList = this.allTourTypeList?.filter(x => x.companyId == this.searchForm.value.companyId);
+        } else {
+            this.tourTypeList = this.allTourTypeList;
+        }
+    }
+
+
     loadData() {
-        const subscription = this.restService.getList(new TourSearchModel()).subscribe((response) => {
+        const subscription = this.restService.getList(this.searchForm.value).subscribe((response) => {
             this.list = response;
         });
         this.subscriptions.push(subscription);
+    }
+
+    onClear() {
+        this.searchForm.reset();
+        this.searchForm.patchValue(new TourSearchModel());
+        this.loadData();
+    }
+
+    onSearch() {
+        this.loadData();
     }
 
     onAdd() {

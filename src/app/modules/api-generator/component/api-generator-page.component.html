@@ -5,15 +5,15 @@
             <p-divider></p-divider>
             <form [formGroup]="form">
                 <div class="field">
-                    <label htmlFor="apiPackage">Api Paketi</label>
+                    <label for="apiPackage">Api Paketi</label>
                     <input pInputText id="apiPackage" type="text" formControlName="apiPackage" placeholder="tripsales"/>
                 </div>
                 <div class="field">
-                    <label htmlFor="apiName">Api Adı</label>
+                    <label for="apiName">Api Adı</label>
                     <input pInputText id="apiName" type="text" formControlName="apiName" placeholder="TripSales"/>
                 </div>
                 <div class="field">
-                    <label htmlFor="tableName">Tablo Adı</label>
+                    <label for="tableName">Tablo Adı</label>
                     <input pInputText id="tableName" type="text" formControlName="tableName" placeholder="TRIP_SALES"/>
                 </div>
 
@@ -80,31 +80,31 @@
 
             <form [formGroup]="propertyForm">
                 <div class="field grid">
-                    <label htmlFor="type" class="col-4">Değişken Tipi</label>
+                    <label for="type" class="col-4">Değişken Tipi</label>
                     <div class="col-8">
                         <input pInputText id="type" type="text" formControlName="type" placeholder="Long"/>
                     </div>
                 </div>
                 <div class="field grid">
-                    <label htmlFor="name" class="col-4">Değişken Adı</label>
+                    <label for="name" class="col-4">Değişken Adı</label>
                     <div class="col-8">
                         <input pInputText id="name" type="text" formControlName="name" placeholder="tripId"/>
                     </div>
                 </div>
                 <div class="field grid">
-                    <label htmlFor="dbName" class="col-4">DB Kolon Adı</label>
+                    <label for="dbName" class="col-4">DB Kolon Adı</label>
                     <div class="col-8">
                         <input pInputText id="dbName" type="text" formControlName="dbName" placeholder="TRIP_ID"/>
                     </div>
                 </div>
                 <div class="field grid">
-                    <label htmlFor="notNull" class="col-4">Zorunlu mu?</label>
+                    <label for="notNull" class="col-4">Zorunlu mu?</label>
                     <div class="col-8">
                         <p-checkbox formControlName="notNull" id="notNull" binary="true"></p-checkbox>
                     </div>
                 </div>
                 <div class="field grid">
-                    <label htmlFor="useSearchParameter" class="col-4">Aranabilir mi?</label>
+                    <label for="useSearchParameter" class="col-4">Aranabilir mi?</label>
                     <div class="col-8">
                         <p-checkbox formControlName="useSearchParameter" id="useSearchParameter"
                                     binary="true"></p-checkbox>
