@@ -7,6 +7,18 @@ export const routes: Routes = [
         path: '',
         children: [
             {
+                path: 'country',
+                loadChildren: () => import('./country/country.module').then(m => m.CountryModule)
+            },
+            {
+                path: 'city',
+                loadChildren: () => import('./city/city.module').then(m => m.CityModule)
+            },
+            {
+                path: 'district',
+                loadChildren: () => import('./district/district.module').then(m => m.DistrictModule)
+            },
+            {
                 path: 'tour-menu',
                 loadChildren: () => import('./tour/tour-menu.module').then(m => m.TourMenuModule)
             },

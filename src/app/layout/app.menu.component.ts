@@ -24,6 +24,21 @@ export class AppMenuComponent implements OnInit {
                 label: 'Rehber Asistanı',
                 items: [
                     {
+                        label: 'Ülke',
+                        icon: 'pi pi-fw pi-id-card',
+                        routerLink: ['/guide-assistant/country']
+                    },
+                    {
+                        label: 'Şehir',
+                        icon: 'pi pi-fw pi-id-card',
+                        routerLink: ['/guide-assistant/city']
+                    },
+                    {
+                        label: 'Bölge',
+                        icon: 'pi pi-fw pi-id-card',
+                        routerLink: ['/guide-assistant/district']
+                    },
+                    {
                         label: 'Kategori',
                         icon: 'pi pi-fw pi-id-card',
                         routerLink: ['/guide-assistant/tour-menu/tour-category']

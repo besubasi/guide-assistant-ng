@@ -16,17 +16,9 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
 import {Subscription} from "rxjs";
 
-import {FormMode} from "../../../common/enum/form-mode";
-import {TourTypeModel} from "../model/tour-type-model";
-import {UiSharedModule} from "../../../../ui-shared/ui-shared.module";
-import {TourTypeRestService} from "../service/tour-type-rest-service";
-import {CompanyRestService} from "../../../company/service/company-rest-service";
-import {CompanyModel} from "../../../company/model/company-model";
-import {CompanySearchModel} from "../../../company/model/company-search-model";
-import {TourTypeSearchModel} from "../model/tour-type-search-model";
-import {TourCategoryModel} from "../../tourcategory/model/tour-category-model";
-import {TourCategoryRestService} from "../../tourcategory/service/tour-category-rest-service";
-import {TourCategorySearchModel} from "../../tourcategory/model/tour-category-search-model";
+import {FormMode} from "../../common/enum/form-mode";
+import {UiSharedModule} from "../../../ui-shared/ui-shared.module";
+import {CompanyRestService} from "../service/company-rest-service";
 
 @Component({
     selector: 'app-tour-type-page',
@@ -51,10 +43,9 @@ import {TourCategorySearchModel} from "../../tourcategory/model/tour-category-se
         InputNumberModule,
         DropdownModule,
     ],
-    styleUrls: ['./tour-type-page.component.scss'],
-    templateUrl: './tour-type-page.component.html'
+    templateUrl: './company-page.component.html'
 })
-export class TourTypePageComponent implements OnInit, OnDestroy {
+export class CompanyPageComponent implements OnInit, OnDestroy {
 
     pageCode: string;
     formMode: string;
@@ -67,7 +58,7 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: FormBuilder,
-        private restService: TourTypeRestService,
+        private restService: CompanyRestService,
         private tourCategoryService: TourCategoryRestService,
         private companyService: CompanyRestService,
         private messageService: MessageService,
@@ -165,7 +156,7 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Başarılı',
-                    detail: "İşlem başarıyla kaydedildi."
+                    detail: "Tur tipi başarıyla kaydedildi."
                 });
             }
         );

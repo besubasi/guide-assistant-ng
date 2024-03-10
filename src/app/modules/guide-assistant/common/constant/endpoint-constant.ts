@@ -12,6 +12,9 @@ export class EndpointConstant {
     static MAPPING_GET_LIST: string = "/getList";
     static MAPPING_GET_PAGE: string = "/getPage";
 
+    static COUNTRY_SERVICE_NAME: string = "/country";
+    static CITY_SERVICE_NAME: string = "/city";
+    static DISTRICT_SERVICE_NAME: string = "/district";
     static COMPANY_SERVICE_NAME: string = "/company";
     static TOUR_SERVICE_NAME: string = "/tour";
     static TOUR_CATEGORY_SERVICE_NAME: string = "/tour-category";

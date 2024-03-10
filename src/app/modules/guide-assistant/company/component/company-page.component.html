@@ -45,9 +45,9 @@
                             Adı
                             <p-sortIcon field="name"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="companyCode" style="width: 30%">
+                        <th pSortableColumn="companyId" style="width: 30%">
                             Şirket
-                            <p-sortIcon field="companyCode"></p-sortIcon>
+                            <p-sortIcon field="companyId"></p-sortIcon>
                         </th>
                         <th pSortableColumn="tourCategoryCode" style="width: 25%">
                             Kategori
@@ -129,8 +129,33 @@
                 </div>
             </div>
 
-            <ui-form-footer-buttons [form]="form" [idPrefix]="pageCode" [showCancel]="true" (onCancel)="onCancel()"
-                                    [showSave]="true" (onSave)="onSave()"></ui-form-footer-buttons>
+            <div class="ui-form-footer-buttons-wrapper">
+                <hr/>
+                <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
+                    <div class="mr-2">
+                        <button
+                            pButton
+                            [id]="'cancel'"
+                            type="button"
+                            label="Vazgeç"
+                            class="p-button-text ml-2"
+                            (click)="onCancel()"
+                        ></button>
+                    </div>
+
+                    <div>
+                        <button
+                            pButton
+                            [id]="'save'"
+                            [type]="'button'"
+                            label="Kaydet"
+                            class="ml-2"
+                            (click)="onSave()"
+                        ></button>
+                    </div>
+
+                </p-toolbar>
+            </div>
 
         </form>
     </div>

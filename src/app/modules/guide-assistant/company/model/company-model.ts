@@ -1,43 +1,16 @@
 import {JsonObject, JsonProperty} from 'json2typescript';
-import {BaseModel} from "../../common/model/base-model";
+import {CompanySaveModel} from "./company-save-model";
 
 @JsonObject('CompanyModel')
-export class CompanyModel extends BaseModel {
-
-    @JsonProperty('code', String, true)
-    code: string = null;
-
-    @JsonProperty('name', String, true)
-    name: string = null;
-
-    @JsonProperty('countryId', Number, true)
-    countryId: number = null;
+export class CompanyModel extends CompanySaveModel {
 
     @JsonProperty('countryName', String, true)
     countryName: string = null;
 
-    @JsonProperty('cityId', Number, true)
-    cityId: number = null;
-
     @JsonProperty('cityName', String, true)
     cityName: string = null;
 
-    @JsonProperty('districtId', Number, true)
-    districtId: number = null;
-
     @JsonProperty('districtName', String, true)
     districtName: string = null;
-
-    @JsonProperty('address', String, true)
-    address: string = null;
-
-    @JsonProperty('websiteUrl', String, true)
-    websiteUrl: string = null;
-
-    @JsonProperty('imageUrl', String, true)
-    imageUrl: string = null;
-
-    @JsonProperty('active', Boolean, true)
-    active: boolean = true;
 
 }

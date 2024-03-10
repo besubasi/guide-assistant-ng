@@ -3,7 +3,7 @@
         <p-card>
 
             <ng-template pTemplate="header">
-                <ui-page-title title="Tur Tipleri" [pageCode]="pageCode"
+                <ui-page-title title="Ülke" [pageCode]="pageCode"
                                [showBack]="false"></ui-page-title>
             </ng-template>
 
@@ -41,17 +41,13 @@
             >
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="name" style="width: 30%">
+                        <th pSortableColumn="code" style="width: 35%">
+                            Kodu
+                            <p-sortIcon field="code"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="name" style="width: 50%">
                             Adı
                             <p-sortIcon field="name"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="companyCode" style="width: 30%">
-                            Şirket
-                            <p-sortIcon field="companyCode"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="tourCategoryCode" style="width: 25%">
-                            Kategori
-                            <p-sortIcon field="tourCategoryCode"></p-sortIcon>
                         </th>
                         <th pSortableColumn="active" style="width: 15%">
                             Aktif
@@ -61,9 +57,8 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
                     <tr [pSelectableRow]="item">
-                        <td style="width: 30%">{{ item.name }}</td>
-                        <td style="width: 30%">{{ item.companyName }}</td>
-                        <td style="width: 25%">{{ item.tourCategoryName }}</td>
+                        <td style="width: 35%">{{ item.code }}</td>
+                        <td style="width: 50%">{{ item.name }}</td>
                         <td style="width: 15%">
                             <ui-active-inactive-tags [tagValue]="item.active"></ui-active-inactive-tags>
                         </td>
@@ -71,7 +66,7 @@
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td [attr.colspan]="4">Kayıt Bulunamadı</td>
+                        <td [attr.colspan]="3">Kayıt Bulunamadı</td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -83,38 +78,15 @@
 <ui-sidebar [display]="formMode !== FormMode.NONE">
     <div>
         <div class="grid">
-            <ui-page-title class="col" title="Tur Tipi"></ui-page-title>
+            <ui-page-title class="col" title="Tur Kategorisi"></ui-page-title>
         </div>
-        <form [formGroup]="form" [id]="'formTipi'">
+
+        <form [formGroup]="form" [id]="'formTourCategory'">
             <div class="p-fluid formgrid grid">
 
-                <div class="col-12">
-                    <label for="companyId">Şirket</label>
-                    <p-dropdown
-                        [id]="'companyId'"
-                        [options]="companyList"
-                        [optionValue]="'id'"
-                        [optionLabel]="'name'"
-                        [placeholder]="'Seçiniz'"
-                        (onChange)="onChangeCompany()"
-                        formControlName="companyId"
-                        class="form-control"
-                    >
-                    </p-dropdown>
-                </div>
-
                 <div class="col-12 mt-2">
-                    <label for="tourCategoryId">Kategori</label>
-                    <p-dropdown
-                        [id]="'tourCategoryId'"
-                        [options]="tourCategoryList"
-                        [optionValue]="'id'"
-                        [optionLabel]="'name'"
-                        [placeholder]="'Seçiniz'"
-                        formControlName="tourCategoryId"
-                        class="form-control"
-                    >
-                    </p-dropdown>
+                    <label for="code">Kod</label>
+                    <input pInputText id="code" type="text" formControlName="code"/>
                 </div>
 
                 <div class="col-12 mt-2">

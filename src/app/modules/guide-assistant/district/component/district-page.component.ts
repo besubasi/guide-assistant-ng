@@ -16,20 +16,20 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
 import {Subscription} from "rxjs";
 
-import {FormMode} from "../../../common/enum/form-mode";
-import {TourTypeModel} from "../model/tour-type-model";
-import {UiSharedModule} from "../../../../ui-shared/ui-shared.module";
-import {TourTypeRestService} from "../service/tour-type-rest-service";
-import {CompanyRestService} from "../../../company/service/company-rest-service";
-import {CompanyModel} from "../../../company/model/company-model";
-import {CompanySearchModel} from "../../../company/model/company-search-model";
-import {TourTypeSearchModel} from "../model/tour-type-search-model";
-import {TourCategoryModel} from "../../tourcategory/model/tour-category-model";
-import {TourCategoryRestService} from "../../tourcategory/service/tour-category-rest-service";
-import {TourCategorySearchModel} from "../../tourcategory/model/tour-category-search-model";
+import {FormMode} from "../../common/enum/form-mode";
+import {DistrictModel} from "../model/district-model";
+import {UiSharedModule} from "../../../ui-shared/ui-shared.module";
+import {DistrictRestService} from "../service/district-rest-service";
+import {CountryRestService} from "../../country/service/country-rest-service";
+import {CountryModel} from "../../country/model/country-model";
+import {CountrySearchModel} from "../../country/model/country-search-model";
+import {DistrictSearchModel} from "../model/district-search-model";
+import {CityModel} from "../../city/model/city-model";
+import {CityRestService} from "../../city/service/city-rest-service";
+import {CitySearchModel} from "../../city/model/city-search-model";
 
 @Component({
-    selector: 'app-tour-type-page',
+    selector: 'app-district-page',
     standalone: true,
     imports: [
         NgStyle,
@@ -51,25 +51,26 @@ import {TourCategorySearchModel} from "../../tourcategory/model/tour-category-se
         InputNumberModule,
         DropdownModule,
     ],
-    styleUrls: ['./tour-type-page.component.scss'],
-    templateUrl: './tour-type-page.component.html'
+    styleUrls: ['./district-page.component.scss'],
+    templateUrl: './district-page.component.html'
 })
-export class TourTypePageComponent implements OnInit, OnDestroy {
+export class DistrictPageComponent implements OnInit, OnDestroy {
 
     pageCode: string;
     formMode: string;
     form: UntypedFormGroup;
-    list: TourTypeModel[];
-    selection: TourTypeModel;
+    list: DistrictModel[];
+    selection: DistrictModel;
     subscriptions: Subscription[];
-    companyList: CompanyModel[];
-    tourCategoryList: TourCategoryModel[];
+    countryList: CountryModel[];
+    allCityList: CityModel[];
+    cityList: CityModel[];
 
     constructor(
         private formBuilder: FormBuilder,
-        private restService: TourTypeRestService,
-        private tourCategoryService: TourCategoryRestService,
-        private companyService: CompanyRestService,
+        private restService: DistrictRestService,
+        private cityService: CityRestService,
+        private countryService: CountryRestService,
         private messageService: MessageService,
     ) {
     }
@@ -77,12 +78,13 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
-        this.companyList = [];
-        this.tourCategoryList = [];
+        this.countryList = [];
+        this.cityList = [];
         this.pageCode = "3-5";
 
         this.buildForm();
-        this.loadCompanyList();
+        this.loadCountryList();
+        this.loadCityList();
         this.loadData();
     }
 
@@ -92,32 +94,29 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.formBuilder.group(new TourTypeModel());
+        this.form = this.formBuilder.group(new DistrictModel());
     }
 
-    loadCompanyList() {
-        let searchModel: CompanySearchModel = new CompanySearchModel();
+    loadCountryList() {
+        let searchModel: CountrySearchModel = new CountrySearchModel();
         searchModel.active = true;
-        let subscription = this.companyService.getList(searchModel).subscribe((response => {
-            this.companyList = response;
-            this.companyList?.forEach(x => x.name = x.code + ' - ' + x.name);
+        let subscription = this.countryService.getList(searchModel).subscribe((response => {
+            this.countryList = response;
         }));
         this.subscriptions.push(subscription);
     }
 
-    loadTourCategoryList() {
-        let searchModel: TourCategorySearchModel = new TourCategorySearchModel();
-        searchModel.companyId = this.form.value.companyId;
+    loadCityList() {
+        let searchModel: CitySearchModel = new CitySearchModel();
         searchModel.active = true;
-        let subscription = this.tourCategoryService.getList(searchModel).subscribe((response => {
-            this.tourCategoryList = response;
-            console.log(this.tourCategoryList)
+        let subscription = this.cityService.getList(searchModel).subscribe((response => {
+            this.allCityList = response;
         }));
         this.subscriptions.push(subscription);
     }
 
     loadData() {
-        const subscription = this.restService.getList(new TourTypeSearchModel()).subscribe((response) => {
+        const subscription = this.restService.getList(new DistrictSearchModel()).subscribe((response) => {
             this.list = response;
         });
         this.subscriptions.push(subscription);
@@ -172,9 +171,13 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
         this.subscriptions.push(subscription);
     }
 
-    onChangeCompany() {
-        this.form.patchValue({tourCategoryId: null});
-        this.loadTourCategoryList();
+    onChangeCountry() {
+        this.form.patchValue({cityId: null});
+        if (this.form.value.countryId) {
+            this.cityList = this.allCityList?.filter(x => x.countryId == this.form.value.countryId);
+        } else {
+            this.cityList = this.allCityList;
+        }
     }
 
     get FormMode() {

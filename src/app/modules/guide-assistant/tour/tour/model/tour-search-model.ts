@@ -20,6 +20,6 @@ export class TourSearchModel extends BaseSearchModel {
     day: number = null;
 
     @JsonProperty('active', Boolean, true)
-    active: boolean = false;
+    active: boolean = null;
 
 }
