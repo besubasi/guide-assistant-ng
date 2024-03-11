@@ -9,6 +9,7 @@ export class EndpointConstant {
     static MAPPING_GET_BY_ID: string = "/getById/";
     static MAPPING_GET_BY_TOUR_ID: string = "/getByTourId/";
     static MAPPING_GET_LIST_BY_TOUR_ID: string = "/getListByTourId/";
+    static MAPPING_GET_LOOKUP_LIST: string = "/getLookupList";
     static MAPPING_GET_LIST: string = "/getList";
     static MAPPING_GET_PAGE: string = "/getPage";
 

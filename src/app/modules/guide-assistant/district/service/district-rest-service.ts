@@ -10,6 +10,7 @@ import {EndpointConstant} from "../../common/constant/endpoint-constant";
 import {DistrictModel as M} from "../model/district-model";
 import {DistrictSaveModel as SV} from "../model/district-save-model";
 import {DistrictSearchModel as SM} from "../model/district-search-model";
+import {LookupModel as LM} from "../../common/model/lookup-model";
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +34,12 @@ export class DistrictRestService extends BaseRestService {
     public getById(id: number): Observable<M> {
         return this.httpClient.get<ApiResponse>(this.ENDPOINT_GET_BY_ID + id)
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
+    }
+
+    public getLookupList(searchModel: SM): Observable<Array<LM>> {
+        return this.httpClient
+            .post<ApiResponse>(this.ENDPOINT_GET_LOOKUP_LIST, this.converter.serialize(searchModel, SM))
+            .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], LM)));
     }
 
     public getList(searchModel: SM): Observable<Array<M>> {

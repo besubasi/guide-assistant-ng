@@ -4,9 +4,6 @@ import {DistrictSaveModel} from "./district-save-model";
 @JsonObject('DistrictModel')
 export class DistrictModel extends DistrictSaveModel {
 
-    @JsonProperty('countryCode', String, true)
-    countryCode: string = null;
-
     @JsonProperty('countryName', String, true)
     countryName: string = null;
 

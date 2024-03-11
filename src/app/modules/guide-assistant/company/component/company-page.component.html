@@ -3,7 +3,7 @@
         <p-card>
 
             <ng-template pTemplate="header">
-                <ui-page-title title="Tur Tipleri" [pageCode]="pageCode"
+                <ui-page-title title="Şirket" [pageCode]="pageCode"
                                [showBack]="false"></ui-page-title>
             </ng-template>
 
@@ -13,15 +13,15 @@
 
                     </button>
                     <button [id]="'copy'" pButton [label]="'Kopyala'" class="mr-2 p-button-outlined" (click)="onCopy()"
-                            [disabled]="!selection">
+                            [disabled]="!selectedItem">
 
                     </button>
                     <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
-                            [disabled]="!selection">
+                            [disabled]="!selectedItem">
 
                     </button>
                     <button [id]="'delete'" pButton [label]="'Sil'" class="mr-2 p-button-outlined" (click)="onDelete()"
-                            [disabled]="!selection">
+                            [disabled]="!selectedItem">
 
                     </button>
                 </div>
@@ -37,23 +37,40 @@
                 [rows]="10"
                 [rowsPerPageOptions]="[10, 25, 50]"
                 [totalRecords]="list?.length"
-                [(selection)]="selection"
+                [(selection)]="selectedItem"
+                [metaKeySelection]="false"
             >
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="name" style="width: 30%">
-                            Adı
+                        <th pSortableColumn="countryName" style="width: 15%">
+                            Ülke
+                            <p-sortIcon field="countryName"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="cityName" style="width: 15%">
+                            Şehir
+                            <p-sortIcon field="cityName"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="districtName" style="width: 15%">
+                            Bölge
+                            <p-sortIcon field="districtName"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="code" style="width: 10%">
+                            Şirket Kodu
+                            <p-sortIcon field="code"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="name" style="width: 15%">
+                            Şirket Adı
                             <p-sortIcon field="name"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="companyId" style="width: 30%">
-                            Şirket
-                            <p-sortIcon field="companyId"></p-sortIcon>
+                        <th pSortableColumn="address" style="width: 15%">
+                            Adres
+                            <p-sortIcon field="address"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="tourCategoryCode" style="width: 25%">
-                            Kategori
-                            <p-sortIcon field="tourCategoryCode"></p-sortIcon>
+                        <th pSortableColumn="websiteUrl" style="width: 10%">
+                            Web Sitesi
+                            <p-sortIcon field="websiteUrl"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="active" style="width: 15%">
+                        <th pSortableColumn="active" style="width: 10%">
                             Aktif
                             <p-sortIcon field="active"></p-sortIcon>
                         </th>
@@ -61,17 +78,21 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
                     <tr [pSelectableRow]="item">
-                        <td style="width: 30%">{{ item.name }}</td>
-                        <td style="width: 30%">{{ item.companyName }}</td>
-                        <td style="width: 25%">{{ item.tourCategoryName }}</td>
-                        <td style="width: 15%">
+                        <td style="width: 15%">{{ item.countryName }}</td>
+                        <td style="width: 15%">{{ item.cityName }}</td>
+                        <td style="width: 15%">{{ item.districtName }}</td>
+                        <td style="width: 10%">{{ item.code }}</td>
+                        <td style="width: 15%">{{ item.name }}</td>
+                        <td style="width: 15%">{{ item.address }}</td>
+                        <td style="width: 10%">{{ item.websiteUrl }}</td>
+                        <td style="width: 10%">
                             <ui-active-inactive-tags [tagValue]="item.active"></ui-active-inactive-tags>
                         </td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td [attr.colspan]="4">Kayıt Bulunamadı</td>
+                        <td [attr.colspan]="7">Kayıt Bulunamadı</td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -83,43 +104,73 @@
 <ui-sidebar [display]="formMode !== FormMode.NONE">
     <div>
         <div class="grid">
-            <ui-page-title class="col" title="Tur Tipi"></ui-page-title>
+            <ui-page-title class="col" title="Şirket"></ui-page-title>
         </div>
-        <form [formGroup]="form" [id]="'formTipi'">
+        <form [formGroup]="form">
             <div class="p-fluid formgrid grid">
 
                 <div class="col-12">
-                    <label for="companyId">Şirket</label>
+                    <label>Ülke</label>
                     <p-dropdown
-                        [id]="'companyId'"
-                        [options]="companyList"
+                        [id]="'countryId'"
+                        [options]="countryList"
                         [optionValue]="'id'"
                         [optionLabel]="'name'"
                         [placeholder]="'Seçiniz'"
-                        (onChange)="onChangeCompany()"
-                        formControlName="companyId"
+                        (onChange)="onChangeCountry()"
+                        formControlName="countryId"
                         class="form-control"
                     >
                     </p-dropdown>
                 </div>
 
                 <div class="col-12 mt-2">
-                    <label for="tourCategoryId">Kategori</label>
+                    <label>Şehir</label>
                     <p-dropdown
-                        [id]="'tourCategoryId'"
-                        [options]="tourCategoryList"
+                        [id]="'cityId'"
+                        [options]="cityList"
                         [optionValue]="'id'"
                         [optionLabel]="'name'"
                         [placeholder]="'Seçiniz'"
-                        formControlName="tourCategoryId"
+                        (onChange)="onChangeCity()"
+                        formControlName="cityId"
                         class="form-control"
                     >
                     </p-dropdown>
                 </div>
 
                 <div class="col-12 mt-2">
-                    <label for="name">Adı</label>
+                    <label>Bölge</label>
+                    <p-dropdown
+                        [id]="'districtId'"
+                        [options]="districtList"
+                        [optionValue]="'id'"
+                        [optionLabel]="'name'"
+                        [placeholder]="'Seçiniz'"
+                        formControlName="districtId"
+                        class="form-control"
+                    >
+                    </p-dropdown>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label>Şirket Kodu</label>
+                    <input pInputText id="code" type="text" formControlName="code"/>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label>Şirket Adı</label>
                     <input pInputText id="name" type="text" formControlName="name"/>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label>Adress</label>
+                    <input pInputText id="address" type="text" formControlName="address"/>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label>Web Sitesi</label>
+                    <input pInputText id="websiteUrl" type="text" formControlName="websiteUrl"/>
                 </div>
 
                 <div class="col-12 mt-2">
@@ -129,33 +180,8 @@
                 </div>
             </div>
 
-            <div class="ui-form-footer-buttons-wrapper">
-                <hr/>
-                <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
-                    <div class="mr-2">
-                        <button
-                            pButton
-                            [id]="'cancel'"
-                            type="button"
-                            label="Vazgeç"
-                            class="p-button-text ml-2"
-                            (click)="onCancel()"
-                        ></button>
-                    </div>
-
-                    <div>
-                        <button
-                            pButton
-                            [id]="'save'"
-                            [type]="'button'"
-                            label="Kaydet"
-                            class="ml-2"
-                            (click)="onSave()"
-                        ></button>
-                    </div>
-
-                </p-toolbar>
-            </div>
+            <ui-form-footer-buttons [form]="form" [idPrefix]="pageCode" [showCancel]="true" (onCancel)="onCancel()"
+                                    [showSave]="true" (onSave)="onSave()"></ui-form-footer-buttons>
 
         </form>
     </div>

@@ -21,12 +21,12 @@ import {DistrictModel} from "../model/district-model";
 import {UiSharedModule} from "../../../ui-shared/ui-shared.module";
 import {DistrictRestService} from "../service/district-rest-service";
 import {CountryRestService} from "../../country/service/country-rest-service";
-import {CountryModel} from "../../country/model/country-model";
 import {CountrySearchModel} from "../../country/model/country-search-model";
 import {DistrictSearchModel} from "../model/district-search-model";
-import {CityModel} from "../../city/model/city-model";
 import {CityRestService} from "../../city/service/city-rest-service";
 import {CitySearchModel} from "../../city/model/city-search-model";
+import {LookupModel} from "../../common/model/lookup-model";
+import {PageCode} from "../../common/enum/page-code";
 
 @Component({
     selector: 'app-district-page',
@@ -59,12 +59,11 @@ export class DistrictPageComponent implements OnInit, OnDestroy {
     pageCode: string;
     formMode: string;
     form: UntypedFormGroup;
-    list: DistrictModel[];
-    selection: DistrictModel;
+    list!: DistrictModel[];
+    selectedItem!: DistrictModel;
     subscriptions: Subscription[];
-    countryList: CountryModel[];
-    allCityList: CityModel[];
-    cityList: CityModel[];
+    countryList: LookupModel[];
+    cityList: LookupModel[];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -80,11 +79,10 @@ export class DistrictPageComponent implements OnInit, OnDestroy {
         this.subscriptions = [];
         this.countryList = [];
         this.cityList = [];
-        this.pageCode = "3-5";
+        this.pageCode = PageCode.DISTRICT;
 
         this.buildForm();
         this.loadCountryList();
-        this.loadCityList();
         this.loadData();
     }
 
@@ -100,7 +98,7 @@ export class DistrictPageComponent implements OnInit, OnDestroy {
     loadCountryList() {
         let searchModel: CountrySearchModel = new CountrySearchModel();
         searchModel.active = true;
-        let subscription = this.countryService.getList(searchModel).subscribe((response => {
+        let subscription = this.countryService.getLookupList(searchModel).subscribe((response => {
             this.countryList = response;
         }));
         this.subscriptions.push(subscription);
@@ -108,9 +106,10 @@ export class DistrictPageComponent implements OnInit, OnDestroy {
 
     loadCityList() {
         let searchModel: CitySearchModel = new CitySearchModel();
+        searchModel.countryId = this.form.value.countryId;
         searchModel.active = true;
-        let subscription = this.cityService.getList(searchModel).subscribe((response => {
-            this.allCityList = response;
+        let subscription = this.cityService.getLookupList(searchModel).subscribe((response => {
+            this.cityList = response;
         }));
         this.subscriptions.push(subscription);
     }
@@ -130,18 +129,20 @@ export class DistrictPageComponent implements OnInit, OnDestroy {
     onCopy() {
         this.formMode = FormMode.COPY;
         this.buildForm();
-        this.form.patchValue(this.selection);
+        this.form.patchValue(this.selectedItem);
         this.form.patchValue({id: null});
+        this.loadCityList();
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
-        this.form.patchValue(this.selection);
+        this.form.patchValue(this.selectedItem);
+        this.loadCityList();
     }
 
     onDelete() {
-        let subscription = this.restService.deleteById(this.selection.id).subscribe(() => {
+        let subscription = this.restService.deleteById(this.selectedItem.id).subscribe(() => {
             this.onCancel();
             this.loadData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
@@ -173,11 +174,7 @@ export class DistrictPageComponent implements OnInit, OnDestroy {
 
     onChangeCountry() {
         this.form.patchValue({cityId: null});
-        if (this.form.value.countryId) {
-            this.cityList = this.allCityList?.filter(x => x.countryId == this.form.value.countryId);
-        } else {
-            this.cityList = this.allCityList;
-        }
+        this.loadCityList();
     }
 
     get FormMode() {

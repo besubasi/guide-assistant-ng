@@ -34,14 +34,14 @@
                     <button pButton pRipple icon="pi pi-plus" class="p-button-raised mr-2" [label]="'Ekle'"
                             (click)="onAdd()"></button>
                     <button pButton pRipple icon="pi pi-copy" class="p-button-raised p-button-secondary mr-2"
-                            [label]="'Kopyala'" [disabled]="!selectedModel"
+                            [label]="'Kopyala'" [disabled]="!selectedItem"
                             (click)="onCopy()"></button>
                     <button pButton pRipple icon="pi pi-file-edit" class="p-button-raised p-button-help mr-2"
-                            [label]="'Düzenle'" [disabled]="!selectedModel"
+                            [label]="'Düzenle'" [disabled]="!selectedItem"
                             (click)="onUpdate()"></button>
                     <button pButton pRipple label="Sil" icon="pi pi-trash" class="p-button-danger mr-2"
                             (click)="onDelete()"
-                            [disabled]="!selectedModel"></button>
+                            [disabled]="!selectedItem"></button>
 
                 </ng-template>
             </p-toolbar>
@@ -49,8 +49,9 @@
             <p-table dataKey="uuid"
                      styleClass="p-datatable-striped"
                      selectionMode="single"
-                     [value]="propertyList"
-                     [(selection)]="selectedModel"
+                     [value]="list"
+                     [(selection)]="selectedItem"
+                     [metaKeySelection]="false"
             >
                 <ng-template pTemplate="header">
                     <tr>

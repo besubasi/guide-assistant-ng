@@ -60,7 +60,7 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
     formMode: string;
     form: UntypedFormGroup;
     list: TourTypeModel[];
-    selection: TourTypeModel;
+    selectedItem: TourTypeModel;
     subscriptions: Subscription[];
     companyList: CompanyModel[];
     tourCategoryList: TourCategoryModel[];
@@ -131,18 +131,18 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
     onCopy() {
         this.formMode = FormMode.COPY;
         this.buildForm();
-        this.form.patchValue(this.selection);
+        this.form.patchValue(this.selectedItem);
         this.form.patchValue({id: null});
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
-        this.form.patchValue(this.selection);
+        this.form.patchValue(this.selectedItem);
     }
 
     onDelete() {
-        let subscription = this.restService.deleteById(this.selection.id).subscribe(() => {
+        let subscription = this.restService.deleteById(this.selectedItem.id).subscribe(() => {
             this.onCancel();
             this.loadData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});

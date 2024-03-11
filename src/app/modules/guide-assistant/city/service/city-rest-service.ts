@@ -7,6 +7,7 @@ import {ApiResponse} from "../../common/model/api-response";
 import {BaseRestService} from "../../common/service/base-rest-service";
 import {EndpointConstant} from "../../common/constant/endpoint-constant";
 
+import {LookupModel as LM} from "../../common/model/lookup-model";
 import {CityModel as M} from "../model/city-model";
 import {CitySaveModel as SV} from "../model/city-save-model";
 import {CitySearchModel as SM} from "../model/city-search-model";
@@ -33,6 +34,12 @@ export class CityRestService extends BaseRestService {
     public getById(id: number): Observable<M> {
         return this.httpClient.get<ApiResponse>(this.ENDPOINT_GET_BY_ID + id)
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
+    }
+
+    public getLookupList(searchModel: SM): Observable<Array<LM>> {
+        return this.httpClient
+            .post<ApiResponse>(this.ENDPOINT_GET_LOOKUP_LIST, this.converter.serialize(searchModel, SM))
+            .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], LM)));
     }
 
     public getList(searchModel: SM): Observable<Array<M>> {

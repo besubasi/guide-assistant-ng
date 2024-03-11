@@ -41,6 +41,7 @@
             [rowsPerPageOptions]="[10, 25, 50]"
             [totalRecords]="list?.length"
             [(selection)]="selectedItem"
+            [metaKeySelection]="false"
         >
             <ng-template pTemplate="header">
                 <th pSortableColumn="lineNumber" style="width: 15%">

@@ -54,7 +54,7 @@ export class CountryPageComponent implements OnInit, OnDestroy {
     formMode: string;
     form: UntypedFormGroup;
     list: CountryModel[];
-    selection: CountryModel;
+    selectedItem: CountryModel;
     subscriptions: Subscription[];
 
     constructor(
@@ -98,18 +98,18 @@ export class CountryPageComponent implements OnInit, OnDestroy {
     onCopy() {
         this.formMode = FormMode.COPY;
         this.buildForm();
-        this.form.patchValue(this.selection);
+        this.form.patchValue(this.selectedItem);
         this.form.patchValue({id: null});
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
-        this.form.patchValue(this.selection);
+        this.form.patchValue(this.selectedItem);
     }
 
     onDelete() {
-        this.restService.deleteById(this.selection.id).subscribe(() => {
+        this.restService.deleteById(this.selectedItem.id).subscribe(() => {
             this.onCancel();
             this.loadListData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
@@ -133,7 +133,7 @@ export class CountryPageComponent implements OnInit, OnDestroy {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Başarılı',
-                    detail: "Tur Kategorisi başarıyla kaydedildi."
+                    detail: "İşlem başarıyla kaydedildi."
                 });
             }
         );

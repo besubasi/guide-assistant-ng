@@ -48,9 +48,9 @@ export class ApiGeneratorPageComponent implements OnInit, OnDestroy {
 
     form: UntypedFormGroup;
     propertyForm: UntypedFormGroup;
-    propertyList: PropertyModel[];
+    list: PropertyModel[];
+    selectedItem: PropertyModel;
     formMode: string;
-    selectedModel: PropertyModel;
     subscriptions: Subscription[];
 
     constructor(
@@ -63,7 +63,7 @@ export class ApiGeneratorPageComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
-        this.propertyList = [];
+        this.list = [];
         this.buildForm();
     }
 
@@ -99,33 +99,33 @@ export class ApiGeneratorPageComponent implements OnInit, OnDestroy {
     onCopy() {
         this.formMode = FormMode.COPY;
         this.buildPropertyForm();
-        this.propertyForm.patchValue(this.selectedModel);
+        this.propertyForm.patchValue(this.selectedItem);
         this.propertyForm.patchValue({uuid: uuid()});
     }
 
     onUpdate() {
         this.formMode = FormMode.EDIT;
         this.buildPropertyForm();
-        this.propertyForm.patchValue(this.selectedModel);
+        this.propertyForm.patchValue(this.selectedItem);
     }
 
     onDelete() {
-        this.propertyList = this.propertyList.filter(x => x.uuid !== this.selectedModel.uuid);
-        this.form.patchValue({propertyList: this.propertyList})
+        this.list = this.list.filter(x => x.uuid !== this.selectedItem.uuid);
+        this.form.patchValue({propertyList: this.list})
     }
 
     onCancel() {
         this.formMode = FormMode.NONE;
         this.form.reset();
         this.propertyForm.reset();
-        this.propertyList = [];
+        this.list = [];
         this.buildForm();
         this.buildPropertyForm();
     }
 
     onGenerateApi() {
         let apiModel: ApiGeneratorModel = this.form.value;
-        apiModel.propertyList = this.propertyList;
+        apiModel.propertyList = this.list;
 
         let subscription = this.apiGeneratorService.generate(apiModel).subscribe(
             response => {
@@ -142,14 +142,14 @@ export class ApiGeneratorPageComponent implements OnInit, OnDestroy {
     onOkay() {
         let propertyModel: PropertyModel = this.propertyForm.value;
         if (this.formMode == FormMode.EDIT) {
-            const index = this.propertyList.findIndex(x => x.uuid === propertyModel.uuid);
-            this.propertyList[index] = propertyModel;
+            const index = this.list.findIndex(x => x.uuid === propertyModel.uuid);
+            this.list[index] = propertyModel;
         } else {
-            this.propertyList.push(propertyModel);
+            this.list.push(propertyModel);
         }
-        this.selectedModel = null;
+        this.selectedItem = null;
         this.formMode = FormMode.NONE;
-        this.form.patchValue({propertyList: this.propertyList})
+        this.form.patchValue({propertyList: this.list})
     }
 
     get FormMode() {

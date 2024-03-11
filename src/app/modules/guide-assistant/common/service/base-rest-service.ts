@@ -14,6 +14,7 @@ export class BaseRestService {
     public ENDPOINT_GET_BY_ID: string;
     public ENDPOINT_GET_BY_TOUR_ID: string;
     public ENDPOINT_GET_LIST_BY_TOUR_ID: string;
+    public ENDPOINT_GET_LOOKUP_LIST: string;
     public ENDPOINT_GET_LIST: string;
     public ENDPOINT_GET_PAGE: string;
 
@@ -26,6 +27,7 @@ export class BaseRestService {
         this.ENDPOINT_GET_BY_ID = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_GET_BY_ID;
         this.ENDPOINT_GET_BY_TOUR_ID = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_GET_BY_TOUR_ID;
         this.ENDPOINT_GET_LIST_BY_TOUR_ID = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_GET_LIST_BY_TOUR_ID;
+        this.ENDPOINT_GET_LOOKUP_LIST = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_GET_LOOKUP_LIST;
         this.ENDPOINT_GET_LIST = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_GET_LIST;
         this.ENDPOINT_GET_PAGE = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_GET_PAGE;
     }

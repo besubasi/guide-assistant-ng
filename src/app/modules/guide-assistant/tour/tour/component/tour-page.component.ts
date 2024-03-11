@@ -24,12 +24,12 @@ import {TourSearchModel} from "../model/tour-search-model";
 import {TourFormComponent} from "./tour-form.component";
 import {PageCode} from "../../../common/enum/page-code";
 import {AccordionModule} from "primeng/accordion";
-import {CompanyModel} from "../../../company/model/company-model";
 import {TourTypeModel} from "../../tourtype/model/tour-type-model";
 import {CompanyRestService} from "../../../company/service/company-rest-service";
 import {TourTypeRestService} from "../../tourtype/service/tour-type-rest-service";
 import {CompanySearchModel} from "../../../company/model/company-search-model";
 import {TourTypeSearchModel} from "../../tourtype/model/tour-type-search-model";
+import {LookupModel} from "../../../common/model/lookup-model";
 
 @Component({
     selector: 'app-tour-page',
@@ -65,11 +65,11 @@ export class TourPageComponent implements OnInit, OnDestroy {
     formMode: string;
     searchForm: UntypedFormGroup;
     list: TourModel[];
-    selectedModel: TourModel;
+    selectedItem: TourModel;
     subscriptions: Subscription[];
     isReloadNecessary: boolean;
 
-    companyList: CompanyModel[];
+    companyList: LookupModel[];
     allTourTypeList: TourTypeModel[];
     tourTypeList: TourTypeModel[];
 
@@ -105,9 +105,8 @@ export class TourPageComponent implements OnInit, OnDestroy {
     loadCompanyList() {
         let searchModel: CompanySearchModel = new CompanySearchModel();
         searchModel.active = true;
-        let subscription = this.companyService.getList(searchModel).subscribe((response => {
+        let subscription = this.companyService.getLookupList(searchModel).subscribe((response => {
             this.companyList = response;
-            this.companyList?.forEach(x => x.name = x.code + ' - ' + x.name);
         }));
         this.subscriptions.push(subscription);
     }
@@ -150,7 +149,7 @@ export class TourPageComponent implements OnInit, OnDestroy {
     }
 
     onAdd() {
-        this.selectedModel = null;
+        this.selectedItem = null;
         this.formMode = FormMode.ADD;
     }
 
@@ -163,7 +162,7 @@ export class TourPageComponent implements OnInit, OnDestroy {
     }
 
     onDelete() {
-        this.restService.deleteById(this.selectedModel.id).subscribe(() => {
+        this.restService.deleteById(this.selectedItem.id).subscribe(() => {
             this.onCancel();
             this.loadData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
@@ -188,12 +187,6 @@ export class TourPageComponent implements OnInit, OnDestroy {
 
     onRowSelect() {
 
-    }
-
-    onRowUnselect() {
-        this.selectedModel == null;
-        console.log("selectedModel");
-        console.log(this.selectedModel);
     }
 
     get FormMode() {

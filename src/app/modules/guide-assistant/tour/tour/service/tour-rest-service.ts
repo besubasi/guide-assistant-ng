@@ -10,6 +10,7 @@ import {EndpointConstant} from "../../../common/constant/endpoint-constant";
 import {TourModel as M} from "../model/tour-model";
 import {TourSaveModel as SV} from "../model/tour-save-model";
 import {TourSearchModel as SM} from "../model/tour-search-model";
+import {LookupModel as LM} from "../../../common/model/lookup-model";
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +34,12 @@ export class TourRestService extends BaseRestService {
     public getById(id: number): Observable<M> {
         return this.httpClient.get<ApiResponse>(this.ENDPOINT_GET_BY_ID + id)
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
+    }
+
+    public getLookupList(searchModel: SM): Observable<Array<LM>> {
+        return this.httpClient
+            .post<ApiResponse>(this.ENDPOINT_GET_LOOKUP_LIST, this.converter.serialize(searchModel, SM))
+            .pipe(map((apiResponse) => this.converter.deserializeArray(apiResponse.data || [], LM)));
     }
 
     public getList(searchModel: SM): Observable<Array<M>> {

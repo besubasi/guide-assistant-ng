@@ -2,14 +2,10 @@ import {JsonObject, JsonProperty} from 'json2typescript';
 
 @JsonObject('LookupModel')
 export class LookupModel {
-    @JsonProperty('id', String, true)
-    id: string = null;
+    @JsonProperty('id', Number, true)
+    id: number = null;
 
-    @JsonProperty('label', String, true)
-    label: string = null;
+    @JsonProperty('name', String, true)
+    name: string = null;
 
-    constructor(id: string, label: string) {
-        this.id = id;
-        this.label = label;
-    }
 }

@@ -21,9 +21,10 @@ import {CityModel} from "../model/city-model";
 import {UiSharedModule} from "../../../ui-shared/ui-shared.module";
 import {CityRestService} from "../service/city-rest-service";
 import {CountryRestService} from "../../country/service/country-rest-service";
-import {CountryModel} from "../../country/model/country-model";
 import {CountrySearchModel} from "../../country/model/country-search-model";
 import {CitySearchModel} from "../model/city-search-model";
+import {LookupModel} from "../../common/model/lookup-model";
+import {PageCode} from "../../common/enum/page-code";
 
 @Component({
     selector: 'app-city-page',
@@ -57,9 +58,9 @@ export class CityPageComponent implements OnInit, OnDestroy {
     formMode: string;
     form: UntypedFormGroup;
     list: CityModel[];
-    selection: CityModel;
+    selectedItem: CityModel;
     subscriptions: Subscription[];
-    countryList: CountryModel[];
+    countryList: LookupModel[];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -73,7 +74,7 @@ export class CityPageComponent implements OnInit, OnDestroy {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
         this.countryList = [];
-        this.pageCode = "3-5";
+        this.pageCode = PageCode.CITY;
 
         this.buildForm();
         this.loadCountryList();
@@ -92,9 +93,8 @@ export class CityPageComponent implements OnInit, OnDestroy {
     loadCountryList() {
         let searchModel: CountrySearchModel = new CountrySearchModel();
         searchModel.active = true;
-        let subscription = this.countryService.getList(searchModel).subscribe((response => {
+        let subscription = this.countryService.getLookupList(searchModel).subscribe((response => {
             this.countryList = response;
-            this.countryList?.forEach(x => x.name = x.code + ' - ' + x.name);
         }));
         this.subscriptions.push(subscription);
     }
@@ -114,18 +114,18 @@ export class CityPageComponent implements OnInit, OnDestroy {
     onCopy() {
         this.formMode = FormMode.COPY;
         this.buildForm();
-        this.form.patchValue(this.selection);
+        this.form.patchValue(this.selectedItem);
         this.form.patchValue({id: null});
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
-        this.form.patchValue(this.selection);
+        this.form.patchValue(this.selectedItem);
     }
 
     onDelete() {
-        this.restService.deleteById(this.selection.id).subscribe(() => {
+        this.restService.deleteById(this.selectedItem.id).subscribe(() => {
             this.onCancel();
             this.loadListData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
