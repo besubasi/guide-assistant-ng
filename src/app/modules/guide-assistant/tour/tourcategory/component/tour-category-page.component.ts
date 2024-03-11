@@ -144,7 +144,6 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
 
         let subscription = this.restService.save(apiModel).subscribe(
             response => {
-                console.log(response);
                 this.onCancel();
                 this.loadListData();
                 this.messageService.add({

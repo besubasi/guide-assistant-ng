@@ -159,7 +159,6 @@ export class DistrictPageComponent implements OnInit, OnDestroy {
     onSave() {
         let subscription = this.restService.save(this.form.value).subscribe(
             response => {
-                console.log(response);
                 this.onCancel();
                 this.loadData();
                 this.messageService.add({

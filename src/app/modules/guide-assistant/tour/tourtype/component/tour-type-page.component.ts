@@ -111,7 +111,6 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
         searchModel.active = true;
         let subscription = this.tourCategoryService.getList(searchModel).subscribe((response => {
             this.tourCategoryList = response;
-            console.log(this.tourCategoryList)
         }));
         this.subscriptions.push(subscription);
     }
@@ -159,7 +158,6 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
     onSave() {
         let subscription = this.restService.save(this.form.value).subscribe(
             response => {
-                console.log(response);
                 this.onCancel();
                 this.loadData();
                 this.messageService.add({
