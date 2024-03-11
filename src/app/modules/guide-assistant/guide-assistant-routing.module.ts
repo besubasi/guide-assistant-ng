@@ -23,6 +23,10 @@ export const routes: Routes = [
                 loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
             },
             {
+                path: 'activity',
+                loadChildren: () => import('./activity/activity.module').then(m => m.ActivityModule)
+            },
+            {
                 path: 'tour-menu',
                 loadChildren: () => import('./tour/tour-menu.module').then(m => m.TourMenuModule)
             },

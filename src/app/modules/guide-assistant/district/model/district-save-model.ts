@@ -14,6 +14,6 @@ export class DistrictSaveModel extends BaseModel {
     name: string = null;
 
     @JsonProperty('active', Boolean, true)
-    active: boolean = null;
+    active: boolean = true;
 
 }

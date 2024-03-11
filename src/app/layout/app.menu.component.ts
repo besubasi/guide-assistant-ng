@@ -44,6 +44,11 @@ export class AppMenuComponent implements OnInit {
                         routerLink: ['/guide-assistant/company']
                     },
                     {
+                        label: 'Aktivite',
+                        icon: 'pi pi-fw pi-id-card',
+                        routerLink: ['/guide-assistant/activity']
+                    },
+                    {
                         label: 'Kategori',
                         icon: 'pi pi-fw pi-id-card',
                         routerLink: ['/guide-assistant/tour-menu/tour-category']

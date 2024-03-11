@@ -1,0 +1,91 @@
+<div>
+    <div class="grid">
+        <div class="col-12 md:col-3 lg:col-4">
+            <form [formGroup]="form">
+                <p-card>
+                    <ng-template pTemplate="header">
+                        <ui-page-title title="Aktivite Bilgileri" [pageCode]="pageCode"></ui-page-title>
+                    </ng-template>
+
+                    <form [formGroup]="form" [id]="'formTipi'">
+                        <div class="p-fluid formgrid grid">
+
+                            <div class="col-12 mb-2">
+                                <label>Kod</label>
+                                <input pInputText id="code" type="text" formControlName="code"/>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label>Adı</label>
+                                <input pInputText id="name" type="text" formControlName="name"/>
+                            </div>
+
+
+                            <div class="col-12 mb-2">
+                                <label>Tahmini Süre</label>
+                                <input pInputText id="estimatedTime" type="text" formControlName="estimatedTime"/>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <div class="field-checkbox">
+                                    <p-checkbox id="extra" formControlName="extra" binary="true"
+                                                label="Ekstra"></p-checkbox>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <div class="field-checkbox">
+                                    <p-checkbox id="active" formControlName="active" binary="true"
+                                                label="Aktif"></p-checkbox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ui-form-footer-buttons [form]="form" [idPrefix]="pageCode" [showCancel]="true"
+                                                (onCancel)="onCancel()"
+                                                [showSave]="true" (onSave)="onSave()"></ui-form-footer-buttons>
+
+                    </form>
+
+                </p-card>
+            </form>
+        </div>
+
+        <div class="col-12 md:col-9 lg:col-8">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <ui-page-title *ngIf="!selectedBox" title="Aktivite Detay Bilgileri"
+                                   [pageCode]="pageCode"></ui-page-title>
+
+                    <ui-page-title *ngIf="selectedBox" [title]="selectedBox.title" [pageCode]="selectedBox.pageCode"
+                                   [showBack]="true" (onBack)="onBack()"></ui-page-title>
+                </ng-template>
+
+                <div *ngIf="!selectedBox">
+                    <div class="grid">
+                        <div class="col-12 sm:col-6 lg:col-6 pb-6" *ngFor="let item of boxList">
+                            <ui-card-item [title]="item.title" [isDisabledCard]="item.disabled"
+                                          (click)="onSelect(item)"></ui-card-item>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="selectedBox">
+                    <app-activity-description-page
+                        *ngIf="selectedBox.pageCode == PageCode.ACTIVITY_DESCRIPTION"
+                        [activity]="activity"></app-activity-description-page>
+                    <app-activity-gallery-page
+                        *ngIf="selectedBox.pageCode == PageCode.ACTIVITY_GALLERY"
+                        [activity]="activity"
+                    ></app-activity-gallery-page>
+                    <app-activity-gallery-preview
+                        *ngIf="selectedBox.pageCode == PageCode.ACTIVITY_GALLERY_PREVIEW"
+                        [activityId]="activity?.id"
+                        [numVisible]="4"
+                    ></app-activity-gallery-preview>
+                </div>
+            </p-card>
+
+        </div>
+    </div>
+</div>

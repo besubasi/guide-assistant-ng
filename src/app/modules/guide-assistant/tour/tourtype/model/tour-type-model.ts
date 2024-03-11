@@ -23,6 +23,6 @@ export class TourTypeModel extends BaseModel {
     tourCategoryName: string = null;
 
     @JsonProperty('active', Boolean, true)
-    active: boolean = null;
+    active: boolean = true;
 
 }

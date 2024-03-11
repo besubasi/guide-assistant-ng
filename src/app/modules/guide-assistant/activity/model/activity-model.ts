@@ -1,17 +1,20 @@
 import {JsonObject, JsonProperty} from "json2typescript";
 import {BaseModel} from "../../common/model/base-model";
 
-@JsonObject('CitySaveModel')
-export class CitySaveModel extends BaseModel {
-
-    @JsonProperty('countryId', Number, true)
-    countryId: number = null;
+@JsonObject('ActivityModel')
+export class ActivityModel extends BaseModel {
 
     @JsonProperty('code', String, true)
     code: string = null;
 
     @JsonProperty('name', String, true)
     name: string = null;
+
+    @JsonProperty('estimatedTime', String, true)
+    estimatedTime: string = null;
+
+    @JsonProperty('extra', Boolean, true)
+    extra: boolean = false;
 
     @JsonProperty('active', Boolean, true)
     active: boolean = true;

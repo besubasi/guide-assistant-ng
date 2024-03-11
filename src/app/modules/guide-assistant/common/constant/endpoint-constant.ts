@@ -8,7 +8,9 @@ export class EndpointConstant {
     static MAPPING_DELETE_BY_ID: string = "/deleteById/";
     static MAPPING_GET_BY_ID: string = "/getById/";
     static MAPPING_GET_BY_TOUR_ID: string = "/getByTourId/";
+    static MAPPING_GET_BY_ACTIVITY_ID: string = "/getByActivityId/";
     static MAPPING_GET_LIST_BY_TOUR_ID: string = "/getListByTourId/";
+    static MAPPING_GET_LIST_BY_ACTIVITY_ID: string = "/getListByActivityId/";
     static MAPPING_GET_LOOKUP_LIST: string = "/getLookupList";
     static MAPPING_GET_LIST: string = "/getList";
     static MAPPING_GET_PAGE: string = "/getPage";
@@ -24,5 +26,9 @@ export class EndpointConstant {
     static TOUR_DAY_DESCRIPTION_SERVICE_NAME: string = "/tour-day-description";
     static TOUR_CALENDAR_SERVICE_NAME: string = "/tour-calendar";
     static TOUR_GALLERY_SERVICE_NAME: string = "/tour-gallery";
+
+    static ACTIVITY_SERVICE_NAME: string = "/activity";
+    static ACTIVITY_DESCRIPTION_SERVICE_NAME: string = "/activity-description";
+    static ACTIVITY_GALLERY_SERVICE_NAME: string = "/activity-gallery";
 
 }

@@ -11,6 +11,6 @@ export class CountryModel extends BaseModel {
     name: string = null;
 
     @JsonProperty('active', Boolean, true)
-    active: boolean = null;
+    active: boolean = true;
 
 }

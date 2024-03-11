@@ -29,6 +29,6 @@ export class CompanySearchModel extends BaseSearchModel {
     imageUrl: string = null;
 
     @JsonProperty('active', Boolean, true)
-    active: boolean = true;
+    active: boolean = null;
 
 }
