@@ -8,7 +8,7 @@ export class TourCalendarModel extends BaseModel {
     @JsonProperty('tourId', Number, true)
     tourId: number = null;
 
-    @JsonProperty('startDate', Date, true)
-    startDate: Date = null;
+    @JsonProperty('startDate', String, true)
+    startDate: string = null;
 
 }

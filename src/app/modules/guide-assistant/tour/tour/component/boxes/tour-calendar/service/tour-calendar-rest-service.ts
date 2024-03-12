@@ -7,6 +7,7 @@ import {BaseRestService} from "../../../../../../common/service/base-rest-servic
 import {EndpointConstant} from "../../../../../../common/constant/endpoint-constant";
 import {ApiResponse} from "../../../../../../common/model/api-response";
 
+import {TourCalendarBatchModel as BM} from "../model/tour-calendar-batch-model";
 import {TourCalendarModel as M} from "../model/tour-calendar-model";
 import {TourCalendarSearchModel as SM} from "../model/tour-calendar-search-model";
 import {LookupModel as LM} from "../../../../../../common/model/lookup-model";
@@ -24,6 +25,12 @@ export class TourCalendarRestService extends BaseRestService {
         return this.httpClient
             .post<ApiResponse>(this.ENDPOINT_SAVE, this.converter.serialize(model, M))
             .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
+    }
+
+    public saveBatch(batchModel: BM): Observable<Boolean> {
+        return this.httpClient
+            .post<ApiResponse>(this.ENDPOINT_SAVE_BATCH, this.converter.serialize(batchModel, BM))
+            .pipe(map((apiResponse) => Boolean(apiResponse.data)));
     }
 
     public deleteById(id: number): Observable<any> {

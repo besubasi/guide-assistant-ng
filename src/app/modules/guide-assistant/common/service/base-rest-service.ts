@@ -8,6 +8,7 @@ export class BaseRestService {
     public converter: JsonConvert;
 
     public ENDPOINT_SAVE: string;
+    public ENDPOINT_SAVE_BATCH: string;
     public ENDPOINT_CREATE_CONTENT_LIST: string;
     public ENDPOINT_UPDATE_CONTENT: string;
     public ENDPOINT_DELETE_BY_ID: string;
@@ -23,6 +24,7 @@ export class BaseRestService {
     constructor(public httpClient: HttpClient, serviceUrl: string) {
         this.converter = new JsonConvert();
         this.ENDPOINT_SAVE = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_SAVE;
+        this.ENDPOINT_SAVE_BATCH = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_SAVE_BATCH;
         this.ENDPOINT_CREATE_CONTENT_LIST = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_CREATE_CONTENT_LIST;
         this.ENDPOINT_UPDATE_CONTENT = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_UPDATE_CONTENT;
         this.ENDPOINT_DELETE_BY_ID = EndpointConstant.BASE_ENDPOINT + serviceUrl + EndpointConstant.MAPPING_DELETE_BY_ID;

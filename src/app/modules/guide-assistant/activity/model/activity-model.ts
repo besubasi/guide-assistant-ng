@@ -16,6 +16,9 @@ export class ActivityModel extends BaseModel {
     @JsonProperty('extra', Boolean, true)
     extra: boolean = false;
 
+    @JsonProperty('contentUrl', String, true)
+    contentUrl: string = null;
+
     @JsonProperty('active', Boolean, true)
     active: boolean = true;
 

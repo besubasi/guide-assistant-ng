@@ -44,6 +44,7 @@ export class ActivityDescriptionPageComponent implements OnInit {
         this.pageCode = PageCode.ACTIVITY_DESCRIPTION;
         this.subscriptions = [];
         this.form = this.formBuilder.group(new ActivityDescriptionModel());
+        this.form.patchValue({activityId: this.activity?.id});
         this.loadActivityDescription();
     }
 
@@ -56,7 +57,9 @@ export class ActivityDescriptionPageComponent implements OnInit {
             return;
 
         const subscription = this.restService.getByActivityId(this.activity.id).subscribe((response) => {
-            this.form.patchValue(response);
+            if (response) {
+                this.form.patchValue(response);
+            }
         });
         this.subscriptions.push(subscription);
     }

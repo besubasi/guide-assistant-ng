@@ -23,7 +23,7 @@
                             <div class="col-12 mb-2">
                                 <label for="companyId">Şirket</label>
                                 <p-dropdown
-                                    [id]="'companyId'"
+                                    id="companyId"
                                     [options]="companyList"
                                     [optionValue]="'id'"
                                     [optionLabel]="'name'"
@@ -36,7 +36,7 @@
                             </div>
 
                             <div class="col-12 mb-2">
-                                <label for="tourTypeId">Tur Tipi</label>
+                                <label>Tur Tipi</label>
                                 <p-dropdown
                                     [id]="'tourTypeId'"
                                     [options]="allTourTypeList"
@@ -65,33 +65,9 @@
                             </div>
                         </div>
 
-                        <div class="ui-form-footer-buttons-wrapper">
-                            <hr/>
-                            <p-toolbar styleClass="pb-0 pr-2" class="flex justify-content-end">
-                                <div class="mr-2">
-                                    <button
-                                        pButton
-                                        [id]="'cancel'"
-                                        type="button"
-                                        label="Vazgeç"
-                                        class="p-button-text ml-2"
-                                        (click)="onCancel()"
-                                    ></button>
-                                </div>
-
-                                <div>
-                                    <button
-                                        pButton
-                                        [id]="'save'"
-                                        [type]="'button'"
-                                        label="Kaydet"
-                                        class="ml-2"
-                                        (click)="onSave()"
-                                    ></button>
-                                </div>
-
-                            </p-toolbar>
-                        </div>
+                        <ui-form-footer-buttons [form]="form" [idPrefix]="pageCode" [showCancel]="true"
+                                                (onCancel)="onCancel()"
+                                                [showSave]="true" (onSave)="onSave()"></ui-form-footer-buttons>
 
                     </form>
 

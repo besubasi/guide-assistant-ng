@@ -3,6 +3,7 @@ export class EndpointConstant {
     static BASE_ENDPOINT: string = 'http://localhost:8080/guide';
 
     static MAPPING_SAVE: string = "/save";
+    static MAPPING_SAVE_BATCH: string = "/saveBatch";
     static MAPPING_CREATE_CONTENT_LIST: string = "/createContentList";
     static MAPPING_UPDATE_CONTENT: string = "/updateContent";
     static MAPPING_DELETE_BY_ID: string = "/deleteById/";

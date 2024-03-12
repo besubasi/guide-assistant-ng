@@ -24,6 +24,11 @@ import {
 import {InputNumberModule} from "primeng/inputnumber";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {CalendarModule} from "primeng/calendar";
+import {
+    UiFormFooterButtonsModule
+} from "../../../../../../../ui-shared/ui-form-footer-buttons/ui-form-footer-buttons.module";
+import {TourCalendarBatchModel} from "../model/tour-calendar-batch-model";
+import {NgIf} from "@angular/common";
 
 @Component({
     selector: 'app-tour-calendar-page',
@@ -44,10 +49,11 @@ import {CalendarModule} from "primeng/calendar";
         UiActiveInactiveTagsModule,
         InputNumberModule,
         InputTextareaModule,
-        CalendarModule
+        CalendarModule,
+        UiFormFooterButtonsModule,
+        NgIf
     ],
     templateUrl: './tour-calendar-page.component.html',
-    styleUrl: './tour-calendar-page.component.scss'
 })
 export class TourCalendarPageComponent implements OnInit, OnDestroy {
 
@@ -56,9 +62,12 @@ export class TourCalendarPageComponent implements OnInit, OnDestroy {
     pageCode: string;
     formMode: string;
     form: UntypedFormGroup;
+    batchForm: UntypedFormGroup;
     list: TourCalendarModel[];
     selectedItem: TourCalendarModel;
     subscriptions: Subscription[];
+    startDate: Date;
+    startDateList: Date[];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -73,6 +82,7 @@ export class TourCalendarPageComponent implements OnInit, OnDestroy {
         this.subscriptions = [];
 
         this.buildForm();
+        this.buildBatchForm();
         this.loadData();
     }
 
@@ -82,22 +92,29 @@ export class TourCalendarPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
+        this.startDate = null;
         this.form = this.formBuilder.group(new TourCalendarModel());
         this.form.patchValue({tourId: this.tour?.id});
+    }
+
+    buildBatchForm() {
+        this.startDateList = [];
+        this.batchForm = this.formBuilder.group(new TourCalendarBatchModel());
+        this.batchForm.patchValue({tourId: this.tour?.id});
     }
 
     loadData() {
         let searchModel = new TourCalendarSearchModel();
         searchModel.tourId = this.tour?.id;
         const subscription = this.restService.getList(searchModel).subscribe((response) => {
-            this.list = response;
+            this.list = response ?? [];
         });
         this.subscriptions.push(subscription);
     }
 
     onAdd() {
         this.formMode = FormMode.ADD;
-        this.buildForm();
+        this.buildBatchForm();
     }
 
     onCopy() {
@@ -105,12 +122,14 @@ export class TourCalendarPageComponent implements OnInit, OnDestroy {
         this.buildForm();
         this.form.patchValue(this.selectedItem);
         this.form.patchValue({id: null});
+        this.startDate = new Date(this.selectedItem?.startDate);
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
         this.form.patchValue(this.selectedItem);
+        this.startDate = new Date(this.selectedItem?.startDate);
     }
 
     onDelete() {
@@ -126,10 +145,31 @@ export class TourCalendarPageComponent implements OnInit, OnDestroy {
         this.formMode = FormMode.NONE;
         this.form.reset();
         this.buildForm();
+        this.buildBatchForm();
     }
 
     onSave() {
+        this.form.patchValue({startDate: this.startDate.toJSON()})
         let subscription = this.restService.save(this.form.value).subscribe(
+            response => {
+                this.onCancel();
+                this.loadData();
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Başarılı',
+                    detail: "İşlem başarıyla kaydedildi."
+                });
+            }
+        );
+        this.subscriptions.push(subscription);
+    }
+
+    onSaveBatch() {
+        this.batchForm.patchValue({
+            startDateList: this.startDateList.map(date => date.toJSON())
+        })
+
+        let subscription = this.restService.saveBatch(this.batchForm.value).subscribe(
             response => {
                 this.onCancel();
                 this.loadData();

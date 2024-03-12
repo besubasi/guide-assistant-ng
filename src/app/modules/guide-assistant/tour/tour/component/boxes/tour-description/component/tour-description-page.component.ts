@@ -44,6 +44,7 @@ export class TourDescriptionPageComponent implements OnInit {
         this.pageCode = PageCode.TOUR_DESCRIPTION;
         this.subscriptions = [];
         this.form = this.formBuilder.group(new TourDescriptionModel());
+        this.form.patchValue({tourId: this.tour?.id});
         this.loadTourDescription();
     }
 
@@ -56,7 +57,9 @@ export class TourDescriptionPageComponent implements OnInit {
             return;
 
         const subscription = this.restService.getByTourId(this.tour.id).subscribe((response) => {
-            this.form.patchValue(response);
+            if (response) {
+                this.form.patchValue(response);
+            }
         });
         this.subscriptions.push(subscription);
     }
