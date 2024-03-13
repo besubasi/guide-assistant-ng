@@ -19,7 +19,7 @@ import {Subscription} from "rxjs";
 import {FormMode} from "../../common/enum/form-mode";
 import {CurrencyModel} from "../model/currency-model";
 import {UiSharedModule} from "../../../ui-shared/ui-shared.module";
-import {CountryRestService} from "../service/country-rest-service";
+import {CurrencyRestService} from "../service/currency-rest-service";
 import {CurrencySearchModel} from "../model/currency-search-model";
 
 @Component({
@@ -58,7 +58,7 @@ export class CurrencyPageComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: FormBuilder,
-        private restService: CountryRestService,
+        private restService: CurrencyRestService,
         private messageService: MessageService,
     ) {
     }

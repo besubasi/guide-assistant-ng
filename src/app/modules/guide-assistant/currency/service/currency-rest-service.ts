@@ -14,7 +14,7 @@ import {LookupModel as LM} from "../../common/model/lookup-model";
 @Injectable({
     providedIn: 'root'
 })
-export class CountryRestService extends BaseRestService {
+export class CurrencyRestService extends BaseRestService {
 
     constructor(public override httpClient: HttpClient) {
         super(httpClient, EndpointConstant.CURRENCY_SERVICE_NAME);
