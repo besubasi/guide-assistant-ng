@@ -17,10 +17,10 @@ import {DropdownModule} from "primeng/dropdown";
 import {Subscription} from "rxjs";
 
 import {FormMode} from "../../common/enum/form-mode";
-import {CountryModel} from "../model/country-model";
+import {CurrencyModel} from "../model/currency-model";
 import {UiSharedModule} from "../../../ui-shared/ui-shared.module";
 import {CountryRestService} from "../service/country-rest-service";
-import {CountrySearchModel} from "../model/country-search-model";
+import {CurrencySearchModel} from "../model/currency-search-model";
 
 @Component({
     selector: 'app-country-page',
@@ -45,15 +45,15 @@ import {CountrySearchModel} from "../model/country-search-model";
         InputNumberModule,
         DropdownModule,
     ],
-    templateUrl: './country-page.component.html'
+    templateUrl: './currency-page.component.html'
 })
-export class CountryPageComponent implements OnInit, OnDestroy {
+export class CurrencyPageComponent implements OnInit, OnDestroy {
 
     pageCode: string;
     formMode: string;
     form: UntypedFormGroup;
-    list: CountryModel[];
-    selectedItem: CountryModel;
+    list: CurrencyModel[];
+    selectedItem: CurrencyModel;
     subscriptions: Subscription[];
 
     constructor(
@@ -78,12 +78,12 @@ export class CountryPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.formBuilder.group(new CountryModel());
+        this.form = this.formBuilder.group(new CurrencyModel());
     }
 
 
     loadListData() {
-        const subscription = this.restService.getList(new CountrySearchModel()).subscribe((response) => {
+        const subscription = this.restService.getList(new CurrencySearchModel()).subscribe((response) => {
             this.list = response;
         });
         this.subscriptions.push(subscription);
@@ -122,7 +122,7 @@ export class CountryPageComponent implements OnInit, OnDestroy {
     }
 
     onSave() {
-        let apiModel: CountryModel = this.form.value;
+        let apiModel: CurrencyModel = this.form.value;
 
         let subscription = this.restService.save(apiModel).subscribe(
             response => {

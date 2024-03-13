@@ -31,6 +31,10 @@ export const routes: Routes = [
                 loadChildren: () => import('./pricing-type/pricing-type.module').then(m => m.PricingTypeModule)
             },
             {
+                path: 'currency',
+                loadChildren: () => import('./currency/currency.module').then(m => m.CurrencyModule)
+            },
+            {
                 path: 'activity',
                 loadChildren: () => import('./activity/activity.module').then(m => m.ActivityModule)
             },
