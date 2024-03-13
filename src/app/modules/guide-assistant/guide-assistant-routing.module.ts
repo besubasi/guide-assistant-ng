@@ -27,6 +27,10 @@ export const routes: Routes = [
                 loadChildren: () => import('./activity-company/activity-company.module').then(m => m.ActivityCompanyModule)
             },
             {
+                path: 'pricing-type',
+                loadChildren: () => import('./pricing-type/pricing-type.module').then(m => m.PricingTypeModule)
+            },
+            {
                 path: 'activity',
                 loadChildren: () => import('./activity/activity.module').then(m => m.ActivityModule)
             },

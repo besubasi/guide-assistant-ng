@@ -49,6 +49,11 @@ export class AppMenuComponent implements OnInit {
                         routerLink: ['/guide-assistant/activity-company']
                     },
                     {
+                        label: 'Ücretlendirme Tipi',
+                        icon: 'pi pi-fw pi-id-card',
+                        routerLink: ['/guide-assistant/pricing-type']
+                    },
+                    {
                         label: 'Aktivite',
                         icon: 'pi pi-fw pi-id-card',
                         routerLink: ['/guide-assistant/activity']
