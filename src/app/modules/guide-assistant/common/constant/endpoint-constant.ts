@@ -31,5 +31,6 @@ export class EndpointConstant {
     static ACTIVITY_SERVICE_NAME: string = "/activity";
     static ACTIVITY_DESCRIPTION_SERVICE_NAME: string = "/activity-description";
     static ACTIVITY_GALLERY_SERVICE_NAME: string = "/activity-gallery";
+    static ACTIVITY_COMPANY_SERVICE_NAME: string = "/activity-company";
 
 }

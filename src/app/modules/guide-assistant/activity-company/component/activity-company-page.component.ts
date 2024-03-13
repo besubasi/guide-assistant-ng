@@ -18,23 +18,13 @@ import {Subscription} from "rxjs";
 
 import {FormMode} from "../../common/enum/form-mode";
 import {UiSharedModule} from "../../../ui-shared/ui-shared.module";
-import {CompanyRestService} from "../service/company-rest-service";
-import {CompanyModel} from "../model/company-model";
-import {CountryModel} from "../../country/model/country-model";
-import {CitySaveModel} from "../../city/model/city-save-model";
-import {DistrictSaveModel} from "../../district/model/district-save-model";
-import {CountryRestService} from "../../country/service/country-rest-service";
-import {CityRestService} from "../../city/service/city-rest-service";
-import {DistrictRestService} from "../../district/service/district-rest-service";
+import {ActivityCompanyRestService} from "../service/activity-company-rest-service";
+import {ActivityCompanyModel} from "../model/activity-company-model";
 import {PageCode} from "../../common/enum/page-code";
-import {CountrySearchModel} from "../../country/model/country-search-model";
-import {CompanySaveModel} from "../model/company-save-model";
-import {CompanySearchModel} from "../model/company-search-model";
-import {CitySearchModel} from "../../city/model/city-search-model";
-import {DistrictSearchModel} from "../../district/model/district-search-model";
+import {ActivityCompanySearchModel} from "../model/activity-company-search-model";
 
 @Component({
-    selector: 'app-company-page',
+    selector: 'app-activity-company-page',
     standalone: true,
     imports: [
         NgStyle,
@@ -56,26 +46,20 @@ import {DistrictSearchModel} from "../../district/model/district-search-model";
         InputNumberModule,
         DropdownModule,
     ],
-    templateUrl: './company-page.component.html'
+    templateUrl: './activity-company-page.component.html'
 })
-export class CompanyPageComponent implements OnInit, OnDestroy {
+export class ActivityCompanyPageComponent implements OnInit, OnDestroy {
 
     pageCode: string;
     formMode: string;
     form: UntypedFormGroup;
-    list: CompanyModel[];
-    selectedItem: CompanyModel;
+    list: ActivityCompanyModel[];
+    selectedItem: ActivityCompanyModel;
     subscriptions: Subscription[];
-    countryList: CountryModel[];
-    cityList: CitySaveModel[];
-    districtList: DistrictSaveModel[];
 
     constructor(
         private formBuilder: FormBuilder,
-        private restService: CompanyRestService,
-        private countryService: CountryRestService,
-        private cityService: CityRestService,
-        private districtService: DistrictRestService,
+        private restService: ActivityCompanyRestService,
         private messageService: MessageService,
     ) {
     }
@@ -83,13 +67,9 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
-        this.countryList = [];
-        this.cityList = [];
-        this.districtList = [];
-        this.pageCode = PageCode.COMPANY;
+        this.pageCode = PageCode.ACTIVITY_COMPANY;
 
         this.buildForm();
-        this.loadCountryList();
         this.loadData();
     }
 
@@ -99,41 +79,11 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.formBuilder.group(new CompanySaveModel());
+        this.form = this.formBuilder.group(new ActivityCompanyModel());
     }
-
-    loadCountryList() {
-        let searchModel: CountrySearchModel = new CountrySearchModel();
-        searchModel.active = true;
-        let subscription = this.countryService.getList(searchModel).subscribe((response => {
-            this.countryList = response;
-        }));
-        this.subscriptions.push(subscription);
-    }
-
-    loadCityList() {
-        let searchModel: CitySearchModel = new CitySearchModel();
-        searchModel.countryId = this.form.value.countryId;
-        searchModel.active = true;
-        let subscription = this.cityService.getList(searchModel).subscribe((response => {
-            this.cityList = response;
-        }));
-        this.subscriptions.push(subscription);
-    }
-
-    loadDistrictList() {
-        let searchModel: DistrictSearchModel = new DistrictSearchModel();
-        searchModel.cityId = this.form.value.cityId;
-        searchModel.active = true;
-        let subscription = this.districtService.getList(searchModel).subscribe((response => {
-            this.districtList = response;
-        }));
-        this.subscriptions.push(subscription);
-    }
-
 
     loadData() {
-        const subscription = this.restService.getList(new CompanySearchModel()).subscribe((response) => {
+        const subscription = this.restService.getList(new ActivityCompanySearchModel()).subscribe((response) => {
             this.list = response;
         });
         this.subscriptions.push(subscription);
@@ -149,16 +99,12 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
         this.buildForm();
         this.form.patchValue(this.selectedItem);
         this.form.patchValue({id: null});
-        this.loadCityList();
-        this.loadDistrictList();
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
         this.form.patchValue(this.selectedItem);
-        this.loadCityList();
-        this.loadDistrictList();
     }
 
     onDelete() {
@@ -189,16 +135,6 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
             }
         );
         this.subscriptions.push(subscription);
-    }
-
-    onChangeCountry() {
-        this.form.patchValue({cityId: null});
-        this.loadCityList();
-    }
-
-    onChangeCity() {
-        this.form.patchValue({districtId: null});
-        this.loadDistrictList();
     }
 
     get FormMode() {
