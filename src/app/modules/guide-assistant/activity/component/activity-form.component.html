@@ -78,6 +78,10 @@
                         *ngIf="selectedBox.pageCode == PageCode.ACTIVITY_GALLERY"
                         [activity]="activity"
                     ></app-activity-gallery-page>
+                    <app-activity-company-rel-page
+                        *ngIf="selectedBox.pageCode == PageCode.ACTIVITY_COMPANY"
+                        [activity]="activity"
+                    ></app-activity-company-rel-page>
                     <app-activity-gallery-preview
                         *ngIf="selectedBox.pageCode == PageCode.ACTIVITY_GALLERY_PREVIEW"
                         [activityId]="activity?.id"
