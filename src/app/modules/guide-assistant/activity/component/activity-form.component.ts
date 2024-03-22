@@ -29,6 +29,7 @@ import {
 import {ActivityGalleryPageComponent} from "./boxes/activity-gallery/component/activity-gallery-page.component";
 import {ActivityGalleryPreviewComponent} from "./boxes/activity-gallery/component/activity-gallery-preview.component";
 import {ActivityCompanyRelPageComponent} from "./boxes/company/component/activity-company-rel-page.component";
+import {ActivityTariffPageComponent} from "./boxes/tariff/component/activity-tariff-page.component";
 
 
 @Component({
@@ -60,6 +61,7 @@ import {ActivityCompanyRelPageComponent} from "./boxes/company/component/activit
         ActivityGalleryPageComponent,
         ActivityGalleryPreviewComponent,
         ActivityCompanyRelPageComponent,
+        ActivityTariffPageComponent,
     ],
     templateUrl: './activity-form.component.html',
 })
@@ -142,6 +144,7 @@ export class ActivityFormComponent implements OnInit, OnDestroy {
         this.boxList = [];
         this.boxList.push(new BoxModel(PageCode.ACTIVITY_DESCRIPTION, "Açıklamalar", !this.activity?.id));
         this.boxList.push(new BoxModel(PageCode.ACTIVITY_GALLERY, "Galeri", !this.activity?.id));
+        this.boxList.push(new BoxModel(PageCode.ACTIVITY_TARIFF, "Ücretlendirme", !this.activity?.id));
         this.boxList.push(new BoxModel(PageCode.ACTIVITY_COMPANY, "Aktivite Şirketi", !this.activity?.id));
         this.boxList.push(new BoxModel(PageCode.ACTIVITY_GALLERY_PREVIEW, "Galeri Preview", !this.activity?.id));
     }

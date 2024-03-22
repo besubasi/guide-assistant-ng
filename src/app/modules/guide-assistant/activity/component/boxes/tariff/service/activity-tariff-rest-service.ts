@@ -3,19 +3,18 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from "rxjs/operators";
 
-import {ApiResponse} from "../../common/model/api-response";
-import {BaseRestService} from "../../common/service/base-rest-service";
-import {EndpointConstant} from "../../common/constant/endpoint-constant";
-
-import {LookupModel as LM} from "../../common/model/lookup-model";
-import {CityModel as M} from "../model/city-model";
-import {CitySaveModel as SV} from "../model/city-save-model";
-import {CitySearchModel as SM} from "../model/city-search-model";
+import {ActivityTariffModel as M} from "../model/activity-tariff-model";
+import {ActivityTariffSaveModel as SV} from "../model/activity-tariff-save-model";
+import {ActivityTariffSearchModel as SM} from "../model/activity-tariff-search-model";
+import {LookupModel as LM} from "../../../../../common/model/lookup-model";
+import {EndpointConstant} from "../../../../../common/constant/endpoint-constant";
+import {ApiResponse} from "../../../../../common/model/api-response";
+import {BaseRestService} from "../../../../../common/service/base-rest-service";
 
 @Injectable({
     providedIn: 'root'
 })
-export class CityRestService extends BaseRestService {
+export class ActivityTariffRestService extends BaseRestService {
 
     constructor(public override httpClient: HttpClient) {
         super(httpClient, EndpointConstant.ACTIVITY_TARIFF_SERVICE_NAME);

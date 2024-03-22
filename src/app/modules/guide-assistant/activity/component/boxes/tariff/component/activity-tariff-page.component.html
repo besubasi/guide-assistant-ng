@@ -1,0 +1,169 @@
+<div class="grid">
+    <div class="col-12">
+        <p-card>
+
+            <ng-template pTemplate="header">
+                <ui-page-title title="Ücretlendirmeler" [pageCode]="pageCode"
+                               [showBack]="false"></ui-page-title>
+            </ng-template>
+
+            <p-toolbar toolbar class="flex justify-content-end" styleClass="pr-0 pl-0 pt-0">
+                <div>
+                    <button [id]="'add'" pButton [label]="'Ekle'" class="mr-2" (click)="onAdd()">
+
+                    </button>
+                    <button [id]="'copy'" pButton [label]="'Kopyala'" class="mr-2 p-button-outlined" (click)="onCopy()"
+                            [disabled]="!selectedItem">
+
+                    </button>
+                    <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
+                            [disabled]="!selectedItem">
+
+                    </button>
+                    <button [id]="'delete'" pButton [label]="'Sil'" class="mr-2 p-button-outlined" (click)="onDelete()"
+                            [disabled]="!selectedItem">
+
+                    </button>
+                </div>
+            </p-toolbar>
+
+            <p-table
+                dataKey="id"
+                styleClass="p-datatable-striped"
+                selectionMode="single"
+                [id]="pageCode + '_list'"
+                [value]="list"
+                [paginator]="true"
+                [rows]="10"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [totalRecords]="list?.length"
+                [(selection)]="selectedItem"
+                [metaKeySelection]="false"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="pricingTypeCode" style="width: 20%">
+                            Ücretlendirme Tipi
+                            <p-sortIcon field="pricingTypeCode"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="amount" style="width: 15%">
+                            Tutar
+                            <p-sortIcon field="amount"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="commissionRate" style="width: 20%">
+                            Komisyon Oranı
+                            <p-sortIcon field="commissionRate"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="description" style="width: 20%">
+                            Açıklama
+                            <p-sortIcon field="description"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="startDate" style="width: 15%">
+                            Başlangıç Tarihi
+                            <p-sortIcon field="startDate"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="active" style="width: 10%">
+                            Aktif
+                            <p-sortIcon field="active"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr [pSelectableRow]="item">
+                        <td style="width: 20%">{{ item.pricingTypeCode + ' - ' + item.pricingTypeName }}</td>
+                        <td style="width: 15%">{{ item.amount + ' ' + item.currencyCode }}</td>
+                        <td style="width: 20%">{{ item.commissionRate }}</td>
+                        <td style="width: 20%">{{ item.description }}</td>
+                        <td style="width: 15%">{{ item.startDate }}</td>
+                        <td style="width: 10%">
+                            <ui-active-inactive-tags [tagValue]="item.active"></ui-active-inactive-tags>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td [attr.colspan]="3">Kayıt Bulunamadı</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </p-card>
+    </div>
+</div>
+
+<ui-sidebar [display]="formMode !== FormMode.NONE">
+    <div>
+        <div class="grid">
+            <ui-page-title class="col" title="Ücretlendirme"></ui-page-title>
+        </div>
+
+        <form [formGroup]="form">
+            <div class="p-fluid formgrid grid">
+
+                <div class="col-12">
+                    <label for="pricingTypeId">Ücretlendirme Tipi</label>
+                    <p-dropdown
+                        id="pricingTypeId"
+                        [options]="pricingTypeList"
+                        [optionValue]="'id'"
+                        [optionLabel]="'name'"
+                        [placeholder]="'Seçiniz'"
+                        formControlName="pricingTypeId"
+                        class="form-control"
+                    >
+                    </p-dropdown>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label for="amount">Tutar</label>
+                    <p-inputNumber id="amount" formControlName="amount" mode="decimal" [showButtons]="true"
+                                   [min]="1"
+                                   [max]="100">
+                    </p-inputNumber>
+                    <p-dropdown
+                        id="currencyId"
+                        [options]="currencyList"
+                        [optionValue]="'id'"
+                        [optionLabel]="'name'"
+                        [placeholder]="'Seçiniz'"
+                        formControlName="currencyId"
+                        class="form-control"
+                    >
+                    </p-dropdown>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label for="commissionRate">Komisyon Oranı %</label>
+                    <p-inputNumber id="commissionRate" formControlName="commissionRate" mode="decimal"
+                                   [showButtons]="true" [min]="1" [max]="100"></p-inputNumber>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label for="description">Açıklama</label>
+                    <input pInputText id="description" type="text" formControlName="description"/>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label for="startDate">Tarih</label>
+                    <p-calendar id="startDate"
+                                [(ngModel)]="startDate"
+                                [ngModelOptions]="{standalone: true}"
+                                [showWeek]="true"
+                                [showIcon]="true"
+                                dateFormat="dd.mm.yy"
+                    ></p-calendar>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <div class="field-checkbox">
+                        <p-checkbox id="active" formControlName="active" binary="true" label="Aktif"></p-checkbox>
+                    </div>
+                </div>
+            </div>
+
+            <ui-form-footer-buttons [form]="form" [idPrefix]="pageCode" [showCancel]="true" (onCancel)="onCancel()"
+                                    [showSave]="true" (onSave)="onSave()"></ui-form-footer-buttons>
+
+        </form>
+    </div>
+</ui-sidebar>
