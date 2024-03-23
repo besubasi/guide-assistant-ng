@@ -32,6 +32,7 @@ import {TourGalleryPreviewComponent} from "./boxes/tour-gallery/component/tour-g
 import {FileUploadModule} from "primeng/fileupload";
 import {Util} from "../../../common/util/util";
 import {LookupModel} from "../../../common/model/lookup-model";
+import {TourActivityRelPageComponent} from "./boxes/tour-activity/component/tour-activity-rel-page.component";
 
 
 @Component({
@@ -64,9 +65,9 @@ import {LookupModel} from "../../../common/model/lookup-model";
         NgForOf,
         TourGalleryPreviewComponent,
         FileUploadModule,
+        TourActivityRelPageComponent,
     ],
     templateUrl: './tour-form.component.html',
-    styleUrl: './tour-form.component.scss'
 })
 export class TourFormComponent implements OnInit, OnDestroy {
 
@@ -156,6 +157,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
         this.boxList.push(new BoxModel(PageCode.TOUR_DESCRIPTION, "Açıklamalar", !this.tour?.id));
         this.boxList.push(new BoxModel(PageCode.TOUR_DAY_DESCRIPTION, "Günlük Detaylar", !this.tour?.id));
         this.boxList.push(new BoxModel(PageCode.TOUR_GALLERY, "Galeri", !this.tour?.id));
+        this.boxList.push(new BoxModel(PageCode.TOUR_ACTIVITY_REL, "Aktiviteler", !this.tour?.id));
         this.boxList.push(new BoxModel(PageCode.TOUR_CALENDAR, "Tarihler", !this.tour?.id));
         this.boxList.push(new BoxModel(PageCode.TOUR_GALLERY_PREVIEW, "Foto Preview", !this.tour?.id));
     }

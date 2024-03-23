@@ -48,7 +48,6 @@ import {
         UiFormFooterButtonsModule
     ],
     templateUrl: './tour-day-description-page.component.html',
-    styleUrl: './tour-day-description-page.component.scss'
 })
 export class TourDayDescriptionPageComponent implements OnInit, OnDestroy {
 

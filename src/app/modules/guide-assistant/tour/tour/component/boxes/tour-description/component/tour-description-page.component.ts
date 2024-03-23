@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormGroup} from '@angular/forms';
 
-// Import PrimeNG modules
 import {EditorModule} from 'primeng/editor';
 import {MessageService} from "primeng/api";
 import {Subscription} from "rxjs";

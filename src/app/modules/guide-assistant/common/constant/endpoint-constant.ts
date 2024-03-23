@@ -27,6 +27,7 @@ export class EndpointConstant {
     static TOUR_DAY_DESCRIPTION_SERVICE_NAME: string = "/tour-day-description";
     static TOUR_CALENDAR_SERVICE_NAME: string = "/tour-calendar";
     static TOUR_GALLERY_SERVICE_NAME: string = "/tour-gallery";
+    static TOUR_ACTIVITY_REL_SERVICE_NAME: string = "/tour-activity-rel";
 
     static ACTIVITY_SERVICE_NAME: string = "/activity";
     static ACTIVITY_DESCRIPTION_SERVICE_NAME: string = "/activity-description";

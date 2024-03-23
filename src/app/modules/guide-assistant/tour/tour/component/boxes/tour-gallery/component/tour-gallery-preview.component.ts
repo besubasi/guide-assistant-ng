@@ -14,7 +14,6 @@ import {DynamicDialogConfig} from "primeng/dynamicdialog";
         GalleriaModule
     ],
     templateUrl: './tour-gallery-preview.component.html',
-    styleUrl: './tour-gallery-preview.component.scss'
 })
 export class TourGalleryPreviewComponent implements OnInit, OnDestroy {
 

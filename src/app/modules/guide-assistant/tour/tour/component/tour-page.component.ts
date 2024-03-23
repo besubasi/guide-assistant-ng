@@ -56,7 +56,6 @@ import {LookupModel} from "../../../common/model/lookup-model";
         TourFormComponent,
         AccordionModule,
     ],
-    styleUrls: ['./tour-page.component.scss'],
     templateUrl: './tour-page.component.html'
 })
 export class TourPageComponent implements OnInit, OnDestroy {

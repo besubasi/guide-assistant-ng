@@ -21,6 +21,7 @@ import {CountryModel} from "../model/country-model";
 import {UiSharedModule} from "../../../ui-shared/ui-shared.module";
 import {CountryRestService} from "../service/country-rest-service";
 import {CountrySearchModel} from "../model/country-search-model";
+import {PageCode} from "../../common/enum/page-code";
 
 @Component({
     selector: 'app-country-page',
@@ -66,7 +67,7 @@ export class CountryPageComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
-        this.pageCode = "3-5";
+        this.pageCode = PageCode.COUNTRY;
 
         this.buildForm();
         this.loadListData();

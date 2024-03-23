@@ -24,6 +24,7 @@ import {CompanyRestService} from "../../../company/service/company-rest-service"
 import {CompanyModel} from "../../../company/model/company-model";
 import {CompanySearchModel} from "../../../company/model/company-search-model";
 import {TourCategorySearchModel} from "../model/tour-category-search-model";
+import {PageCode} from "../../../common/enum/page-code";
 
 @Component({
     selector: 'app-tour-category-page',
@@ -48,7 +49,6 @@ import {TourCategorySearchModel} from "../model/tour-category-search-model";
         InputNumberModule,
         DropdownModule,
     ],
-    styleUrls: ['./tour-category-page.component.scss'],
     templateUrl: './tour-category-page.component.html'
 })
 export class TourCategoryPageComponent implements OnInit, OnDestroy {
@@ -73,7 +73,7 @@ export class TourCategoryPageComponent implements OnInit, OnDestroy {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
         this.companyList = [];
-        this.pageCode = "3-5";
+        this.pageCode = PageCode.TOUR_CATEGORY;
 
         this.buildForm();
         this.loadCompanyList();

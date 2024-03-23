@@ -105,6 +105,10 @@
                         *ngIf="selectedBox.pageCode == PageCode.TOUR_GALLERY"
                         [tour]="tour"
                     ></app-tour-gallery-page>
+                    <app-tour-activity-rel-page
+                        *ngIf="selectedBox.pageCode == PageCode.TOUR_ACTIVITY_REL"
+                        [tour]="tour"
+                    ></app-tour-activity-rel-page>
                     <app-tour-calendar-page
                         *ngIf="selectedBox.pageCode == PageCode.TOUR_CALENDAR"
                         [tour]="tour"

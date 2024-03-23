@@ -16,22 +16,21 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
 import {Subscription} from "rxjs";
 
-import {FormMode} from "../../../../../common/enum/form-mode";
-import {ActivityTariffModel} from "../model/activity-tariff-model";
-import {UiSharedModule} from "../../../../../../ui-shared/ui-shared.module";
-import {ActivityTariffRestService} from "../service/activity-tariff-rest-service";
-import {ActivityTariffSearchModel} from "../model/activity-tariff-search-model";
-import {LookupModel} from "../../../../../common/model/lookup-model";
-import {PageCode} from "../../../../../common/enum/page-code";
-import {PricingTypeRestService} from "../../../../../pricing-type/service/pricing-type-rest-service";
-import {CurrencyRestService} from "../../../../../currency/service/currency-rest-service";
-import {PricingTypeSearchModel} from "../../../../../pricing-type/model/pricing-type-search-model";
-import {CurrencySearchModel} from "../../../../../currency/model/currency-search-model";
+import {TourActivityRelModel} from "../model/tour-activity-rel-model";
+import {TourActivityRelRestService} from "../service/tour-activity-rel-rest-service";
+import {TourActivityRelSearchModel} from "../model/tour-activity-rel-search-model";
 import {CalendarModule} from "primeng/calendar";
-import {ActivityModel} from "../../../../model/activity-model";
+import {TourSaveModel} from "../../../../model/tour-save-model";
+import {LookupModel} from "../../../../../../common/model/lookup-model";
+import {ActivityRestService} from "../../../../../../activity/service/activity-rest-service";
+import {FormMode} from "../../../../../../common/enum/form-mode";
+import {PageCode} from "../../../../../../common/enum/page-code";
+import {TourActivityRelSaveModel} from "../model/tour-activity-rel-save-model";
+import {ActivitySearchModel} from "../../../../../../activity/model/activity-search-model";
+import {UiSharedModule} from "../../../../../../../ui-shared/ui-shared.module";
 
 @Component({
-    selector: 'app-activity-tariff-page',
+    selector: 'app-tour-activity-rel-page',
     standalone: true,
     imports: [
         NgStyle,
@@ -56,27 +55,24 @@ import {ActivityModel} from "../../../../model/activity-model";
         FormsModule,
         DatePipe,
     ],
-    templateUrl: './activity-tariff-page.component.html'
+    templateUrl: './tour-activity-rel-page.component.html'
 })
-export class ActivityTariffPageComponent implements OnInit, OnDestroy {
+export class TourActivityRelPageComponent implements OnInit, OnDestroy {
 
-    @Input() activity: ActivityModel;
+    @Input() tour: TourSaveModel;
 
     pageCode: string;
     formMode: string;
     form: UntypedFormGroup;
-    list: ActivityTariffModel[];
-    selectedItem: ActivityTariffModel;
+    list: TourActivityRelModel[];
+    selectedItem: TourActivityRelModel;
     subscriptions: Subscription[];
-    pricingTypeList: LookupModel[];
-    currencyList: LookupModel[];
-    startDate: Date;
+    activityList: LookupModel[];
 
     constructor(
         private formBuilder: FormBuilder,
-        private restService: ActivityTariffRestService,
-        private pricingTypeRestService: PricingTypeRestService,
-        private currencyRestService: CurrencyRestService,
+        private restService: TourActivityRelRestService,
+        private activityRestService: ActivityRestService,
         private messageService: MessageService,
     ) {
     }
@@ -84,12 +80,11 @@ export class ActivityTariffPageComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
-        this.pricingTypeList = [];
-        this.pageCode = PageCode.ACTIVITY_TARIFF;
+        this.activityList = [];
+        this.pageCode = PageCode.TOUR_ACTIVITY_REL;
 
         this.buildForm();
-        this.loadPricingTypeList();
-        this.loadCurrencyList();
+        this.loadActivityList();
         this.loadListData();
     }
 
@@ -99,32 +94,22 @@ export class ActivityTariffPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.startDate = null;
-        this.form = this.formBuilder.group(new ActivityTariffModel());
-        this.form.patchValue({activityId: this.activity?.id});
+        this.form = this.formBuilder.group(new TourActivityRelSaveModel());
+        this.form.patchValue({tourId: this.tour?.id});
     }
 
-    loadPricingTypeList() {
-        let searchModel: PricingTypeSearchModel = new PricingTypeSearchModel();
+    loadActivityList() {
+        let searchModel: ActivitySearchModel = new ActivitySearchModel();
         searchModel.active = true;
-        let subscription = this.pricingTypeRestService.getLookupList(searchModel).subscribe((response => {
-            this.pricingTypeList = response;
-        }));
-        this.subscriptions.push(subscription);
-    }
-
-    loadCurrencyList() {
-        let searchModel: CurrencySearchModel = new CurrencySearchModel();
-        searchModel.active = true;
-        let subscription = this.currencyRestService.getLookupList(searchModel).subscribe((response => {
-            this.currencyList = response;
+        let subscription = this.activityRestService.getLookupList(searchModel).subscribe((response => {
+            this.activityList = response;
         }));
         this.subscriptions.push(subscription);
     }
 
     loadListData() {
-        let searchModel: ActivityTariffSearchModel = new ActivityTariffSearchModel();
-        searchModel.activityId = this.activity?.id;
+        let searchModel: TourActivityRelSearchModel = new TourActivityRelSearchModel();
+        searchModel.tourId = this.tour?.id;
         const subscription = this.restService.getList(searchModel).subscribe((response) => {
             this.list = response;
         });
@@ -141,14 +126,12 @@ export class ActivityTariffPageComponent implements OnInit, OnDestroy {
         this.buildForm();
         this.form.patchValue(this.selectedItem);
         this.form.patchValue({id: null});
-        this.startDate = new Date(this.selectedItem?.startDate);
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
         this.form.patchValue(this.selectedItem);
-        this.startDate = new Date(this.selectedItem?.startDate);
     }
 
     onDelete() {
@@ -166,7 +149,6 @@ export class ActivityTariffPageComponent implements OnInit, OnDestroy {
     }
 
     onSave() {
-        this.form.patchValue({startDate: this.startDate.toJSON()})
         let subscription = this.restService.save(this.form.value).subscribe(
             response => {
                 this.onCancel();

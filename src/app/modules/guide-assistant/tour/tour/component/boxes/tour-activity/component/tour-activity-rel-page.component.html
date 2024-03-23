@@ -3,7 +3,7 @@
         <p-card>
 
             <ng-template pTemplate="header">
-                <ui-page-title title="Kategoriler" [pageCode]="pageCode"
+                <ui-page-title title="Aktiviteler" [pageCode]="pageCode"
                                [showBack]="false"></ui-page-title>
             </ng-template>
 
@@ -42,15 +42,19 @@
             >
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="companyId" style="width: 35%">
-                            Şirket
-                            <p-sortIcon field="companyId"></p-sortIcon>
+                        <th pSortableColumn="lineNumber" style="width: 15%">
+                            Sıra
+                            <p-sortIcon field="lineNumber"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="name" style="width: 50%">
-                            Adı
-                            <p-sortIcon field="name"></p-sortIcon>
+                        <th pSortableColumn="dayNumber" style="width: 15%">
+                            Gün
+                            <p-sortIcon field="dayNumber"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="active" style="width: 15%">
+                        <th pSortableColumn="activityCode" style="width: 50%">
+                            Aktivite
+                            <p-sortIcon field="activityCode"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="active" style="width: 20%">
                             Aktif
                             <p-sortIcon field="active"></p-sortIcon>
                         </th>
@@ -58,16 +62,17 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
                     <tr [pSelectableRow]="item">
-                        <td style="width: 35%">{{ item.companyName }}</td>
-                        <td style="width: 50%">{{ item.name }}</td>
-                        <td style="width: 15%">
+                        <td style="width: 15%">{{ item.lineNumber }}</td>
+                        <td style="width: 15%">{{ item.dayNumber }}</td>
+                        <td style="width: 50%">{{ item.activityCode + ' - ' + item.activityName }}</td>
+                        <td style="width: 20%">
                             <ui-active-inactive-tags [tagValue]="item.active"></ui-active-inactive-tags>
                         </td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td [attr.colspan]="3">Kayıt Bulunamadı</td>
+                        <td [attr.colspan]="4">Kayıt Bulunamadı</td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -79,29 +84,38 @@
 <ui-sidebar [display]="formMode !== FormMode.NONE">
     <div>
         <div class="grid">
-            <ui-page-title class="col" title="Tur Kategorisi"></ui-page-title>
+            <ui-page-title class="col" title="Aktivite"></ui-page-title>
         </div>
 
-        <form [formGroup]="form" [id]="'formTourCategory'">
+        <form [formGroup]="form">
             <div class="p-fluid formgrid grid">
 
+                <div class="col-12 mb-2">
+                    <label for="lineNumber">Sıra</label>
+                    <p-inputNumber id="lineNumber" formControlName="lineNumber" mode="decimal"
+                                   [showButtons]="true" [min]="1" [max]="100">
+                    </p-inputNumber>
+                </div>
+
+                <div class="col-12 mb-2">
+                    <label for="dayNumber">Gün</label>
+                    <p-inputNumber id="dayNumber" formControlName="dayNumber" mode="decimal"
+                                   [showButtons]="true" [min]="1" [max]="100">
+                    </p-inputNumber>
+                </div>
+
                 <div class="col-12">
-                    <label for="name1">Şirket</label>
+                    <label for="activityId">Aktivite</label>
                     <p-dropdown
-                        [id]="'companyId'"
-                        [options]="companyList"
+                        id="activityId"
+                        [options]="activityList"
                         [optionValue]="'id'"
                         [optionLabel]="'name'"
                         [placeholder]="'Seçiniz'"
-                        formControlName="companyId"
+                        formControlName="activityId"
                         class="form-control"
                     >
                     </p-dropdown>
-                </div>
-
-                <div class="col-12 mt-2">
-                    <label for="name">Adı</label>
-                    <input pInputText id="name" type="text" formControlName="name"/>
                 </div>
 
                 <div class="col-12 mt-2">

@@ -49,7 +49,6 @@ import {FileUploadModule} from "primeng/fileupload";
         FileUploadModule
     ],
     templateUrl: './tour-gallery-page.component.html',
-    styleUrl: './tour-gallery-page.component.scss'
 })
 export class TourGalleryPageComponent implements OnInit, OnDestroy {
 
