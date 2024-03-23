@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {CurrencyPipe, NgIf, NgStyle} from "@angular/common";
+import {CurrencyPipe, DatePipe, NgIf, NgStyle} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {MenuModule} from "primeng/menu";
 import {MessageService, SharedModule} from "primeng/api";
@@ -54,6 +54,7 @@ import {ActivityModel} from "../../../../model/activity-model";
         DropdownModule,
         CalendarModule,
         FormsModule,
+        DatePipe,
     ],
     templateUrl: './activity-tariff-page.component.html'
 })

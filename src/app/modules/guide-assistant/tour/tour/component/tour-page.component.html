@@ -181,7 +181,8 @@
         <p-card *ngIf="formMode !== FormMode.NONE">
             <ui-page-header title="Tur" [pageCode]="pageCode" [showBack]="true" (onBack)="onBack()"></ui-page-header>
 
-            <app-tour-form [tour]="selectedItem" (eventSave)="eventSave()" (eventCancel)="onBack()"></app-tour-form>
+            <app-tour-form [tour]="selectedItem" [companyList]="companyList" [allTourTypeList]="allTourTypeList"
+                           (eventSave)="eventSave()" (eventCancel)="onBack()"></app-tour-form>
         </p-card>
 
     </div>

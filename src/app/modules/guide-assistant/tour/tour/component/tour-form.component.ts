@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormGroup} from "@angular/forms";
 import {FormMode} from "../../../common/enum/form-mode";
-import {TourModel} from "../model/tour-model";
 import {Subscription} from "rxjs";
-import {CompanyModel} from "../../../company/model/company-model";
 import {TourTypeModel} from "../../tourtype/model/tour-type-model";
 import {TourRestService} from "../service/tour-rest-service";
 import {MessageService, SharedModule} from "primeng/api";
@@ -33,6 +31,7 @@ import {TourGalleryPageComponent} from "./boxes/tour-gallery/component/tour-gall
 import {TourGalleryPreviewComponent} from "./boxes/tour-gallery/component/tour-gallery-preview.component";
 import {FileUploadModule} from "primeng/fileupload";
 import {Util} from "../../../common/util/util";
+import {LookupModel} from "../../../common/model/lookup-model";
 
 
 @Component({
@@ -72,7 +71,7 @@ import {Util} from "../../../common/util/util";
 export class TourFormComponent implements OnInit, OnDestroy {
 
     @Input() tour: TourSaveModel;
-    @Input() companyList: CompanyModel[];
+    @Input() companyList: LookupModel[];
     @Input() allTourTypeList: TourTypeModel[];
     @Output() eventSave = new EventEmitter();
     @Output() eventCancel = new EventEmitter();
@@ -99,8 +98,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
         this.pageCode = PageCode.TOUR_FORM;
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
-        this.companyList = [];
-        this.allTourTypeList = [];
+        this.tourTypeList = [];
         this.boxList = [];
         this.selectedBox = null;
         this.tour = Util.clone<TourSaveModel>(TourSaveModel, this.tour);
@@ -112,10 +110,6 @@ export class TourFormComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions?.forEach(x => x.unsubscribe());
-    }
-
-    clone<T>(TCreator: { new(): T }, model: T): T {
-        return Object.assign(new TCreator(), structuredClone(model));
     }
 
     buildForm() {
@@ -137,9 +131,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
     }
 
     onSave() {
-        let apiModel: TourModel = this.form.value;
-
-        let subscription = this.restService.save(apiModel).subscribe(
+        let subscription = this.restService.save(this.form.value).subscribe(
             response => {
                 this.messageService.add({
                     severity: 'success',
