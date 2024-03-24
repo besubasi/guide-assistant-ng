@@ -18,16 +18,20 @@ import {AppLayoutComponent} from "./layout/app.layout.component";
                         loadChildren: () => import('./modules/api-generator/api-generator.module').then(m => m.ApiGeneratorModule)
                     },
                     {
+                        path: 'account',
+                        loadChildren: () => import('./modules/account/account.module').then(m => m.AccountModule)
+                    },
+                    {
                         path: 'guide-assistant',
                         loadChildren: () => import('./modules/guide-assistant/guide-assistant.module').then(m => m.GuideAssistantModule)
                     },
                     {
                         path: 'guide-assistant/tour-menu/tour-category',
-                        loadChildren: () => import('./modules/guide-assistant/tour/tourcategory/tour-category-routing.module').then(m => m.TourCategoryRoutingModule)
+                        loadChildren: () => import('./modules/guide-assistant/tour/tour-category/tour-category-routing.module').then(m => m.TourCategoryRoutingModule)
                     },
                     {
                         path: 'guide-assistant/tour-menu/tour-type',
-                        loadChildren: () => import('./modules/guide-assistant/tour/tourtype/tour-type-routing.module').then(m => m.TourTypeRoutingModule)
+                        loadChildren: () => import('./modules/guide-assistant/tour/tour-type/tour-type-routing.module').then(m => m.TourTypeRoutingModule)
                     },
                     {
                         path: 'guide-assistant/tour-menu/tour',

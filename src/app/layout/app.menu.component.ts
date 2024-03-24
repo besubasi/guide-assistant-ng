@@ -21,6 +21,12 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
+                label: 'Hesap Bigileri',
+                items: [
+                    {label: 'Kullanıcı', icon: 'pi pi-fw pi-id-card', routerLink: ['/admin/user']}
+                ]
+            },
+            {
                 label: 'Rehber Asistanı',
                 items: [
                     {

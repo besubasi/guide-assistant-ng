@@ -1,0 +1,149 @@
+<div class="grid">
+    <div class="col-12">
+        <p-card>
+
+            <ng-template pTemplate="header">
+                <ui-page-title title="Kullanıcı" [pageCode]="pageCode"
+                               [showBack]="false"></ui-page-title>
+            </ng-template>
+
+            <p-toolbar toolbar class="flex justify-content-end" styleClass="pr-0 pl-0 pt-0">
+                <div>
+                    <button [id]="'add'" pButton [label]="'Ekle'" class="mr-2" (click)="onAdd()">
+
+                    </button>
+                    <button [id]="'copy'" pButton [label]="'Kopyala'" class="mr-2 p-button-outlined" (click)="onCopy()"
+                            [disabled]="!selectedItem">
+
+                    </button>
+                    <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
+                            [disabled]="!selectedItem">
+
+                    </button>
+                    <button [id]="'delete'" pButton [label]="'Sil'" class="mr-2 p-button-outlined" (click)="onDelete()"
+                            [disabled]="!selectedItem">
+
+                    </button>
+                </div>
+            </p-toolbar>
+
+            <p-table
+                dataKey="id"
+                styleClass="p-datatable-striped"
+                selectionMode="single"
+                [id]="pageCode + '_list'"
+                [value]="list"
+                [paginator]="true"
+                [rows]="10"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [totalRecords]="list?.length"
+                [(selection)]="selectedItem"
+                [metaKeySelection]="false"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="name" style="width: 25%">
+                            Adı Soyadı
+                            <p-sortIcon field="name"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="userName" style="width: 25%">
+                            Kullanıcı Adı
+                            <p-sortIcon field="userName"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="phoneNumber" style="width: 15%">
+                            Telefon
+                            <p-sortIcon field="phoneNumber"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="email" style="width: 20%">
+                            Mail
+                            <p-sortIcon field="email"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="active" style="width: 15%">
+                            Aktif
+                            <p-sortIcon field="active"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr [pSelectableRow]="item">
+                        <td style="width: 25%">{{ item.name }}</td>
+                        <td style="width: 25%">{{ item.userName }}</td>
+                        <td style="width: 15%">{{ item.email }}</td>
+                        <td style="width: 20%">{{ item.phoneNumber }}</td>
+                        <td style="width: 15%">
+                            <ui-active-inactive-tags [tagValue]="item.active"></ui-active-inactive-tags>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td [attr.colspan]="6">Kayıt Bulunamadı</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </p-card>
+    </div>
+</div>
+
+<ui-sidebar [display]="formMode !== FormMode.NONE">
+    <div>
+        <div class="grid">
+            <ui-page-title class="col" title="Kullanıcı"></ui-page-title>
+        </div>
+
+        <form [formGroup]="form">
+            <div class="p-fluid formgrid grid">
+
+                <div class="col-12 mt-2">
+                    <label for="name">Adı Soyadı</label>
+                    <input pInputText id="name" type="text" formControlName="name"/>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label for="userName">Kullanıcı Adı</label>
+                    <input pInputText id="userName" type="text" formControlName="userName"/>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label for="password">Şifre</label>
+                    <p-password id="password" formControlName="password" [feedback]="false"></p-password>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label for="phoneNumber">Telefon</label>
+                    <input pInputText id="phoneNumber" type="text" formControlName="phoneNumber"/>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <label for="email">Email</label>
+                    <input pInputText id="email" type="text" formControlName="email"/>
+                </div>
+
+                <div class="col-12">
+                    <label for="languageId">Dil</label>
+                    <p-dropdown
+                        id="languageId"
+                        [options]="languageList"
+                        [optionValue]="'id'"
+                        [optionLabel]="'name'"
+                        [placeholder]="'Seçiniz'"
+                        formControlName="languageId"
+                        class="form-control"
+                    >
+                    </p-dropdown>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <div class="field-checkbox">
+                        <p-checkbox id="active" formControlName="active" binary="true" label="Aktif"></p-checkbox>
+                    </div>
+                </div>
+            </div>
+
+            <ui-form-footer-buttons [form]="form" [idPrefix]="pageCode" [showCancel]="true" (onCancel)="onCancel()"
+                                    [showSave]="true" (onSave)="onSave()"></ui-form-footer-buttons>
+
+        </form>
+    </div>
+</ui-sidebar>

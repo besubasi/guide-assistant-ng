@@ -16,18 +16,21 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
 import {Subscription} from "rxjs";
 
-import {FormMode} from "../../common/enum/form-mode";
-import {CityModel} from "../model/city-model";
-import {UiSharedModule} from "../../../ui-shared/ui-shared.module";
-import {CityRestService} from "../service/city-rest-service";
-import {CountryRestService} from "../../country/service/country-rest-service";
-import {CountrySearchModel} from "../../country/model/country-search-model";
-import {CitySearchModel} from "../model/city-search-model";
-import {LookupModel} from "../../common/model/lookup-model";
-import {PageCode} from "../../common/enum/page-code";
+import {FormMode} from "../../../common/enum/form-mode";
+import {TourTypeModel} from "../model/tour-type-model";
+import {UiSharedModule} from "../../../../ui-shared/ui-shared.module";
+import {TourTypeRestService} from "../service/tour-type-rest-service";
+import {CompanyRestService} from "../../../company/service/company-rest-service";
+import {CompanyModel} from "../../../company/model/company-model";
+import {CompanySearchModel} from "../../../company/model/company-search-model";
+import {TourTypeSearchModel} from "../model/tour-type-search-model";
+import {TourCategoryModel} from "../../tour-category/model/tour-category-model";
+import {TourCategoryRestService} from "../../tour-category/service/tour-category-rest-service";
+import {TourCategorySearchModel} from "../../tour-category/model/tour-category-search-model";
+import {PageCode} from "../../../common/enum/page-code";
 
 @Component({
-    selector: 'app-city-page',
+    selector: 'app-tour-type-page',
     standalone: true,
     imports: [
         NgStyle,
@@ -49,22 +52,24 @@ import {PageCode} from "../../common/enum/page-code";
         InputNumberModule,
         DropdownModule,
     ],
-    templateUrl: './city-page.component.html'
+    templateUrl: './tour-type-page.component.html'
 })
-export class CityPageComponent implements OnInit, OnDestroy {
+export class TourTypePageComponent implements OnInit, OnDestroy {
 
     pageCode: string;
     formMode: string;
     form: UntypedFormGroup;
-    list: CityModel[];
-    selectedItem: CityModel;
+    list: TourTypeModel[];
+    selectedItem: TourTypeModel;
     subscriptions: Subscription[];
-    countryList: LookupModel[];
+    companyList: CompanyModel[];
+    tourCategoryList: TourCategoryModel[];
 
     constructor(
         private formBuilder: FormBuilder,
-        private restService: CityRestService,
-        private countryService: CountryRestService,
+        private restService: TourTypeRestService,
+        private tourCategoryService: TourCategoryRestService,
+        private companyService: CompanyRestService,
         private messageService: MessageService,
     ) {
     }
@@ -72,12 +77,13 @@ export class CityPageComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.formMode = FormMode.NONE;
         this.subscriptions = [];
-        this.countryList = [];
-        this.pageCode = PageCode.CITY;
+        this.companyList = [];
+        this.tourCategoryList = [];
+        this.pageCode = PageCode.TOUR_TYPE;
 
         this.buildForm();
-        this.loadCountryList();
-        this.loadListData();
+        this.loadCompanyList();
+        this.loadData();
     }
 
 
@@ -86,20 +92,31 @@ export class CityPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.formBuilder.group(new CityModel());
+        this.form = this.formBuilder.group(new TourTypeModel());
     }
 
-    loadCountryList() {
-        let searchModel: CountrySearchModel = new CountrySearchModel();
+    loadCompanyList() {
+        let searchModel: CompanySearchModel = new CompanySearchModel();
         searchModel.active = true;
-        let subscription = this.countryService.getLookupList(searchModel).subscribe((response => {
-            this.countryList = response;
+        let subscription = this.companyService.getList(searchModel).subscribe((response => {
+            this.companyList = response;
+            this.companyList?.forEach(x => x.name = x.code + ' - ' + x.name);
         }));
         this.subscriptions.push(subscription);
     }
 
-    loadListData() {
-        const subscription = this.restService.getList(new CitySearchModel()).subscribe((response) => {
+    loadTourCategoryList() {
+        let searchModel: TourCategorySearchModel = new TourCategorySearchModel();
+        searchModel.companyId = this.form.value.companyId;
+        searchModel.active = true;
+        let subscription = this.tourCategoryService.getList(searchModel).subscribe((response => {
+            this.tourCategoryList = response;
+        }));
+        this.subscriptions.push(subscription);
+    }
+
+    loadData() {
+        const subscription = this.restService.getList(new TourTypeSearchModel()).subscribe((response) => {
             this.list = response;
         });
         this.subscriptions.push(subscription);
@@ -124,11 +141,12 @@ export class CityPageComponent implements OnInit, OnDestroy {
     }
 
     onDelete() {
-        this.restService.deleteById(this.selectedItem.id).subscribe(() => {
+        let subscription = this.restService.deleteById(this.selectedItem.id).subscribe(() => {
             this.onCancel();
-            this.loadListData();
+            this.loadData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
         });
+        this.subscriptions.push(subscription);
     }
 
     onCancel() {
@@ -138,12 +156,10 @@ export class CityPageComponent implements OnInit, OnDestroy {
     }
 
     onSave() {
-        let apiModel: CityModel = this.form.value;
-
-        let subscription = this.restService.save(apiModel).subscribe(
+        let subscription = this.restService.save(this.form.value).subscribe(
             response => {
                 this.onCancel();
-                this.loadListData();
+                this.loadData();
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Başarılı',
@@ -154,6 +170,10 @@ export class CityPageComponent implements OnInit, OnDestroy {
         this.subscriptions.push(subscription);
     }
 
+    onChangeCompany() {
+        this.form.patchValue({tourCategoryId: null});
+        this.loadTourCategoryList();
+    }
 
     get FormMode() {
         return FormMode;

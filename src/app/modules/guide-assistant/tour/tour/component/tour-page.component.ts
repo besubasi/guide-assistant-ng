@@ -24,11 +24,11 @@ import {TourSearchModel} from "../model/tour-search-model";
 import {TourFormComponent} from "./tour-form.component";
 import {PageCode} from "../../../common/enum/page-code";
 import {AccordionModule} from "primeng/accordion";
-import {TourTypeModel} from "../../tourtype/model/tour-type-model";
+import {TourTypeModel} from "../../tour-type/model/tour-type-model";
 import {CompanyRestService} from "../../../company/service/company-rest-service";
-import {TourTypeRestService} from "../../tourtype/service/tour-type-rest-service";
+import {TourTypeRestService} from "../../tour-type/service/tour-type-rest-service";
 import {CompanySearchModel} from "../../../company/model/company-search-model";
-import {TourTypeSearchModel} from "../../tourtype/model/tour-type-search-model";
+import {TourTypeSearchModel} from "../../tour-type/model/tour-type-search-model";
 import {LookupModel} from "../../../common/model/lookup-model";
 
 @Component({

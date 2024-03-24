@@ -11,11 +11,11 @@ export const routes: Routes = [
             },
             {
                 path: "tour-category",
-                loadChildren: () => import('./tourcategory/tour-category.module').then(m => m.TourCategoryModule)
+                loadChildren: () => import('./tour-category/tour-category.module').then(m => m.TourCategoryModule)
             },
             {
                 path: "tour-type",
-                loadChildren: () => import('./tourtype/tour-type.module').then(m => m.TourTypeModule)
+                loadChildren: () => import('./tour-type/tour-type.module').then(m => m.TourTypeModule)
             },
         ],
     },

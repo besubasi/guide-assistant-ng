@@ -3,28 +3,27 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from "rxjs/operators";
 
-import {ApiResponse} from "../../common/model/api-response";
-import {BaseRestService} from "../../common/service/base-rest-service";
-import {EndpointConstant} from "../../common/constant/endpoint-constant";
+import {ApiResponse} from "../../../guide-assistant/common/model/api-response";
+import {BaseRestService} from "../../../guide-assistant/common/service/base-rest-service";
+import {EndpointConstant} from "../../../guide-assistant/common/constant/endpoint-constant";
 
-import {LookupModel as LM} from "../../common/model/lookup-model";
-import {CityModel as M} from "../model/city-model";
-import {CitySaveModel as SV} from "../model/city-save-model";
-import {CitySearchModel as SM} from "../model/city-search-model";
+import {UserModel as M} from "../model/user-model";
+import {UserSearchModel as SM} from "../model/user-search-model";
+import {LookupModel as LM} from "../../../guide-assistant/common/model/lookup-model";
 
 @Injectable({
     providedIn: 'root'
 })
-export class CityRestService extends BaseRestService {
+export class UserRestService extends BaseRestService {
 
     constructor(public override httpClient: HttpClient) {
-        super(httpClient, EndpointConstant.CITY_SERVICE_NAME);
+        super(httpClient, EndpointConstant.USER_SERVICE_NAME);
     }
 
-    public save(saveModel: SV): Observable<SV> {
+    public save(model: M): Observable<M> {
         return this.httpClient
-            .post<ApiResponse>(this.ENDPOINT_SAVE, this.converter.serialize(saveModel, SV))
-            .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, SV)));
+            .post<ApiResponse>(this.ENDPOINT_SAVE, this.converter.serialize(model, M))
+            .pipe(map((apiResponse) => this.converter.deserializeObject(apiResponse.data, M)));
     }
 
     public deleteById(id: number): Observable<any> {

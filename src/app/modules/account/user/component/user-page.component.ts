@@ -16,21 +16,19 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
 import {Subscription} from "rxjs";
 
-import {FormMode} from "../../../common/enum/form-mode";
-import {TourTypeModel} from "../model/tour-type-model";
-import {UiSharedModule} from "../../../../ui-shared/ui-shared.module";
-import {TourTypeRestService} from "../service/tour-type-rest-service";
-import {CompanyRestService} from "../../../company/service/company-rest-service";
-import {CompanyModel} from "../../../company/model/company-model";
-import {CompanySearchModel} from "../../../company/model/company-search-model";
-import {TourTypeSearchModel} from "../model/tour-type-search-model";
-import {TourCategoryModel} from "../../tourcategory/model/tour-category-model";
-import {TourCategoryRestService} from "../../tourcategory/service/tour-category-rest-service";
-import {TourCategorySearchModel} from "../../tourcategory/model/tour-category-search-model";
-import {PageCode} from "../../../common/enum/page-code";
+import {UserModel} from "../model/user-model";
+import {UserRestService} from "../service/user-rest-service";
+import {UserSearchModel} from "../model/user-search-model";
+import {PasswordModule} from "primeng/password";
+import {UiSharedModule} from "../../../ui-shared/ui-shared.module";
+import {PageCode} from "../../../guide-assistant/common/enum/page-code";
+import {FormMode} from "../../../guide-assistant/common/enum/form-mode";
+import {LookupModel} from "../../../guide-assistant/common/model/lookup-model";
+import {LanguageRestService} from "../../language/service/language-rest-service";
+import {LanguageSearchModel} from "../../language/model/language-search-model";
 
 @Component({
-    selector: 'app-tour-type-page',
+    selector: 'app-user-page',
     standalone: true,
     imports: [
         NgStyle,
@@ -51,39 +49,36 @@ import {PageCode} from "../../../common/enum/page-code";
         UiSharedModule,
         InputNumberModule,
         DropdownModule,
+        PasswordModule,
     ],
-    templateUrl: './tour-type-page.component.html'
+    templateUrl: './user-page.component.html'
 })
-export class TourTypePageComponent implements OnInit, OnDestroy {
+export class UserPageComponent implements OnInit, OnDestroy {
 
     pageCode: string;
     formMode: string;
     form: UntypedFormGroup;
-    list: TourTypeModel[];
-    selectedItem: TourTypeModel;
+    list: UserModel[];
+    selectedItem: UserModel;
     subscriptions: Subscription[];
-    companyList: CompanyModel[];
-    tourCategoryList: TourCategoryModel[];
+    languageList: LookupModel[];
 
     constructor(
         private formBuilder: FormBuilder,
-        private restService: TourTypeRestService,
-        private tourCategoryService: TourCategoryRestService,
-        private companyService: CompanyRestService,
+        private restService: UserRestService,
+        private languageRestService: LanguageRestService,
         private messageService: MessageService,
     ) {
     }
 
     ngOnInit() {
-        this.formMode = FormMode.NONE;
+        this.formMode = FormMode.NONE
         this.subscriptions = [];
-        this.companyList = [];
-        this.tourCategoryList = [];
-        this.pageCode = PageCode.TOUR_TYPE;
+        this.pageCode = PageCode.COUNTRY;
 
         this.buildForm();
-        this.loadCompanyList();
-        this.loadData();
+        this.loadLanguageList();
+        this.loadListData();
     }
 
 
@@ -92,31 +87,18 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.formBuilder.group(new TourTypeModel());
+        this.form = this.formBuilder.group(new UserModel());
     }
 
-    loadCompanyList() {
-        let searchModel: CompanySearchModel = new CompanySearchModel();
-        searchModel.active = true;
-        let subscription = this.companyService.getList(searchModel).subscribe((response => {
-            this.companyList = response;
-            this.companyList?.forEach(x => x.name = x.code + ' - ' + x.name);
-        }));
+    loadLanguageList() {
+        const subscription = this.languageRestService.getList(new LanguageSearchModel()).subscribe((response) => {
+            this.languageList = response;
+        });
         this.subscriptions.push(subscription);
     }
 
-    loadTourCategoryList() {
-        let searchModel: TourCategorySearchModel = new TourCategorySearchModel();
-        searchModel.companyId = this.form.value.companyId;
-        searchModel.active = true;
-        let subscription = this.tourCategoryService.getList(searchModel).subscribe((response => {
-            this.tourCategoryList = response;
-        }));
-        this.subscriptions.push(subscription);
-    }
-
-    loadData() {
-        const subscription = this.restService.getList(new TourTypeSearchModel()).subscribe((response) => {
+    loadListData() {
+        const subscription = this.restService.getList(new UserSearchModel()).subscribe((response) => {
             this.list = response;
         });
         this.subscriptions.push(subscription);
@@ -141,12 +123,11 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
     }
 
     onDelete() {
-        let subscription = this.restService.deleteById(this.selectedItem.id).subscribe(() => {
+        this.restService.deleteById(this.selectedItem?.id).subscribe(() => {
             this.onCancel();
-            this.loadData();
+            this.loadListData();
             this.messageService.add({severity: 'success', summary: 'Success', detail: "Kayıt başarıyla silindi"});
         });
-        this.subscriptions.push(subscription);
     }
 
     onCancel() {
@@ -156,10 +137,12 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
     }
 
     onSave() {
-        let subscription = this.restService.save(this.form.value).subscribe(
+        let apiModel: UserModel = this.form.value;
+
+        let subscription = this.restService.save(apiModel).subscribe(
             response => {
                 this.onCancel();
-                this.loadData();
+                this.loadListData();
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Başarılı',
@@ -168,11 +151,6 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
             }
         );
         this.subscriptions.push(subscription);
-    }
-
-    onChangeCompany() {
-        this.form.patchValue({tourCategoryId: null});
-        this.loadTourCategoryList();
     }
 
     get FormMode() {

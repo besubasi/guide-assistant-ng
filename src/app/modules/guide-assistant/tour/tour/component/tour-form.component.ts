@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormGroup} from "@angular/forms";
 import {FormMode} from "../../../common/enum/form-mode";
 import {Subscription} from "rxjs";
-import {TourTypeModel} from "../../tourtype/model/tour-type-model";
+import {TourTypeModel} from "../../tour-type/model/tour-type-model";
 import {TourRestService} from "../service/tour-rest-service";
 import {MessageService, SharedModule} from "primeng/api";
 import {TourSaveModel} from "../model/tour-save-model";

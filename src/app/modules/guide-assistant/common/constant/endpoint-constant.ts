@@ -1,6 +1,6 @@
 export class EndpointConstant {
 
-    static BASE_ENDPOINT: string = 'http://localhost:8080/guide';
+    static BASE_ENDPOINT: string = 'http://localhost:8080';
 
     static MAPPING_SAVE: string = "/save";
     static MAPPING_SAVE_BATCH: string = "/saveBatch";
@@ -38,4 +38,8 @@ export class EndpointConstant {
 
     static CURRENCY_SERVICE_NAME: string = "/currency";
     static PRICING_TYPE_SERVICE_NAME: string = "/pricing-type";
+
+    static USER_SERVICE_NAME: string = "/account/user";
+
+    static LANGUAGE_SERVICE_NAME: string = "/language";
 }
