@@ -1,6 +1,6 @@
 export class EndpointConstant {
 
-    static BASE_ENDPOINT: string = 'http://localhost:8080';
+    static BASE_ENDPOINT: string = 'http://guide-assistant.com.tr:5180';
 
     static MAPPING_SAVE: string = "/save";
     static MAPPING_SAVE_BATCH: string = "/saveBatch";

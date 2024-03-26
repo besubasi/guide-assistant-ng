@@ -9,7 +9,9 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "startGuideAssistant": "ng serve guide-assistant-ng --host=0.0.0.0 --public-host=localhost --port=5858"
+        "buildGuideAssistant": "ng build guide-assistant-ng",
+        "startGuideAssistant": "ng serve guide-assistant-ng --host=0.0.0.0 --public-host=guide-assistant.com.tr --port=5181",
+        "buildAndStartGuideAssistant": "npm run buildGuideAssistant && npm run startGuideAssistant"
     },
     "private": true,
     "dependencies": {
