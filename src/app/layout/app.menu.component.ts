@@ -23,7 +23,7 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Hesap Bigileri',
                 items: [
-                    {label: 'Kullanıcı', icon: 'pi pi-fw pi-id-card', routerLink: ['/admin/user']}
+                    {label: 'Kullanıcı', icon: 'pi pi-fw pi-id-card', routerLink: ['/account/user']}
                 ]
             },
             {
@@ -72,14 +72,14 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Kategori',
                         icon: 'pi pi-fw pi-id-card',
-                        routerLink: ['/guide-assistant/tour-menu/tour-category']
+                        routerLink: ['/guide-assistant/tour-category']
                     },
                     {
                         label: 'Tur Tipi',
                         icon: 'pi pi-fw pi-id-card',
-                        routerLink: ['/guide-assistant/tour-menu/tour-type']
+                        routerLink: ['/guide-assistant/tour-type']
                     },
-                    {label: 'Tur', icon: 'pi pi-fw pi-id-card', routerLink: ['/guide-assistant/tour-menu/tour']},
+                    {label: 'Tur', icon: 'pi pi-fw pi-id-card', routerLink: ['/guide-assistant/tour']},
                 ]
             },
             {

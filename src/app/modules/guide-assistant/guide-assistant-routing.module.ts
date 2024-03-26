@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-
 export const routes: Routes = [
     {
         path: '',
@@ -39,9 +38,18 @@ export const routes: Routes = [
                 loadChildren: () => import('./activity/activity.module').then(m => m.ActivityModule)
             },
             {
-                path: 'tour-menu',
-                loadChildren: () => import('./tour/tour-menu.module').then(m => m.TourMenuModule)
+                path: 'tour',
+                loadChildren: () => import('./tour/tour.module').then(m => m.TourModule)
             },
+            {
+                path: "tour-category",
+                loadChildren: () => import('./tour-category/tour-category.module').then(m => m.TourCategoryModule)
+            },
+            {
+                path: "tour-type",
+                loadChildren: () => import('./tour-type/tour-type.module').then(m => m.TourTypeModule)
+            },
+
         ],
     },
 ];

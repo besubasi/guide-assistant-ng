@@ -26,18 +26,6 @@ import {AppLayoutComponent} from "./layout/app.layout.component";
                         loadChildren: () => import('./modules/guide-assistant/guide-assistant.module').then(m => m.GuideAssistantModule)
                     },
                     {
-                        path: 'guide-assistant/tour-menu/tour-category',
-                        loadChildren: () => import('./modules/guide-assistant/tour/tour-category/tour-category-routing.module').then(m => m.TourCategoryRoutingModule)
-                    },
-                    {
-                        path: 'guide-assistant/tour-menu/tour-type',
-                        loadChildren: () => import('./modules/guide-assistant/tour/tour-type/tour-type-routing.module').then(m => m.TourTypeRoutingModule)
-                    },
-                    {
-                        path: 'guide-assistant/tour-menu/tour',
-                        loadChildren: () => import('./modules/guide-assistant/tour/tour/tour-routing.module').then(m => m.TourRoutingModule)
-                    },
-                    {
                         path: 'uikit',
                         loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule)
                     },
