@@ -12,10 +12,6 @@
                     <button [id]="'add'" pButton [label]="'Ekle'" class="mr-2" (click)="onAdd()">
 
                     </button>
-                    <button [id]="'copy'" pButton [label]="'Kopyala'" class="mr-2 p-button-outlined" (click)="onCopy()"
-                            [disabled]="!selectedItem">
-
-                    </button>
                     <button [id]="'edit'" pButton [label]="'Düzenle'" class="mr-2 p-button-outlined" (click)="onEdit()"
                             [disabled]="!selectedItem">
 
@@ -46,17 +42,17 @@
                             Adı Soyadı
                             <p-sortIcon field="name"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="userName" style="width: 25%">
-                            Kullanıcı Adı
-                            <p-sortIcon field="userName"></p-sortIcon>
+                        <th pSortableColumn="email" style="width: 20%">
+                            Mail
+                            <p-sortIcon field="email"></p-sortIcon>
                         </th>
                         <th pSortableColumn="phoneNumber" style="width: 15%">
                             Telefon
                             <p-sortIcon field="phoneNumber"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="email" style="width: 20%">
-                            Mail
-                            <p-sortIcon field="email"></p-sortIcon>
+                        <th pSortableColumn="roleType" style="width: 15%">
+                            Rol
+                            <p-sortIcon field="roleType"></p-sortIcon>
                         </th>
                         <th pSortableColumn="active" style="width: 15%">
                             Aktif
@@ -67,9 +63,9 @@
                 <ng-template pTemplate="body" let-item>
                     <tr [pSelectableRow]="item">
                         <td style="width: 25%">{{ item.name }}</td>
-                        <td style="width: 25%">{{ item.userName }}</td>
-                        <td style="width: 15%">{{ item.email }}</td>
+                        <td style="width: 20%">{{ item.email }}</td>
                         <td style="width: 20%">{{ item.phoneNumber }}</td>
+                        <td style="width: 20%">{{ getRoleTypeName(item.roleType) }}</td>
                         <td style="width: 15%">
                             <ui-active-inactive-tags [tagValue]="item.active"></ui-active-inactive-tags>
                         </td>
@@ -77,7 +73,7 @@
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td [attr.colspan]="6">Kayıt Bulunamadı</td>
+                        <td [attr.colspan]="4">Kayıt Bulunamadı</td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -101,8 +97,8 @@
                 </div>
 
                 <div class="col-12 mt-2">
-                    <label for="userName">Kullanıcı Adı</label>
-                    <input pInputText id="userName" type="text" formControlName="userName"/>
+                    <label for="phoneNumber">Telefon</label>
+                    <input pInputText id="phoneNumber" type="text" formControlName="phoneNumber"/>
                 </div>
 
                 <div class="col-12 mt-2">
@@ -111,16 +107,25 @@
                 </div>
 
                 <div class="col-12 mt-2">
-                    <label for="phoneNumber">Telefon</label>
-                    <input pInputText id="phoneNumber" type="text" formControlName="phoneNumber"/>
-                </div>
-
-                <div class="col-12 mt-2">
                     <label for="email">Email</label>
                     <input pInputText id="email" type="text" formControlName="email"/>
                 </div>
 
-                <div class="col-12">
+                <div *ngIf="formMode === FormMode.ADD" class="col-12 mt-2">
+                    <label>Şirket</label>
+                    <p-multiSelect
+                        id="companyIdList"
+                        [options]="companyList"
+                        [optionValue]="'id'"
+                        [optionLabel]="'name'"
+                        [placeholder]="'Seçiniz'"
+                        formControlName="companyIdList"
+                        class="form-control"
+                    >
+                    </p-multiSelect>
+                </div>
+
+                <div class="col-12 mt-2">
                     <label for="languageId">Dil</label>
                     <p-dropdown
                         id="languageId"

@@ -1,14 +1,12 @@
 import {JsonObject, JsonProperty} from "json2typescript";
 import {BaseModel} from "../../../guide-assistant/common/model/base-model";
+import {EnumRoleType} from "../enum/enum-role-type";
 
 @JsonObject('UserModel')
 export class UserModel extends BaseModel {
 
     @JsonProperty('name', String, true)
     name: string = null;
-
-    @JsonProperty('userName', String, true)
-    userName: string = null;
 
     @JsonProperty('password', String, true)
     password: string = null;
@@ -21,6 +19,9 @@ export class UserModel extends BaseModel {
 
     @JsonProperty('languageId', Number, true)
     languageId: number = null;
+
+    @JsonProperty('roleType', String, true)
+    roleType: EnumRoleType = EnumRoleType.TRAVELER;
 
     @JsonProperty('active', Boolean, true)
     active: boolean = true;

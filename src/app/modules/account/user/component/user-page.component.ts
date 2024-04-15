@@ -16,7 +16,6 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
 import {Subscription} from "rxjs";
 
-import {UserModel} from "../model/user-model";
 import {UserRestService} from "../service/user-rest-service";
 import {UserSearchModel} from "../model/user-search-model";
 import {PasswordModule} from "primeng/password";
@@ -26,6 +25,12 @@ import {FormMode} from "../../../guide-assistant/common/enum/form-mode";
 import {LookupModel} from "../../../guide-assistant/common/model/lookup-model";
 import {LanguageRestService} from "../../language/service/language-rest-service";
 import {LanguageSearchModel} from "../../language/model/language-search-model";
+import {CompanyRestService} from "../../../guide-assistant/company/service/company-rest-service";
+import {CompanySearchModel} from "../../../guide-assistant/company/model/company-search-model";
+import {MultiSelectModule} from "primeng/multiselect";
+import {EnumRoleType} from "../enum/enum-role-type";
+import {GuideUserModel} from "../model/guide-user-model";
+import {UserModel} from "../model/user-model";
 
 @Component({
     selector: 'app-user-page',
@@ -50,6 +55,7 @@ import {LanguageSearchModel} from "../../language/model/language-search-model";
         InputNumberModule,
         DropdownModule,
         PasswordModule,
+        MultiSelectModule,
     ],
     templateUrl: './user-page.component.html'
 })
@@ -61,11 +67,13 @@ export class UserPageComponent implements OnInit, OnDestroy {
     list: UserModel[];
     selectedItem: UserModel;
     subscriptions: Subscription[];
+    companyList: LookupModel[];
     languageList: LookupModel[];
 
     constructor(
         private formBuilder: FormBuilder,
         private restService: UserRestService,
+        private companyService: CompanyRestService,
         private languageRestService: LanguageRestService,
         private messageService: MessageService,
     ) {
@@ -77,6 +85,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
         this.pageCode = PageCode.COUNTRY;
 
         this.buildForm();
+        this.loadCompanyList();
         this.loadLanguageList();
         this.loadListData();
     }
@@ -87,7 +96,17 @@ export class UserPageComponent implements OnInit, OnDestroy {
     }
 
     buildForm() {
-        this.form = this.formBuilder.group(new UserModel());
+        this.form = this.formBuilder.group(new GuideUserModel());
+    }
+
+
+    loadCompanyList() {
+        let searchModel: CompanySearchModel = new CompanySearchModel();
+        searchModel.active = true;
+        let subscription = this.companyService.getLookupList(searchModel).subscribe((response => {
+            this.companyList = response;
+        }));
+        this.subscriptions.push(subscription);
     }
 
     loadLanguageList() {
@@ -98,6 +117,13 @@ export class UserPageComponent implements OnInit, OnDestroy {
     }
 
     loadListData() {
+        const subscription = this.restService.getList(new UserSearchModel()).subscribe((response) => {
+            this.list = response;
+        });
+        this.subscriptions.push(subscription);
+    }
+
+    loadUserCompanyRelList() {
         const subscription = this.restService.getList(new UserSearchModel()).subscribe((response) => {
             this.list = response;
         });
@@ -137,9 +163,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
     }
 
     onSave() {
-        let apiModel: UserModel = this.form.value;
-
-        let subscription = this.restService.save(apiModel).subscribe(
+        let subscription = this.restService.save(this.form.value).subscribe(
             response => {
                 this.onCancel();
                 this.loadListData();
@@ -155,5 +179,18 @@ export class UserPageComponent implements OnInit, OnDestroy {
 
     get FormMode() {
         return FormMode;
+    }
+
+    getRoleTypeName(enumRoleType: EnumRoleType) {
+        if (EnumRoleType.TRAVELER === enumRoleType)
+            return 'Gezgin'
+        else if (EnumRoleType.GUIDE === enumRoleType)
+            return 'Rehber'
+        else if (EnumRoleType.COMPANY_OPERATOR === enumRoleType)
+            return 'Şirket Operatörü'
+        else if (EnumRoleType.ADMIN === enumRoleType)
+            return 'Admin'
+        else
+            return '';
     }
 }
