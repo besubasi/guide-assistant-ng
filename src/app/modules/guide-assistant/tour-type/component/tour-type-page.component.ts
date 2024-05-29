@@ -132,12 +132,14 @@ export class TourTypePageComponent implements OnInit, OnDestroy {
         this.buildForm();
         this.form.patchValue(this.selectedItem);
         this.form.patchValue({id: null});
+        this.loadTourCategoryList();
     }
 
     onEdit() {
         this.formMode = FormMode.EDIT;
         this.buildForm();
         this.form.patchValue(this.selectedItem);
+        this.loadTourCategoryList();
     }
 
     onDelete() {

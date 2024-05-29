@@ -106,7 +106,7 @@ export class TourFormComponent implements OnInit, OnDestroy {
 
         this.buildForm();
         this.initializeBoxes();
-        this.onChangeCompany();
+        this.tourTypeList = this.allTourTypeList?.filter(x => x.companyId == this.form.value.companyId);
     }
 
     ngOnDestroy(): void {
